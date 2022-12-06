@@ -1,0 +1,10 @@
+server {
+    listen 80;
+    server_name studio.${SETUP_CUSTOMER}.layerx.ai;
+
+	location /.well-known/acme-challenge/ {
+		root /var/www/certbot;
+	} 
+}
+
+

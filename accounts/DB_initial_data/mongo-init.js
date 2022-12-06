@@ -1,0 +1,63 @@
+// create mongodb user
+db.createUser(
+  {
+    user: _getEnv('DB_USER'),
+    pwd: _getEnv('DB_PASS'),
+    roles: [{role: "readWrite", db: _getEnv('MONGO_INITDB_DATABASE')}],
+    mechanisms: ["SCRAM-SHA-1"]
+  }
+);
+
+var SETUP_CUSTOMER = _getEnv('SETUP_CUSTOMER')
+
+var adminMail = `admin@${SETUP_CUSTOMER}.layerx.ai`
+var teamName = `${SETUP_CUSTOMER} team`
+var imageUrl = `https://accounts.${SETUP_CUSTOMER}.layerx.ai/api/user/profileImage/6374c47ecb468b7a7a68a117/defaultProfileImage.png?1669197094012`
+
+//insert default user
+db.getCollection('User').insert({
+  "_id": ObjectId("6374c47ecb468b7a7a68a117"),
+  "email": adminMail,
+  "name": "LayerX Admin",
+  "userType": 3,
+  "profileImgUrl": "defaultProfileImage.png",
+  "projectList": null,
+  "teamId": ObjectId("6374c3decb468b7a7a68a116"),
+  "teamName": teamName,
+  "userStatus": 1,
+  "isAll": false,
+  "inviteUrlCreatedAt": null,
+  "isUserDeactivated": false,
+  "lastEmailSentTime": null,
+  "userStatPending": false,
+  "isBillingAdmin": false,
+  "annotationStats": null,
+  "createdAt": null,
+  "imageUrl": imageUrl,
+  "offsetTime": null,
+  "taskStats": null,
+  "timeZoneOffset": null
+})
+//insert default user credentials
+db.getCollection('AppUserCredentials').insert({
+  "_id": ObjectId("6374c597cb468b7a7a68a118"),
+  "password": "$2a$10$7eTCIWw6K8uGD.akHaVPdu7B4e6HbBWar1j5xBXAFgGqWYrfMnqqS",
+  "userId": ObjectId("6374c47ecb468b7a7a68a117"),
+  "annotationUserId": ObjectId("6374c47ecb468b7a7a68a117")
+})
+
+//insert default team
+db.getCollection('AnnotationTeam').insert({
+  "_id": ObjectId("6374c3decb468b7a7a68a116"),
+  "teamName": teamName,
+  "create_team_folder": true,
+  "apiKeyGenerated": true
+})
+
+//insert default APIKey
+db.getCollection('ApiKey').insert({
+  "_id": ObjectId("6374eb51e3ac085579e53442"),
+  "teamId": ObjectId("6374c3decb468b7a7a68a116"),
+  "key": "key_nuzplkko0b5jvdzp38c9uwfce5glr0lk",
+  "secret": "7yu90ssqspkou9y6mpe1"
+})

@@ -1,0 +1,64 @@
+version: "3.8"
+services:
+  sso_mongodb:
+      image: mongo:5.0.13
+      restart: always
+      ports:
+        - 17017:27017
+      volumes:
+        - ./mongoData:/data/db
+        - ./DB_initial_data/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js
+      environment:
+        - MONGO_INITDB_ROOT_USERNAME=admin
+        - MONGO_INITDB_ROOT_PASSWORD=${MONGODB_ADMIN_PASSWORD}
+        - MONGO_INITDB_DATABASE=${DATABASE}
+        - DB_USER
+        - DB_PASS
+        - SETUP_CUSTOMER
+
+  sso_node_backend:
+    image: layernextai/sso_node_backend
+    restart: always
+    ports:
+      - "8888:8888"
+    depends_on:
+      - sso_mongodb
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    volumes:
+      - ./sso-layerx-backend/logs:/usr/src/app/logs
+      - ./sso-layerx-backend/storage:/usr/src/app/storage
+    env_file:
+      - ./.env
+
+  sso_frontend:
+    image: layernextai/sso_frontend_${SETUP_CUSTOMER}
+    restart: always
+    ports:
+      - "8097:8097"
+    environment:
+      - TZ:utc
+
+  layerx_nginx:
+    image: nginx
+    volumes:
+      - ./nginxData/nginx/templates:/etc/nginx/templates
+      - ${SYNC_TOOL_PATH}:/home/layerx-sync-tool
+      - ./nginxData/certbot/conf:/etc/letsencrypt
+      - ./nginxData/certbot/www:/var/www/certbot
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    ports:
+      - "80:80"
+      - "443:443"
+    environment:
+      - NGINX_PORT=80
+      - SSO_BACKEND_PORT=8888
+      - SSO_FRONTEND_PORT=8097
+      - DATALAKE_BACKEND_PORT=3000
+      - DATALAKE_FRONTEND_PORT=8095
+      - DATASET_BACKEND_PORT=4000
+      - DATASET_FRONTEND_PORT=8098
+      - STUDIO_BACKEND_PORT=8080
+      - STUDIO_FRONTEND_PORT=8096
+      - SETUP_CUSTOMER
