@@ -2,9 +2,9 @@
 
 setup_customer=$1
 
-db_pass = openssl rand -hex 10
-db_root_pass = openssl rand -hex 16
-jwt_secret = openssl rand -hex 32
+db_pass = echo openssl rand -hex 10
+db_root_pass = echo openssl rand -hex 16
+jwt_secret = echo openssl rand -hex 32
 
 cat > ./.env <<EOL
 #DB
