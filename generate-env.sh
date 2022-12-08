@@ -6,6 +6,7 @@ export $(grep -v '^#' .env | xargs -d '\n')
 accounts_env="./accounts/.env"
 if [ -f $accounts_env ]; then
   echo "Existing env file found for accounts. replacing..."
+  echo "Warning: If the system was already built, the system may become non functional due to regeneration of db passwords"
 fi
 cat > $accounts_env <<EOL
 #DB
@@ -46,3 +47,158 @@ GOOGLE_CLIENT_ID = $GOOGLE_CLIENT_ID
 GOOGLE_CLIENT_SECRET = $GOOGLE_CLIENT_SECRET
 GOOGLE_REFRESH_TOKEN = $GOOGLE_REFRESH_TOKEN
 EOL
+
+
+# generate datalake env
+datalake_env="./datalake/.env"
+if [ -f $datalake_env ]; then
+  echo "Existing env file found for datalake. replacing..."
+  echo "Warning: If the system was already built, the system may become non functional due to regeneration of db passwords"
+fi
+cat > $datalake_env <<EOL
+#DB
+DB_HOST = host.docker.internal
+DB_PORT = 37017
+DB_USER = datalake_user
+DB_PASS = $(openssl rand -hex 10)
+DATABASE = datalakeDB
+
+# Build time
+SETUP_CUSTOMER = $SETUP_CUSTOMER
+MONGODB_ADMIN_PASSWORD = $(openssl rand -hex 16)
+CPU_LIMIT = $CPU_LIMIT
+MEMORY_LIMIT = $MEMORY_LIMIT
+
+#env
+PORT = 3000
+
+JWT_SECRET = $(openssl rand -hex 32)
+
+# Auth
+SSO_INTERNAL_SERVER = http://host.docker.internal:8888
+
+# studio
+ANNO_INTERNAL_SERVER = http://host.docker.internal:8080
+
+# storage
+STORAGE_TYPE = AWS_S3
+
+#S3
+AWS_ACCESS_KEY = $AWS_ACCESS_KEY
+AWS_SECRET_KEY = $AWS_SECRET_KEY
+AWS_REGION = $AWS_REGION
+AWS_BUCKET_NAME = $AWS_BUCKET_NAME
+AWS_BUCKET_S3_FILE_UPLOAD_PREFIX = LayerX-Upload-Contents
+
+EOL
+
+
+# generate dataset env
+dataset_env="./dataset/.env"
+if [ -f $dataset_env ]; then
+  echo "Existing env file found for dataset. replacing..."
+  echo "Warning: If the system was already built, the system may become non functional due to regeneration of db passwords"
+fi
+cat > $dataset_env <<EOL
+#DB
+DB_HOST = host.docker.internal
+DB_PORT = 47017
+DB_USER = dataset_user
+DB_PASS = $(openssl rand -hex 10)
+DATABASE = datasetDB
+
+# Build time
+SETUP_CUSTOMER = $SETUP_CUSTOMER
+MONGODB_ADMIN_PASSWORD = $(openssl rand -hex 16)
+CPU_LIMIT = $CPU_LIMIT
+MEMORY_LIMIT = $MEMORY_LIMIT
+
+#env
+PORT = 4000
+
+JWT_SECRET = $(openssl rand -hex 32)
+
+BASE_URL = https://dataset.$SETUP_CUSTOMER.layerx.ai
+FRONT_END_BASE_URL = http://dataset.$SETUP_CUSTOMER.layerx.ai
+
+SSO_INTERNAL_SERVER = http://host.docker.internal:8888
+ANNO_INTERNAL_SERVER = http://host.docker.internal:8080
+DATALAKE_INTERNAL_SERVER= http://host.docker.internal:3000
+
+DATALAKE_BASE_URL = http://datalake.$SETUP_CUSTOMER.layerx.ai
+
+#S3
+AWS_ACCESS_KEY = $AWS_ACCESS_KEY
+AWS_SECRET_KEY = $AWS_SECRET_KEY
+AWS_REGION = $AWS_REGION
+AWS_BUCKET_NAME = $AWS_BUCKET_NAME
+AWS_BUCKET_S3_FILE_UPLOAD_PREFIX = LayerX-Upload-Contents
+
+EOL
+
+
+
+# generate studio env
+studio_env="./studio/.env"
+if [ -f $studio_env ]; then
+  echo "Existing env file found for studio. replacing..."
+  echo "Warning: If the system was already built, the system may become non functional due to regeneration of db passwords"
+fi
+cat > $studio_env <<EOL
+#DB
+DB_HOST = host.docker.internal
+DB_PORT = 27017
+DB_USER = dataset_user
+DB_PASS = $(openssl rand -hex 10)
+DATABASE = datasetDB
+
+# Build time
+SETUP_CUSTOMER = $SETUP_CUSTOMER
+MONGODB_ADMIN_PASSWORD = $(openssl rand -hex 16)
+CPU_LIMIT = $CPU_LIMIT
+MEMORY_LIMIT = $MEMORY_LIMIT
+
+#For uploadx listener
+EXPRESS_PORT = 8082
+
+JWT_SECRET = $(openssl rand -hex 32)
+
+PYTHON_BASE_URL = http://host.docker.internal:8081
+BASE_URL = https://studio.$SETUP_CUSTOMER.layerx.ai
+PYTHON_SERVER = ../../../contents/uploads/
+FRONT_END_BASE_URL = https://studio.$SETUP_CUSTOMER.layerx.ai
+#ENVIRONMENT = enterprise
+DATALAKE_INTERNAL_SERVER = http://host.docker.internal:3000
+DATALAKE_BASE_URL = https://datalake.$SETUP_CUSTOMER.layerx.ai
+
+#S3
+AWS_ACCESS_KEY = $AWS_ACCESS_KEY
+AWS_SECRET_KEY = $AWS_SECRET_KEY
+AWS_REGION = $AWS_REGION
+AWS_BUCKET_NAME = $AWS_BUCKET_NAME
+AWS_BUCKET_S3_FILE_UPLOAD_PREFIX = LayerX-Upload-Contents
+
+#support email sendgrid
+SUPPORT_EMAIL = support@layerx.ai
+SENDGRID_API_KEY = $SENDGRID_API_KEY
+
+# Google login
+GOOGLE_API_KEY = $GOOGLE_API_KEY
+GOOGLE_CLIENT_ID = $GOOGLE_CLIENT_ID
+GOOGLE_CLIENT_SECRET = $GOOGLE_CLIENT_SECRET
+GOOGLE_REFRESH_TOKEN = $GOOGLE_REFRESH_TOKEN
+EOL
+
+
+# generate ssl creator nginx env
+ssl_nginx_env="./accounts/nginxData/.env"
+if [ -f $ssl_nginx_env ]; then
+  echo "Existing env file found for ssl nginx. replacing..."
+fi
+cat > $ssl_nginx_env <<EOL
+# Build time
+SETUP_CUSTOMER = $SETUP_CUSTOMER
+
+EOL
+
+
