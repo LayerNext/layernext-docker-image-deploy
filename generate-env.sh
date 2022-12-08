@@ -148,9 +148,9 @@ cat > $studio_env <<EOL
 #DB
 DB_HOST = host.docker.internal
 DB_PORT = 27017
-DB_USER = dataset_user
+DB_USER = studio_user
 DB_PASS = $(openssl rand -hex 10)
-DATABASE = datasetDB
+DATABASE = studioDB
 
 # Build time
 SETUP_CUSTOMER = $SETUP_CUSTOMER
