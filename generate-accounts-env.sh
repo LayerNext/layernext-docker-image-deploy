@@ -2,16 +2,22 @@
 
 setup_customer=$1
 
-cat > ./.env <<EOL
+db_pass = openssl rand -hex 10
+db_root_pass = openssl rand -hex 16
+jwt_secret = openssl rand -hex 32
 
+cat > ./.env <<EOL
 #DB
 DB_HOST = host.docker.internal
 DB_PORT = 17017
 DB_USER = sso_user
+DB_PASS = $(openssl rand -hex 10)
 DATABASE = authDB
 
 #env
 PORT = 8888
+
+JWT_SECRET = $jwt_secret
 
 #apps
 DATALAKE = 2E7GG9DZB7J8G45
@@ -27,11 +33,16 @@ ENVIRONMENT = enterprise
 #support email sendgrid
 SUPPORT_EMAIL = support@layerx.ai
 
+# Build time
+SETUP_CUSTOMER = $setup_customer
+MONGODB_ADMIN_PASSWORD = $db_root_pass
+SYNC_TOOL_PATH = ./../dataset
+
 EOL
 
 
 
 
 #SENDGRID_API_KEY = <sendgrid api key>
-#DB_PASS = xfuqbPA17D37teG
-#JWT_SECRET = bPh9LdKnx9VfCjl6w6yOailIp8xU40fYuHfNhN0bAakQ4dYO2E
+
+
