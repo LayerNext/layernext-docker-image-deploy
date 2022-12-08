@@ -163,6 +163,9 @@ EXPRESS_PORT = 8082
 
 JWT_SECRET = $(openssl rand -hex 32)
 
+# Auth
+SSO_INTERNAL_SERVER = http://host.docker.internal:8888
+
 PYTHON_BASE_URL = http://host.docker.internal:8081
 BASE_URL = https://studio.$SETUP_CUSTOMER.layerx.ai
 PYTHON_SERVER = ../../../contents/uploads/
