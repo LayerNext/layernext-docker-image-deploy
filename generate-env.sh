@@ -4,7 +4,7 @@ export $(grep -v '^#' .env | xargs -d '\n')
 
 # generate accounts env
 accounts_env="./accounts/.env"
-if [ -d "$accounts_env" ]; then
+if [ -d $accounts_env ]; then
   echo "Existing env file found for accounts. replacing..."
 fi
 cat > $accounts_env <<EOL
