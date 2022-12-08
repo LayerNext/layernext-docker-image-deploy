@@ -2,8 +2,7 @@
 
 setup_customer=$1
 
-cat <> .env
-------------------------------------------------------------
+cat >/etc/myconfig.conf <<EOL
 
 #DB
 DB_HOST = host.docker.internal
@@ -28,8 +27,7 @@ ENVIRONMENT = enterprise
 #support email sendgrid
 SUPPORT_EMAIL = support@layerx.ai
 
-------------------------------------------------------------
-EOF
+EOL
 
 
 
