@@ -2,7 +2,7 @@
 
 setup_customer=$1
 
-cat >/etc/myconfig.conf <<EOL
+cat > ./test.txt <<EOL
 
 #DB
 DB_HOST = host.docker.internal
