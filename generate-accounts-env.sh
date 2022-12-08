@@ -2,7 +2,7 @@
 
 setup_customer=$1
 
-cat > ./test.txt <<EOL
+cat > ./.env <<EOL
 
 #DB
 DB_HOST = host.docker.internal
