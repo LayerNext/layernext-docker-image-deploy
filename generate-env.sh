@@ -1,6 +1,6 @@
 #!/bin/bash
 
-env $(grep -v '^#' .env | xargs -d '\n')
+export $(grep -v '^#' .env | xargs -d '\n')
 
 echo $SETUP_CUSTOMER
 echo test
