@@ -19,8 +19,8 @@ STUDIO = ZQ9YR6HDFGFRJKQ
 SSO = 1RMBHCWM8QIJ6QH
 DATASET = 8F7TT5VB77K0GGH
 
-BASE_URL = https://accounts.$SETUP_CUSTOMER.layerx.ai
-FRONT_END_BASE_URL = https://accounts.$SETUP_CUSTOMER.layerx.ai
+BASE_URL = https://accounts.$setup_customer.layerx.ai
+FRONT_END_BASE_URL = https://accounts.$setup_customer.layerx.ai
 ANNO_INTERNAL_SERVER = http://host.docker.internal:8080
 ENVIRONMENT = enterprise
 
