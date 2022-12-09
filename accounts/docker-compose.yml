@@ -43,7 +43,7 @@ services:
     image: nginx
     volumes:
       - ./nginxData/nginx/templates:/etc/nginx/templates
-      - ${SYNC_TOOL_PATH}:/home/layerx-sync-tool
+      - ../dataset/layerx-sync-tool:/home/layerx-sync-tool
       - ./nginxData/certbot/conf:/etc/letsencrypt
       - ./nginxData/certbot/www:/var/www/certbot
     extra_hosts:
