@@ -75,7 +75,7 @@ db.getCollection('SystemData').insert({
       "updatedAt": ISODate("2022-12-01T06:11:59.861Z")
     }
   ],
-  "isDefaultQueryOptionsInserted": true,
+  "isDefaultQueryOptionsInserted": false,
   "recentMetaDataKeys": [],
   "recentTags": [],
   "allTags": []

@@ -69,6 +69,9 @@ MONGODB_ADMIN_PASSWORD = $(openssl rand -hex 16)
 CPU_LIMIT = $CPU_LIMIT
 MEMORY_LIMIT = $MEMORY_LIMIT
 
+#server
+INSTANCE_TYPE = master
+
 #env
 PORT = 3000
 
