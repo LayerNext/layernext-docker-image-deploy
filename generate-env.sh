@@ -175,7 +175,8 @@ PYTHON_SERVER = ../../../contents/uploads/
 FRONT_END_BASE_URL = https://studio.$SETUP_CUSTOMER.layerx.ai
 #ENVIRONMENT = enterprise
 DATALAKE_INTERNAL_SERVER = http://host.docker.internal:3000
-DATALAKE_BASE_URL = https://datalake.$SETUP_CUSTOMER.layerx.ai
+DATALAKE_BASE_URL = http://host.docker.internal:3000
+# DATALAKE_BASE_URL = https://datalake.$SETUP_CUSTOMER.layerx.ai
 
 #S3
 AWS_ACCESS_KEY = $AWS_ACCESS_KEY
