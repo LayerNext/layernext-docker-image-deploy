@@ -517,11 +517,12 @@ db.getCollection('MasterData').insert({
 })
 
 // insert default system user - admin
+var adminMail = `admin@${SETUP_CUSTOMER}.layerx.ai`
 db.getCollection('AnnotationUser').insert({
-    "_id" : ObjectId("622aee3f45c22d4752734c3a"),
+    "_id": ObjectId("6374c47ecb468b7a7a68a117"),
     "userType" : 2,
-    "email" : "admin@enterprise.layerx.ai",
-    "name" : "admin",
+    "email": adminMail,
+    "name": "LayerX Admin",
     "profileImgUrl" : "defaultProfileImage.png",
     "userStatus" : 1,
     "isAll" : false,
@@ -531,6 +532,6 @@ db.getCollection('AnnotationUser').insert({
 db.getCollection('AnnotationUserCredentials').insert({
     "_id" : "d6263763-f6a2-438a-bc16-caa21facb4dd",
     "password" : "$2a$10$6HlNYJ.du2gt1c.WRiW3A.FD6vuAqESv2k9tUD0zAeaMG2fW.3P2K",
-    "userId" : ObjectId("622aee3f45c22d4752734c3a"),
-    "annotationUserId" : ObjectId("622aee3f45c22d4752734c3a")
+    "userId": ObjectId("6374c47ecb468b7a7a68a117"),
+    "annotationUserId": ObjectId("6374c47ecb468b7a7a68a117")
 })
