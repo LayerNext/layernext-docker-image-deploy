@@ -94,3 +94,24 @@ db.getCollection('ApiKey').insert({
   "lastSyncTimestamp": ISODate("2022-09-30T10:05:00.018Z"),
   "application": "ANNOTATION_PROJECT"
 })
+
+
+// insert indexes
+db.InputMetaDataFeed.createIndex({"isActive": 1, "apiKey": 1}, {name: 'isActive_1_apiKey_1'})
+db.MetaData.createIndex({"objectKey": 1}, {name: 'objectKey_1'})
+db.MetaData.createIndex({"collectionId": 1}, {name: 'collectionId_1'})
+db.MetaData.createIndex({"parentList": 1}, {name: 'parentList_1'})
+db.MetaData.createIndex({"teamId": 1}, {name: 'teamId_1'})
+db.MetaData.createIndex({"objectType": 1}, {name: 'objectType_1'})
+db.MetaData.createIndex({"annotationProjectList.name": 1}, {name: 'annotationProjectList.name_1'})
+db.MetaData.createIndex({"teamId": 1, "objectType": 1}, {name: 'teamId_1_objectType_1'})
+db.MetaData.createIndex({"labelList.label": 1}, {name: 'labelList.label_1'})
+db.MetaData.createIndex({"updatedAt": -1}, {name: 'updatedAt_-1__id_-1'})
+db.MetaData.createIndex({"objectType": 1, "isError": 1, "teamId": 1}, {name: 'objectType_1_isError_1_teamId_1'})
+db.MetaData.createIndex({"teamId": 1, "collectionId": 1}, {name: 'teamId_1_collectionId_1'})
+db.MetaData.createIndex({"videoFrameIndex": 1}, {name: 'videoFrameIndex_1'})
+db.MetaData.createIndex({"teamId": 1, "collectionId": 1, "url": 1, "isError": 1}, {name: 'teamId_1_collectionId_1_url_1_isError_1'})
+db.MetaData.createIndex({"frameCount": 1}, {name: 'frameCount_1'})
+db.MetaData.createIndex({"$**": 1}, {name: '$**_1'})
+db.MetaDataUpdate.createIndex({"objectKey": 1}, {name: 'objectKey_1'})
+db.MetaDataUpdate.createIndex({"objectKey": 1, "operationId": 1, "operationMode": 1, "operationType": 1}, {name: 'objectKey_1_operationId_1_operationMode_1_operationType_1'})
