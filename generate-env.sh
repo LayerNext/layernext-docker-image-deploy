@@ -122,7 +122,7 @@ PORT = 4000
 JWT_SECRET = $(openssl rand -hex 32)
 
 BASE_URL = https://dataset.$SETUP_CUSTOMER.layerx.ai
-API_URL = https://dataset.$SETUP_CUSTOMER.layerx.ai
+API_URL = https://api.$SETUP_CUSTOMER.layerx.ai
 FRONT_END_BASE_URL = http://dataset.$SETUP_CUSTOMER.layerx.ai
 
 SSO_INTERNAL_SERVER = http://host.docker.internal:8888
