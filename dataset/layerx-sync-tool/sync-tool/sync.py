@@ -17,7 +17,7 @@ import sys
 import layerx
 
 # IP+port or url of the server # (eg: https://qa.deepzea.com)
-serverUrl = 'http://localhost:8080' # default
+serverUrl = 'http://localhost:8030' # default
 
 # get variables from cmd
 cmd_args = sys.argv

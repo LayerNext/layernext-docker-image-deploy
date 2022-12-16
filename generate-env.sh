@@ -34,7 +34,7 @@ DATASET = 8F7TT5VB77K0GGH
 
 BASE_URL = https://accounts.$SETUP_CUSTOMER.layerx.ai
 FRONT_END_BASE_URL = https://accounts.$SETUP_CUSTOMER.layerx.ai
-ANNO_INTERNAL_SERVER = http://host.docker.internal:8080
+ANNO_INTERNAL_SERVER = http://host.docker.internal:8030
 ENVIRONMENT = enterprise
 
 #support email sendgrid
@@ -81,7 +81,7 @@ JWT_SECRET = $(openssl rand -hex 32)
 SSO_INTERNAL_SERVER = http://host.docker.internal:8888
 
 # studio
-ANNO_INTERNAL_SERVER = http://host.docker.internal:8080
+ANNO_INTERNAL_SERVER = http://host.docker.internal:8030
 
 # storage
 STORAGE_TYPE = AWS_S3
@@ -128,7 +128,7 @@ API_URL = https://api.$SETUP_CUSTOMER.layerx.ai
 FRONT_END_BASE_URL = http://dataset.$SETUP_CUSTOMER.layerx.ai
 
 SSO_INTERNAL_SERVER = http://host.docker.internal:8888
-ANNO_INTERNAL_SERVER = http://host.docker.internal:8080
+ANNO_INTERNAL_SERVER = http://host.docker.internal:8030
 DATALAKE_INTERNAL_SERVER= http://host.docker.internal:3000
 
 DATALAKE_BASE_URL = http://datalake.$SETUP_CUSTOMER.layerx.ai
@@ -152,7 +152,7 @@ fi
 cat > $studio_env <<EOL
 #DB
 DB_HOST = host.docker.internal
-DB_PORT = 27017
+DB_PORT = 27018
 DB_USER = studio_user
 DB_PASS = $(openssl rand -hex 10)
 DATABASE = studioDB
@@ -164,14 +164,14 @@ CPU_LIMIT = $CPU_LIMIT
 MEMORY_LIMIT = $MEMORY_LIMIT
 
 #For uploadx listener
-EXPRESS_PORT = 8082
+EXPRESS_PORT = 8032
 
 JWT_SECRET = $(openssl rand -hex 32)
 
 # Auth
 SSO_INTERNAL_SERVER = http://host.docker.internal:8888
 
-PYTHON_BASE_URL = http://host.docker.internal:8081
+PYTHON_BASE_URL = http://host.docker.internal:8031
 BASE_URL = https://studio.$SETUP_CUSTOMER.layerx.ai
 PYTHON_SERVER = ../../../contents/uploads/
 FRONT_END_BASE_URL = https://studio.$SETUP_CUSTOMER.layerx.ai
