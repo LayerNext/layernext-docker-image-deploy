@@ -15,11 +15,10 @@ function initStaticParams
 initStaticParams
 
 mkdir -p $LOG_DIRECTORY
-mkdir -p ${OUTPUT_DIRECTORY}/dump/
 
 echo "`date +'%Y-%m-%dT%H:%M:%S.%3N'` restore start" >> $LOG_FILE
 
-mongorestore --port=$MONGODB_PORT --authenticationDatabase=admin --username=$MONGODB_USER --password=$MONGODB_PWD --db=$MONGODB_DATABASE --gzip --archive="layerxDB_02-06-2022.gz" --nsFrom='layerxDB.*' --nsTo='layerxDB_02-06-2022.*' --gzip  2>> $LOG_FILE
+mongorestore --port=$MONGODB_PORT --authenticationDatabase=admin --username=$MONGODB_USER --password=$MONGODB_PWD --db=$MONGODB_DATABASE --gzip --archive="datalake_dump_2022-12-19T00.gz" --nsFrom='datalakeDB.*' --nsTo='restore_test_1.*' --gzip  2>> $LOG_FILE
 
 
 echo "`date +'%Y-%m-%dT%H:%M:%S.%3N'` restore end" >> $LOG_FILE
