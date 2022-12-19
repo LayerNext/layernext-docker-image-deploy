@@ -1,6 +1,8 @@
 
+PATH_ENV=$1
+PATH_DIR=$2
 
-export $(grep -v '^#' /home/annotation.manager.dev/dataLake-dev/datalake/datalake-nodejs/backup/.env | xargs -d '\n')
+export $(grep -v '^#' $PATH_ENV | xargs -d '\n')
 
 function initStaticParams
 {
@@ -14,8 +16,11 @@ function initStaticParams
 }
 initStaticParams
 
+LOG_FILE=${PATH_DIR}/backup/logs/backup.log
+LOG_DIRECTORY=${PATH_DIR}/backup/logs
+
 mkdir -p $LOG_DIRECTORY
-mkdir -p ${OUTPUT_DIRECTORY}/dump/
+mkdir -p ${PATH_DIR}/backup/${OUTPUT_DIRECTORY}/dump/
 
 echo "`date +'%Y-%m-%dT%H:%M:%S.%3N'` dump start" >> $LOG_FILE
 
@@ -32,7 +37,7 @@ echo "`date +'%Y-%m-%dT%H:%M:%S.%3N'` dump start" >> $LOG_FILE
 
 # log $LOG_MESSAGE_INFO "[INFO] starting backup of datalake"
 
-mongodump --port=$MONGODB_PORT --authenticationDatabase=admin --username=$MONGODB_USER --password=$MONGODB_PWD --db=$MONGODB_DATABASE --archive=${OUTPUT_DIRECTORY}/dump/${DUMP_NAME}_`date +%Y-%m-%dT%H`.gz --gzip  2>> $LOG_FILE
+mongodump --port=$MONGODB_PORT --authenticationDatabase=admin --username=$MONGODB_USER --password=$MONGODB_PWD --db=$MONGODB_DATABASE --archive=${PATH_DIR}/backup/${OUTPUT_DIRECTORY}/dump/${$OUTPUT_DIRECTORY}_`date +%Y-%m-%dT%H`.gz --gzip  2>> $LOG_FILE
 # RET_CODE=$?
 
 

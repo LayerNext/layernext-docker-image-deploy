@@ -2,14 +2,17 @@ import datetime
 import math
 import os
 import subprocess
+import sys
 
 import boto3
 from dotenv import load_dotenv
 
-load_dotenv(
-    '/home/annotation.manager.dev/dataLake-dev/datalake/datalake-nodejs/backup/.env')
+PATH_ENV = sys.argv[1]
+PATH_DIR = sys.argv[2]
+print('env path:', PATH_ENV)
+
+load_dotenv(PATH_ENV)
 OUTPUT_DIRECTORY = os.getenv('OUTPUT_DIRECTORY')
-DUMP_NAME = os.getenv('DUMP_NAME')
 AWS_ACCESS_KEY = os.getenv('AWS_ACCESS_KEY')
 AWS_SECRET_KEY = os.getenv('AWS_SECRET_KEY')
 AWS_REGION = os.getenv('AWS_REGION')
@@ -45,19 +48,13 @@ int_hour = int(date.hour)
 
 def dump_mongdb():
 
-    print(f'{DUMP_NAME}{year}-{month}-{day}T{hour}.gz')
-    file_name = f'{DUMP_NAME}_{year}-{month}-{day}T{hour}.gz'
-    file_location = f'{OUTPUT_DIRECTORY}/dump/{file_name}'
+    print(f'{OUTPUT_DIRECTORY}{year}-{month}-{day}T{hour}.gz')
+    file_name = f'{OUTPUT_DIRECTORY}_{year}-{month}-{day}T{hour}.gz'
+    file_location = f'{PATH_DIR}/backup/{OUTPUT_DIRECTORY}/dump/{file_name}'
     date_string = f'{year}-{month}-{day}'
     print(file_location)
 
-    try:
-        subprocess.call(['bash', f'{OUTPUT_DIRECTORY}/dump.sh'])
-    except Exception as e:
-        print(f'Error while dumping {DUMP_NAME}, error: {e}')
-        return
-
-    
+    subprocess.call(['bash', f'{PATH_DIR}/backup/dump.sh', f'{PATH_ENV}', f'{PATH_DIR}'])
 
     session = boto3.session.Session()
 
@@ -74,19 +71,12 @@ def dump_mongdb():
         aws_access_key_id=AWS_ACCESS_KEY,
         aws_secret_access_key=AWS_SECRET_KEY
     )
-    try:
-        s3_client.upload_file(file_location, AWS_BUCKET_NAME,
-                          f'LayerNext/dump/{date_string}/{file_name}')
-    except Exception as e:
-        print(f'Error while uplaod dump into {DUMP_NAME}, error: {e}')
-        return
 
-    try:
-        response = s3_client.list_objects_v2(
+    s3_client.upload_file(file_location, AWS_BUCKET_NAME,
+                          f'LayerNext/dump/{date_string}/{file_name}')
+
+    response = s3_client.list_objects_v2(
         Bucket=AWS_BUCKET_NAME, Prefix=f'LayerNext/dump/')
-    except Exception as e:
-        print(f'Error while getting dump list, error: {e}')
-        return
 
     expire_date = datetime.datetime.now() - datetime.timedelta(int(DUMP_KEEPING_DAYS))
     expire_month = expire_date.month
@@ -107,11 +97,7 @@ def dump_mongdb():
             delete_list.append(object['Key'])
 
     for key in delete_list:
-        try:
-            s3_client.delete_object(Bucket=AWS_BUCKET_NAME, Key=key)
-        except Exception as e:
-            print(f'Error while getting dump list, error: {e}')
-            return
+        s3_client.delete_object(Bucket=AWS_BUCKET_NAME, Key=key)
         print('file deleted from s3', key)
 
     print(DUMP_KEEPING_DAYS, DUMP_PER_DAY, hour_list, int_hour)
@@ -122,6 +108,7 @@ def dump_mongdb():
 
 if int_hour not in hour_list:
     print('it is not in the list')
+    dump_mongdb()
 else:
     print('it is in the list')
     dump_mongdb()
