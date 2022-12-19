@@ -106,7 +106,7 @@ def dump_mongdb():
 
 if int_hour not in hour_list:
     print('it is not in the list')
-    # dump_mongdb()
+    dump_mongdb()
 else:
     print('it is in the list')
     dump_mongdb()
