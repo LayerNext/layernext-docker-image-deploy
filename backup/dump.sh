@@ -41,6 +41,7 @@ echo $MONGODB_PWD
 echo $MONGODB_DATABASE
 
 # log $LOG_MESSAGE_INFO "[INFO] starting backup of datalake"
+echo --port=$MONGODB_PORT --authenticationDatabase=admin --username=$MONGODB_USER --password=$MONGODB_PWD --db=$MONGODB_DATABASE --archive=${PATH_DIR}/backup/${OUTPUT_DIRECTORY}/dump/${OUTPUT_DIRECTORY}_`date +%Y-%m-%dT%H`.gz --gzip
 
 mongodump --port=$MONGODB_PORT --authenticationDatabase=admin --username=$MONGODB_USER --password=$MONGODB_PWD --db=$MONGODB_DATABASE --archive=${PATH_DIR}/backup/${OUTPUT_DIRECTORY}/dump/${OUTPUT_DIRECTORY}_`date +%Y-%m-%dT%H`.gz --gzip  2>> $LOG_FILE
 # RET_CODE=$?
