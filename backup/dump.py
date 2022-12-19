@@ -71,10 +71,10 @@ def dump_mongdb():
     )
 
     s3_client.upload_file(file_location, AWS_BUCKET_NAME,
-                          f'LayerNext/dump/{date_string}/{file_name}')
+                          f'LayerNext/dump/{OUTPUT_DIRECTORY}/{date_string}/{file_name}')
 
     response = s3_client.list_objects_v2(
-        Bucket=AWS_BUCKET_NAME, Prefix=f'LayerNext/dump/')
+        Bucket=AWS_BUCKET_NAME, Prefix=f'LayerNext/dump/{OUTPUT_DIRECTORY}')
 
     expire_date = datetime.datetime.now() - datetime.timedelta(int(DUMP_KEEPING_DAYS))
     expire_month = expire_date.month
