@@ -51,7 +51,13 @@ def dump_mongdb():
     date_string = f'{year}-{month}-{day}'
     print(file_location)
 
-    subprocess.call(['bash', f'{OUTPUT_DIRECTORY}/dump.sh'])
+    try:
+        subprocess.call(['bash', f'{OUTPUT_DIRECTORY}/dump.sh'])
+    except Exception as e:
+        print(f'Error while dumping {DUMP_NAME}, error: {e}')
+        return
+
+    
 
     session = boto3.session.Session()
 
@@ -68,12 +74,19 @@ def dump_mongdb():
         aws_access_key_id=AWS_ACCESS_KEY,
         aws_secret_access_key=AWS_SECRET_KEY
     )
-
-    s3_client.upload_file(file_location, AWS_BUCKET_NAME,
+    try:
+        s3_client.upload_file(file_location, AWS_BUCKET_NAME,
                           f'LayerNext/dump/{date_string}/{file_name}')
+    except Exception as e:
+        print(f'Error while uplaod dump into {DUMP_NAME}, error: {e}')
+        return
 
-    response = s3_client.list_objects_v2(
+    try:
+        response = s3_client.list_objects_v2(
         Bucket=AWS_BUCKET_NAME, Prefix=f'LayerNext/dump/')
+    except Exception as e:
+        print(f'Error while getting dump list, error: {e}')
+        return
 
     expire_date = datetime.datetime.now() - datetime.timedelta(int(DUMP_KEEPING_DAYS))
     expire_month = expire_date.month
@@ -94,7 +107,11 @@ def dump_mongdb():
             delete_list.append(object['Key'])
 
     for key in delete_list:
-        s3_client.delete_object(Bucket=AWS_BUCKET_NAME, Key=key)
+        try:
+            s3_client.delete_object(Bucket=AWS_BUCKET_NAME, Key=key)
+        except Exception as e:
+            print(f'Error while getting dump list, error: {e}')
+            return
         print('file deleted from s3', key)
 
     print(DUMP_KEEPING_DAYS, DUMP_PER_DAY, hour_list, int_hour)
