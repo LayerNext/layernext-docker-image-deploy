@@ -9,7 +9,6 @@ from dotenv import load_dotenv
 
 PATH_ENV = sys.argv[1]
 PATH_DIR = sys.argv[2]
-print('env path:', PATH_ENV)
 
 load_dotenv(PATH_ENV)
 OUTPUT_DIRECTORY = os.getenv('OUTPUT_DIRECTORY')
@@ -48,7 +47,6 @@ int_hour = int(date.hour)
 
 def dump_mongdb():
 
-    print(f'{OUTPUT_DIRECTORY}{year}-{month}-{day}T{hour}.gz')
     file_name = f'{OUTPUT_DIRECTORY}_{year}-{month}-{day}T{hour}.gz'
     file_location = f'{PATH_DIR}/backup/{OUTPUT_DIRECTORY}/dump/{file_name}'
     date_string = f'{year}-{month}-{day}'
@@ -100,7 +98,7 @@ def dump_mongdb():
         s3_client.delete_object(Bucket=AWS_BUCKET_NAME, Key=key)
         print('file deleted from s3', key)
 
-    print(DUMP_KEEPING_DAYS, DUMP_PER_DAY, hour_list, int_hour)
+    # print(DUMP_KEEPING_DAYS, DUMP_PER_DAY, hour_list, int_hour)
     print('dump finished...')
 
     os.unlink(file_location)
@@ -108,7 +106,7 @@ def dump_mongdb():
 
 if int_hour not in hour_list:
     print('it is not in the list')
-    dump_mongdb()
+    # dump_mongdb()
 else:
     print('it is in the list')
     dump_mongdb()
