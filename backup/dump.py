@@ -89,7 +89,7 @@ def dump_mongdb():
     for object in response['Contents']:
         key = object['Key']
         key_list = key.split('/')
-        date = key_list[2]
+        date = key_list[3]
         if datetime.datetime.fromisoformat(date) < expire_date:
             print('Deleting', object['Key'])
             delete_list.append(object['Key'])
