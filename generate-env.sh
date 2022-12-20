@@ -10,42 +10,50 @@ if [ -f $accounts_env ]; then
 fi
 cat > $accounts_env <<EOL
 #DB
-DB_HOST = host.docker.internal
-DB_PORT = 17017
-DB_USER = sso_user
-DB_PASS = $(openssl rand -hex 10)
-DATABASE = authDB
+DB_HOST=host.docker.internal
+DB_PORT=17017
+DB_USER=sso_user
+DB_PASS=$(openssl rand -hex 10)
+DATABASE=authDB
+
+#DUMP
+DUMP_USER=layernext_dumprestoreuser
+DUMP_USER_PWD=$(openssl rand -hex 10)
+OUTPUT_DIRECTORY=accounts
+#change dump keepeing days as prefer and use dump per day like 1,2,3,4,6,12,24
+DUMP_KEEPING_DAYS=30
+DUMP_PER_DAY=4
 
 # Build time
-SETUP_CUSTOMER = $SETUP_CUSTOMER
-MONGODB_ADMIN_PASSWORD = $(openssl rand -hex 16)
-SYNC_TOOL_PATH = ./../dataset
+SETUP_CUSTOMER=$SETUP_CUSTOMER
+MONGODB_ADMIN_PASSWORD=$(openssl rand -hex 16)
+SYNC_TOOL_PATH=./../dataset
 
 #env
-PORT = 8888
+PORT=8888
 
-JWT_SECRET = $(openssl rand -hex 32)
+JWT_SECRET=$(openssl rand -hex 32)
 
 #apps
-DATALAKE = 2E7GG9DZB7J8G45
-STUDIO = ZQ9YR6HDFGFRJKQ
-SSO = 1RMBHCWM8QIJ6QH
-DATASET = 8F7TT5VB77K0GGH
+DATALAKE=2E7GG9DZB7J8G45
+STUDIO=ZQ9YR6HDFGFRJKQ
+SSO=1RMBHCWM8QIJ6QH
+DATASET=8F7TT5VB77K0GGH
 
-BASE_URL = https://accounts.$SETUP_CUSTOMER.layerx.ai
-FRONT_END_BASE_URL = https://accounts.$SETUP_CUSTOMER.layerx.ai
-ANNO_INTERNAL_SERVER = http://host.docker.internal:8080
-ENVIRONMENT = enterprise
+BASE_URL=https://accounts.$SETUP_CUSTOMER.layerx.ai
+FRONT_END_BASE_URL=https://accounts.$SETUP_CUSTOMER.layerx.ai
+ANNO_INTERNAL_SERVER=http://host.docker.internal:8080
+ENVIRONMENT=enterprise
 
 #support email sendgrid
-SUPPORT_EMAIL = $SUPPORT_EMAIL
-SENDGRID_API_KEY = $SENDGRID_API_KEY
+SUPPORT_EMAIL=$SUPPORT_EMAIL
+SENDGRID_API_KEY=$SENDGRID_API_KEY
 
 # Google login
-GOOGLE_API_KEY = $GOOGLE_API_KEY
-GOOGLE_CLIENT_ID = $GOOGLE_CLIENT_ID
-GOOGLE_CLIENT_SECRET = $GOOGLE_CLIENT_SECRET
-GOOGLE_REFRESH_TOKEN = $GOOGLE_REFRESH_TOKEN
+GOOGLE_API_KEY=$GOOGLE_API_KEY
+GOOGLE_CLIENT_ID=$GOOGLE_CLIENT_ID
+GOOGLE_CLIENT_SECRET=$GOOGLE_CLIENT_SECRET
+GOOGLE_REFRESH_TOKEN=$GOOGLE_REFRESH_TOKEN
 EOL
 
 
@@ -57,43 +65,51 @@ if [ -f $datalake_env ]; then
 fi
 cat > $datalake_env <<EOL
 #DB
-DB_HOST = host.docker.internal
-DB_PORT = 37017
-DB_USER = datalake_user
-DB_PASS = $(openssl rand -hex 10)
-DATABASE = datalakeDB
+DB_HOST=host.docker.internal
+DB_PORT=37017
+DB_USER=datalake_user
+DB_PASS=$(openssl rand -hex 10)
+DATABASE=datalakeDB
+
+#DUMP
+DUMP_USER=layernext_dumprestoreuser
+DUMP_USER_PWD=$(openssl rand -hex 10)
+OUTPUT_DIRECTORY=datalake
+#change dump keepeing days as prefer and use dump per day like 1,2,3,4,6,12,24
+DUMP_KEEPING_DAYS=30
+DUMP_PER_DAY=4
 
 # Build time
-SETUP_CUSTOMER = $SETUP_CUSTOMER
-MONGODB_ADMIN_PASSWORD = $(openssl rand -hex 16)
-CPU_LIMIT = $CPU_LIMIT
-MEMORY_LIMIT = $MEMORY_LIMIT
+SETUP_CUSTOMER=$SETUP_CUSTOMER
+MONGODB_ADMIN_PASSWORD=$(openssl rand -hex 16)
+CPU_LIMIT=$CPU_LIMIT
+MEMORY_LIMIT=$MEMORY_LIMIT
 
 #server
-INSTANCE_TYPE = master
+INSTANCE_TYPE=master
 
 #env
-PORT = 3000
+PORT=3000
 
-JWT_SECRET = $(openssl rand -hex 32)
+JWT_SECRET=$(openssl rand -hex 32)
 
 # Auth
-SSO_INTERNAL_SERVER = http://host.docker.internal:8888
+SSO_INTERNAL_SERVER=http://host.docker.internal:8888
 
 # studio
-ANNO_INTERNAL_SERVER = http://host.docker.internal:8080
+ANNO_INTERNAL_SERVER=http://host.docker.internal:8080
 
 # storage
-STORAGE_TYPE = AWS_S3
+STORAGE_TYPE=AWS_S3
 
 #S3
-AWS_ACCESS_KEY = $AWS_ACCESS_KEY
-AWS_SECRET_KEY = $AWS_SECRET_KEY
-AWS_REGION = $AWS_REGION
-AWS_BUCKET_NAME = $AWS_BUCKET_NAME
+AWS_ACCESS_KEY=$AWS_ACCESS_KEY
+AWS_SECRET_KEY=$AWS_SECRET_KEY
+AWS_REGION=$AWS_REGION
+AWS_BUCKET_NAME=$AWS_BUCKET_NAME
 
 # Enabling optional features
-SUBSEQUENT_CRAWL = $SUBSEQUENT_CRAWL
+SUBSEQUENT_CRAWL=$SUBSEQUENT_CRAWL
 
 EOL
 
@@ -106,38 +122,46 @@ if [ -f $dataset_env ]; then
 fi
 cat > $dataset_env <<EOL
 #DB
-DB_HOST = host.docker.internal
-DB_PORT = 47017
-DB_USER = dataset_user
-DB_PASS = $(openssl rand -hex 10)
-DATABASE = datasetDB
+DB_HOST=host.docker.internal
+DB_PORT=47017
+DB_USER=dataset_user
+DB_PASS=$(openssl rand -hex 10)
+DATABASE=datasetDB
+
+#DUMP
+DUMP_USER=layernext_dumprestoreuser
+DUMP_USER_PWD=$(openssl rand -hex 10)
+OUTPUT_DIRECTORY=dataset
+#change dump keepeing days as prefer and use dump per day like 1,2,3,4,6,12,24
+DUMP_KEEPING_DAYS=30
+DUMP_PER_DAY=4
 
 # Build time
-SETUP_CUSTOMER = $SETUP_CUSTOMER
-MONGODB_ADMIN_PASSWORD = $(openssl rand -hex 16)
-CPU_LIMIT = $CPU_LIMIT
-MEMORY_LIMIT = $MEMORY_LIMIT
+SETUP_CUSTOMER=$SETUP_CUSTOMER
+MONGODB_ADMIN_PASSWORD=$(openssl rand -hex 16)
+CPU_LIMIT=$CPU_LIMIT
+MEMORY_LIMIT=$MEMORY_LIMIT
 
 #env
-PORT = 4000
+PORT=4000
 
-JWT_SECRET = $(openssl rand -hex 32)
+JWT_SECRET=$(openssl rand -hex 32)
 
-BASE_URL = https://dataset.$SETUP_CUSTOMER.layerx.ai
-API_URL = https://api.$SETUP_CUSTOMER.layerx.ai
-FRONT_END_BASE_URL = http://dataset.$SETUP_CUSTOMER.layerx.ai
+BASE_URL=https://dataset.$SETUP_CUSTOMER.layerx.ai
+API_URL=https://api.$SETUP_CUSTOMER.layerx.ai
+FRONT_END_BASE_URL=http://dataset.$SETUP_CUSTOMER.layerx.ai
 
-SSO_INTERNAL_SERVER = http://host.docker.internal:8888
-ANNO_INTERNAL_SERVER = http://host.docker.internal:8080
-DATALAKE_INTERNAL_SERVER= http://host.docker.internal:3000
+SSO_INTERNAL_SERVER=http://host.docker.internal:8888
+ANNO_INTERNAL_SERVER=http://host.docker.internal:8080
+DATALAKE_INTERNAL_SERVER=http://host.docker.internal:3000
 
-DATALAKE_BASE_URL = http://datalake.$SETUP_CUSTOMER.layerx.ai
+DATALAKE_BASE_URL=http://datalake.$SETUP_CUSTOMER.layerx.ai
 
 #S3
-AWS_ACCESS_KEY = $AWS_ACCESS_KEY
-AWS_SECRET_KEY = $AWS_SECRET_KEY
-AWS_REGION = $AWS_REGION
-AWS_BUCKET_NAME = $AWS_BUCKET_NAME
+AWS_ACCESS_KEY=$AWS_ACCESS_KEY
+AWS_SECRET_KEY=$AWS_SECRET_KEY
+AWS_REGION=$AWS_REGION
+AWS_BUCKET_NAME=$AWS_BUCKET_NAME
 
 EOL
 
@@ -151,51 +175,59 @@ if [ -f $studio_env ]; then
 fi
 cat > $studio_env <<EOL
 #DB
-DB_HOST = host.docker.internal
-DB_PORT = 27017
-DB_USER = studio_user
-DB_PASS = $(openssl rand -hex 10)
-DATABASE = studioDB
+DB_HOST=host.docker.internal
+DB_PORT=27017
+DB_USER=studio_user
+DB_PASS=$(openssl rand -hex 10)
+DATABASE=studioDB
+
+#DUMP
+DUMP_USER=layernext_dumprestoreuser
+DUMP_USER_PWD=$(openssl rand -hex 10)
+OUTPUT_DIRECTORY=studio
+#change dump keepeing days as prefer and use dump per day like 1,2,3,4,6,12,24
+DUMP_KEEPING_DAYS=30
+DUMP_PER_DAY=4
 
 # Build time
-SETUP_CUSTOMER = $SETUP_CUSTOMER
-MONGODB_ADMIN_PASSWORD = $(openssl rand -hex 16)
-CPU_LIMIT = $CPU_LIMIT
-MEMORY_LIMIT = $MEMORY_LIMIT
+SETUP_CUSTOMER=$SETUP_CUSTOMER
+MONGODB_ADMIN_PASSWORD=$(openssl rand -hex 16)
+CPU_LIMIT=$CPU_LIMIT
+MEMORY_LIMIT=$MEMORY_LIMIT
 
 #For uploadx listener
-EXPRESS_PORT = 8082
+EXPRESS_PORT=8082
 
 JWT_SECRET = $(openssl rand -hex 32)
 
 # Auth
-SSO_INTERNAL_SERVER = http://host.docker.internal:8888
+SSO_INTERNAL_SERVER=http://host.docker.internal:8888
 
-PYTHON_BASE_URL = http://host.docker.internal:8081
-BASE_URL = https://studio.$SETUP_CUSTOMER.layerx.ai
-PYTHON_SERVER = ../../../contents/uploads/
-FRONT_END_BASE_URL = https://studio.$SETUP_CUSTOMER.layerx.ai
-#ENVIRONMENT = enterprise
-DATALAKE_INTERNAL_SERVER = http://host.docker.internal:3000
-DATALAKE_BASE_URL = http://host.docker.internal:3000
-# DATALAKE_BASE_URL = https://datalake.$SETUP_CUSTOMER.layerx.ai
+PYTHON_BASE_URL=http://host.docker.internal:8081
+BASE_URL=https://studio.$SETUP_CUSTOMER.layerx.ai
+PYTHON_SERVER=../../../contents/uploads/
+FRONT_END_BASE_URL=https://studio.$SETUP_CUSTOMER.layerx.ai
+#ENVIRONMENT=enterprise
+DATALAKE_INTERNAL_SERVER=http://host.docker.internal:3000
+DATALAKE_BASE_URL=http://host.docker.internal:3000
+# DATALAKE_BASE_URL=https://datalake.$SETUP_CUSTOMER.layerx.ai
 
 #S3
-AWS_ACCESS_KEY = $AWS_ACCESS_KEY
-AWS_SECRET_KEY = $AWS_SECRET_KEY
-AWS_REGION = $AWS_REGION
-AWS_BUCKET_NAME = $AWS_BUCKET_NAME
-AWS_BUCKET_S3_FILE_UPLOAD_PREFIX = LayerX-Upload-Contents
+AWS_ACCESS_KEY=$AWS_ACCESS_KEY
+AWS_SECRET_KEY=$AWS_SECRET_KEY
+AWS_REGION=$AWS_REGION
+AWS_BUCKET_NAME=$AWS_BUCKET_NAME
+AWS_BUCKET_S3_FILE_UPLOAD_PREFIX=LayerX-Upload-Contents
 
 #support email sendgrid
-SUPPORT_EMAIL = $SUPPORT_EMAIL
-SENDGRID_API_KEY = $SENDGRID_API_KEY
+SUPPORT_EMAIL=$SUPPORT_EMAIL
+SENDGRID_API_KEY=$SENDGRID_API_KEY
 
 # Google login
-GOOGLE_API_KEY = $GOOGLE_API_KEY
-GOOGLE_CLIENT_ID = $GOOGLE_CLIENT_ID
-GOOGLE_CLIENT_SECRET = $GOOGLE_CLIENT_SECRET
-GOOGLE_REFRESH_TOKEN = $GOOGLE_REFRESH_TOKEN
+GOOGLE_API_KEY=$GOOGLE_API_KEY
+GOOGLE_CLIENT_ID=$GOOGLE_CLIENT_ID
+GOOGLE_CLIENT_SECRET=$GOOGLE_CLIENT_SECRET
+GOOGLE_REFRESH_TOKEN=$GOOGLE_REFRESH_TOKEN
 EOL
 
 
@@ -206,7 +238,7 @@ if [ -f $ssl_nginx_env ]; then
 fi
 cat > $ssl_nginx_env <<EOL
 # Build time
-SETUP_CUSTOMER = $SETUP_CUSTOMER
+SETUP_CUSTOMER=$SETUP_CUSTOMER
 
 EOL
 

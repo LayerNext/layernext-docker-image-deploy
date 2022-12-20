@@ -1,4 +1,4 @@
-1) create dump-restore user
+1) create dump-restore user if not generated through docker setup
 
 mongo --port XXXX
 use admin
@@ -13,19 +13,16 @@ db.createUser(
   }
 )
 
-2) pip install python-dotenv & pip install boto3
+2) pip install python-dotenv & pip install boto3 if not generated through docker setup
 
 
-3) example .env file
+3) example .env file in each app (datalake/.env) if not generated through docker setup
 
-MONGODB_PORT=XXXX
-MONGODB_DATABASE=XXXXX
-MONGODB_USER=USER
-MONGODB_PWD=PASSWORD
-LOG_FILE=/home/annotation.manager.dev/dump-datalake/logs/backup.log
-LOG_DIRECTORY=/home/annotation.manager.dev/dump-datalake/logs
-OUTPUT_DIRECTORY=/home/annotation.manager.dev/dump-datalake
-DUMP_NAME=datalake_dump
+DB_PORT=XXXX
+DATABASE=XXXXX
+DUMP_USER=USER
+DUMP_USER_PWD=PASSWORD
+OUTPUT_DIRECTORY=datalake
 AWS_ACCESS_KEY=XXXXX
 AWS_SECRET_KEY=XXXXX
 AWS_REGION=us-east-1
@@ -33,12 +30,7 @@ AWS_BUCKET_NAME=layerx-datalake-dev
 DUMP_KEEPING_DAYS=30
 DUMP_PER_DAY=4
 
-4)
-enter .env path in both dump.sh and dump.py files
-  eg dump.sh- export $(grep -v '^#' /home/annotation.manager.dev/dump-datalake/.env | xargs -d '\n')
-  eg dump.py- load_dotenv('/home/annotation.manager.dev/dump-datalake/.env')
-
-5) crontab setup
-eg- 0 * * * * python3 /home/annotation.manager.dev/dump-datalake/dump.py
+5) crontab setup in each app (datalake/crontab.sh)
+bash crontab.sh after creating all above .env variables
 
 

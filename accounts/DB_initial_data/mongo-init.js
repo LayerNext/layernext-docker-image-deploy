@@ -8,6 +8,14 @@ db.createUser(
   }
 );
 
+db.createUser(
+  {
+    user: _getEnv('DUMP_USER'),
+    pwd: _getEnv('DUMP_USER_PWD'),
+    roles: [ "backup", "restore"]
+  }
+);
+
 var SETUP_CUSTOMER = _getEnv('SETUP_CUSTOMER')
 
 var adminMail = `admin@${SETUP_CUSTOMER}.layerx.ai`
