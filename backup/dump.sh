@@ -36,7 +36,7 @@ echo "`date +'%Y-%m-%dT%H:%M:%S.%3N'` dump start" >> $LOG_FILE
 # }
 # log $LOG_MESSAGE_INFO "[INFO] starting backup of datalake"
 
-mongodump --port=$DB_PORT --authenticationDatabase=admin --username=$MONGODB_USER --password=$MONGODB_PWD --db=$DATABASE --archive=${PATH_DIR}/backup/${OUTPUT_DIRECTORY}/dump/${OUTPUT_DIRECTORY}_`date +%Y-%m-%dT%H`.gz --gzip  2>> $LOG_FILE
+mongodump --port=$DB_PORT --authenticationDatabase=admin --username=$DUMP_USER --password=$DUMP_USER_PWD --db=$DATABASE --archive=${PATH_DIR}/backup/${OUTPUT_DIRECTORY}/dump/${OUTPUT_DIRECTORY}_`date +%Y-%m-%dT%H`.gz --gzip  2>> $LOG_FILE
 # RET_CODE=$?
 
 
