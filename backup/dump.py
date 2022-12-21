@@ -70,6 +70,8 @@ def dump_mongdb():
         aws_secret_access_key=AWS_SECRET_KEY
     )
 
+    print('paths: ', file_location, AWS_BUCKET_NAME, f'LayerNext/dump/{OUTPUT_DIRECTORY}/{date_string}/{file_name}')
+
     s3_client.upload_file(file_location, AWS_BUCKET_NAME,
                           f'LayerNext/dump/{OUTPUT_DIRECTORY}/{date_string}/{file_name}')
 
