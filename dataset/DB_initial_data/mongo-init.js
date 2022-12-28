@@ -1,18 +1,19 @@
+// create mongodb dump restore user
+db.createUser(
+  {
+    user: _getEnv('DUMP_USER'),
+    pwd: _getEnv('DUMP_USER_PWD'),
+    roles: ["backup", "restore"],
+    mechanisms: ["SCRAM-SHA-1"]
+  }
+);
+
 // create mongodb user
 db.createUser(
   {
     user: _getEnv('DB_USER'),
     pwd: _getEnv('DB_PASS'),
     roles: [{role: "readWrite", db: _getEnv('MONGO_INITDB_DATABASE')}],
-    mechanisms: ["SCRAM-SHA-1"]
-  }
-);
-
-db.createUser(
-  {
-    user: _getEnv('DUMP_USER'),
-    pwd: _getEnv('DUMP_USER_PWD'),
-    roles: [ "backup", "restore"],
     mechanisms: ["SCRAM-SHA-1"]
   }
 );
