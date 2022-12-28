@@ -8,6 +8,15 @@ db.createUser(
     }
   );
 
+db.createUser(
+{
+    user: _getEnv('DUMP_USER'),
+    pwd: _getEnv('DUMP_USER_PWD'),
+    roles: [ "backup", "restore"],
+    mechanisms: ["SCRAM-SHA-1"]
+}
+);
+
 //insert masterData
 db.getCollection('MasterData').insert({
     "_id" : ObjectId("619dd3ff8c115a50e135b303"),
