@@ -3,7 +3,7 @@ db.createUser(
   {
     user: _getEnv('DUMP_USER'),
     pwd: _getEnv('DUMP_USER_PWD'),
-    roles: [{role: ["backup", "restore"], db: "admin"}],
+    roles: [{role: "backup", db: "admin"}, {role: "restore", db: "admin"}],
     mechanisms: ["SCRAM-SHA-1"]
   }
 );
