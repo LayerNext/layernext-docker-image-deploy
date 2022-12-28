@@ -8,12 +8,15 @@ db.createUser(
   }
 );
 
+// switch to db
+db = db.getSiblingDB(_getEnv('DATABASE'));
+
 // create mongodb user
 db.createUser(
   {
     user: _getEnv('DB_USER'),
     pwd: _getEnv('DB_PASS'),
-    roles: [{role: "readWrite", db: _getEnv('MONGO_INITDB_DATABASE')}],
+    roles: [{role: "readWrite", db: _getEnv('DATABASE')}],
     mechanisms: ["SCRAM-SHA-1"]
   }
 );
