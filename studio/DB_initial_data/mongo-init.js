@@ -1,3 +1,16 @@
+// create mongodb dump restore user
+db.createUser(
+    {
+        user: _getEnv('DUMP_USER'),
+        pwd: _getEnv('DUMP_USER_PWD'),
+        roles: [{role: "backup", db: "admin"}, {role: "restore", db: "admin"}],
+        mechanisms: ["SCRAM-SHA-1"]
+    }
+);
+
+// switch to db
+db = db.getSiblingDB(_getEnv('DATABASE'));
+
 // create mongodb user
 db.createUser(
     {
@@ -7,15 +20,6 @@ db.createUser(
       mechanisms:["SCRAM-SHA-1"]
     }
   );
-
-db.createUser(
-{
-    user: _getEnv('DUMP_USER'),
-    pwd: _getEnv('DUMP_USER_PWD'),
-    roles: [ "backup", "restore"],
-    mechanisms: ["SCRAM-SHA-1"]
-}
-);
 
 //insert masterData
 db.getCollection('MasterData').insert({

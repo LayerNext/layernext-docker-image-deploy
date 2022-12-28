@@ -11,7 +11,8 @@ services:
       environment:
         - MONGO_INITDB_ROOT_USERNAME=admin
         - MONGO_INITDB_ROOT_PASSWORD=${MONGODB_ADMIN_PASSWORD}
-        - MONGO_INITDB_DATABASE=${DATABASE}
+        - MONGO_INITDB_DATABASE=admin
+        - DATABASE
         - DB_USER
         - DB_PASS
         - DUMP_USER
