@@ -88,6 +88,7 @@ def dump_mongdb():
         expire_day = f'0{str(expire_day)}'
 
     delete_list = []
+    keep_list = []
     for object in response['Contents']:
         key = object['Key']
         key_list = key.split('/')
@@ -95,10 +96,13 @@ def dump_mongdb():
         if datetime.datetime.fromisoformat(date) < expire_date:
             print('Deleting', object['Key'])
             delete_list.append(object['Key'])
+        else:
+            keep_list.append(object['Key'])
 
-    for key in delete_list:
-        s3_client.delete_object(Bucket=AWS_BUCKET_NAME, Key=key)
-        print('file deleted from s3', key)
+    if(len(keep_list) > ((int(DUMP_KEEPING_DAYS)-1) * int(DUMP_PER_DAY))):
+        for key in delete_list:
+            s3_client.delete_object(Bucket=AWS_BUCKET_NAME, Key=key)
+            print('file deleted from s3', key)
 
     # print(DUMP_KEEPING_DAYS, DUMP_PER_DAY, hour_list, int_hour)
     print('dump finished...')
