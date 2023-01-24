@@ -108,23 +108,72 @@ db.getCollection('ApiKey').insert({
   "application": "ANNOTATION_PROJECT"
 })
 
+/**
+ * insert indexes
+ */
 
-// insert indexes
+// 'InputMetaDataFeed' collection
 db.InputMetaDataFeed.createIndex({"isActive": 1, "apiKey": 1}, {name: 'isActive_1_apiKey_1'})
+
+// 'MetaData' collection
 db.MetaData.createIndex({"objectKey": 1}, {name: 'objectKey_1'})
 db.MetaData.createIndex({"collectionId": 1}, {name: 'collectionId_1'})
 db.MetaData.createIndex({"parentList": 1}, {name: 'parentList_1'})
 db.MetaData.createIndex({"teamId": 1}, {name: 'teamId_1'})
 db.MetaData.createIndex({"objectType": 1}, {name: 'objectType_1'})
-db.MetaData.createIndex({"annotationProjectList.name": 1}, {name: 'annotationProjectList.name_1'})
-db.MetaData.createIndex({"teamId": 1, "objectType": 1}, {name: 'teamId_1_objectType_1'})
 db.MetaData.createIndex({"labelList.label": 1}, {name: 'labelList.label_1'})
-db.MetaData.createIndex({"updatedAt": -1}, {name: 'updatedAt_-1__id_-1'})
+db.MetaData.createIndex({"frameCount": 1}, {name: 'frameCount_1'})
+db.MetaData.createIndex({"isPendingThumbnail": 1}, {name: 'isPendingThumbnail_1'})
+db.MetaData.createIndex({"Tags": 1}, {name: 'Tags_1'})
+db.MetaData.createIndex({"directory": 1}, {name: 'directory_1'})
+db.MetaData.createIndex({"dataCrawlId": 1}, {name: 'dataCrawlId_1'})
+db.MetaData.createIndex({"datasetGroupId": 1}, {name: 'datasetGroupId_1'})
+db.MetaData.createIndex({"name": 1}, {name: 'name_1'})
+db.MetaData.createIndex({"createdAt": 1}, {name: 'createdAt_1'})
+db.MetaData.createIndex({"urlExpiredAt": 1}, {name: 'urlExpiredAt_1'})
+db.MetaData.createIndex({"taskIdList": 1}, {name: 'taskIdList_1'})
+db.MetaData.createIndex({"vCollectionIdList": 1}, {name: 'vCollectionIdList_1'})
+db.MetaData.createIndex({"verificationStatusCount.raw": 1}, {name: 'verificationStatusCount.raw_1'})
+db.MetaData.createIndex({"verificationStatusCount.machineAnnotated": 1}, {name: 'verificationStatusCount.machineAnnotated_1'})
+db.MetaData.createIndex({"verificationStatusCount.verified": 1}, {name: 'verificationStatusCount.verified_1'})
+db.MetaData.createIndex({"isLeaf": 1}, {name: 'isLeaf_1'})
+db.MetaData.createIndex({"statPending": 1}, {name: 'statPending_1'})
+db.MetaData.createIndex({"annotationStatPending": 1}, {name: 'annotationStatPending_1'})
+db.MetaData.createIndex({"datasetStatPending": 1}, {name: 'datasetStatPending_1'})
+db.MetaData.createIndex({"frameAnalyticsCalcAt": 1}, {name: 'frameAnalyticsCalcAt_1'})
+db.MetaData.createIndex({"isMediaProcessingPending": 1}, {name: 'isMediaProcessingPending_1'})
+db.MetaData.createIndex({"isVerificationStatusPending": 1}, {name: 'isVerificationStatusPending_1'})
+db.MetaData.createIndex({"isLogical": 1}, {name: 'isLogical_1'})
+db.MetaData.createIndex({"annotationProjectList.name": 1}, {name: 'annotationProjectList.name_1'})
+db.MetaData.createIndex({"annotationProjectList.id": 1}, {name: 'annotationProjectList.id_1'})
+db.MetaData.createIndex({"datasetVersionList.datasetVersionId": 1}, {name: 'datasetVersionList.datasetVersionId_1'})
+db.MetaData.createIndex({"datasetVersionList.datasetMetaId": 1}, {name: 'datasetVersionList.datasetMetaId_1'})
+
+
+db.MetaData.createIndex({"teamId": 1, "objectType": 1}, {name: 'teamId_1_objectType_1'})
 db.MetaData.createIndex({"objectType": 1, "isError": 1, "teamId": 1}, {name: 'objectType_1_isError_1_teamId_1'})
 db.MetaData.createIndex({"teamId": 1, "collectionId": 1}, {name: 'teamId_1_collectionId_1'})
-db.MetaData.createIndex({"videoFrameIndex": 1}, {name: 'videoFrameIndex_1'})
-db.MetaData.createIndex({"teamId": 1, "collectionId": 1, "url": 1, "isError": 1}, {name: 'teamId_1_collectionId_1_url_1_isError_1'})
-db.MetaData.createIndex({"frameCount": 1}, {name: 'frameCount_1'})
-db.MetaData.createIndex({"$**": 1}, {name: '$**_1'})
+db.MetaData.createIndex({"teamId": 1, "collectionId": 1, "isAccessible": 1, "isError": 1}, {name: 'teamId_1_collectionId_1_isAccessible_1_isError_1'})
+db.MetaData.createIndex({"datasetVersionList.datasetVersionId": 1, "objectType": 1}, {name: 'datasetVersionList.datasetVersionId_1_objectType_1'})
+db.MetaData.createIndex({"datasetVersionList.datasetVersionId": 1, "collectionId": 1}, {name: 'datasetVersionList.datasetVersionId_1_collectionId_1'})
+db.MetaData.createIndex({"datasetVersionList.datasetVersionId": 1, "datasetVersionList.datasetSplitType": 1, "objectType": 1}, {name: 'datasetVersionList.datasetVersionId_1_datasetVersionList.datasetSplitType_1_objectType_1'})
+db.MetaData.createIndex({"datasetVersionList.datasetMetaId": 1, "objectType": 1}, {name: 'datasetVersionList.datasetMetaId_1_objectType_1'})
+
+
+db.MetaData.createIndex({"updatedAt": -1, "_id": -1}, {name: 'updatedAt_-1__id_-1'})
+db.MetaData.createIndex({"sourceVideoId": 1, "videoFrameIndex": 1, "_id": 1}, {name: 'sourceVideoId_1_videoFrameIndex_1__id_1'})
+
+
+db.MetaData.createIndex({"customMeta.$**": 1}, {name: 'customMeta.$**_1'})
+
+
+// 'MetaDataUpdate' collection
 db.MetaDataUpdate.createIndex({"objectKey": 1}, {name: 'objectKey_1'})
 db.MetaDataUpdate.createIndex({"objectKey": 1, "operationId": 1, "operationMode": 1, "operationType": 1}, {name: 'objectKey_1_operationId_1_operationMode_1_operationType_1'})
+
+// 'Job' collection
+db.Job.createIndex({"jobName": 1})
+db.Job.createIndex({"jobType": 1})
+db.Job.createIndex({"updatedAt": -1})
+db.Job.createIndex({"status": 1})
+db.Job.createIndex({"createdAt": 1})
