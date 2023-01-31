@@ -29,7 +29,7 @@ db.getCollection('SystemData').insert({
   "apiConfigs": {
     "maxSyncInterval": 50000.0
   },
-  "totalDataSize": 365510868200.0,
+  "totalDataSize": 0,
   "objectCounts": {
     "total": 0,
     "rootImageCount": 0,
@@ -37,13 +37,13 @@ db.getCollection('SystemData').insert({
     "videos": {
       "count": 0,
       "frames": 0,
-      "size": 0.0,
+      "size": 0,
       "length": 0,
       "imageCount": 0
     },
     "images": {
       "count": 0,
-      "size": 0.0,
+      "size": 0,
       "imageCount": 0
     },
     "datasets": {
@@ -54,15 +54,15 @@ db.getCollection('SystemData').insert({
     },
     "imageCollections": {
       "count": 0,
-      "size": 0.0,
+      "size": 0,
       "frames": 0,
       "imageCount": 0
     },
     "videoCollections": {
       "count": 0,
       "frames": 0,
-      "size": 0.0,
-      "length": 0.0,
+      "size": 0,
+      "length": 0,
       "videoCount": 0,
       "frameCollection": 0,
       "imageCount": 0
@@ -80,14 +80,7 @@ db.getCollection('SystemData').insert({
     "verified": 0
   },
   "labelCounts": {},
-  "cloudStorages": [
-    {
-      "storageType": "AWS_S3",
-      "storageName": _getEnv('AWS_BUCKET_NAME'),
-      "connectionStatus": 1,
-      "updatedAt": ISODate("2022-12-01T06:11:59.861Z")
-    }
-  ],
+  "cloudStorages": [],
   "isDefaultQueryOptionsInserted": false,
   "recentMetaDataKeys": [],
   "recentTags": [],
@@ -104,7 +97,7 @@ db.getCollection('ApiKey').insert({
     "maxSyncInterval": 50000.0
   },
   "isProcessingLocked": false,
-  "lastSyncTimestamp": ISODate("2022-09-30T10:05:00.018Z"),
+  "lastSyncTimestamp": ISODate("2000-01-01T00:00:00.000Z"),
   "application": "ANNOTATION_PROJECT"
 })
 
