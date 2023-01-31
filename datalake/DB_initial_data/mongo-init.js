@@ -141,7 +141,7 @@ db.MetaData.createIndex({"annotationProjectList.name": 1}, {name: 'annotationPro
 db.MetaData.createIndex({"annotationProjectList.id": 1}, {name: 'annotationProjectList.id_1'})
 db.MetaData.createIndex({"datasetVersionList.datasetVersionId": 1}, {name: 'datasetVersionList.datasetVersionId_1'})
 db.MetaData.createIndex({"datasetVersionList.datasetMetaId": 1}, {name: 'datasetVersionList.datasetMetaId_1'})
-
+db.MetaData.createIndex({"statPendingAt": 1}, {name: 'statPendingAt_1'})
 
 db.MetaData.createIndex({"teamId": 1, "objectType": 1}, {name: 'teamId_1_objectType_1'})
 db.MetaData.createIndex({"objectType": 1, "isError": 1, "teamId": 1}, {name: 'objectType_1_isError_1_teamId_1'})
