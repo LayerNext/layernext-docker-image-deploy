@@ -5,7 +5,7 @@ services:
       container_name: studio_mongodb_${SETUP_CUSTOMER}
       restart: always
       ports:
-        - 27017:27017
+        - 27018:27017
       volumes:
         - ./mongoData:/data/db
         - ./DB_initial_data/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js
@@ -25,7 +25,7 @@ services:
     container_name: studio_python_app_${SETUP_CUSTOMER}
     restart: always
     ports:
-      - "8081:8081"
+      - "9091:9091"
     volumes:
       - ./layerx-python-backend/logs:/app/logs
       - ./contents:/app/contents
@@ -46,8 +46,8 @@ services:
     container_name: studio_node_backend_${SETUP_CUSTOMER}
     restart: always
     ports:
-      - "8080:8080"
-      - "8082:8082"
+      - "9090:9090"
+      - "9092:9092"
     depends_on:
       - studio_mongodb
     extra_hosts:
@@ -64,6 +64,6 @@ services:
     container_name: studio_frontend_${SETUP_CUSTOMER}
     restart: always
     ports:
-      - "8096:8096"
+      - "9096:9096"
     environment:
       - TZ:utc

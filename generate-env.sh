@@ -11,7 +11,7 @@ fi
 cat > $accounts_env <<EOL
 #DB
 DB_HOST=host.docker.internal
-DB_PORT=17017
+DB_PORT=17018
 DB_USER=sso_user
 DB_PASS=$(openssl rand -hex 10)
 DATABASE=authDB
@@ -30,7 +30,7 @@ MONGODB_ADMIN_PASSWORD=$(openssl rand -hex 16)
 SYNC_TOOL_PATH=./../dataset
 
 #env
-PORT=8888
+PORT=8889
 
 JWT_SECRET=$(openssl rand -hex 32)
 
@@ -42,7 +42,7 @@ DATASET=8F7TT5VB77K0GGH
 
 BASE_URL=https://accounts.$SETUP_CUSTOMER.layerx.ai
 FRONT_END_BASE_URL=https://accounts.$SETUP_CUSTOMER.layerx.ai
-ANNO_INTERNAL_SERVER=http://host.docker.internal:8080
+ANNO_INTERNAL_SERVER=http://host.docker.internal:9090
 ENVIRONMENT=enterprise
 
 #support email sendgrid
@@ -73,7 +73,7 @@ fi
 cat > $datalake_env <<EOL
 #DB
 DB_HOST=host.docker.internal
-DB_PORT=37017
+DB_PORT=37018
 DB_USER=datalake_user
 DB_PASS=$(openssl rand -hex 10)
 DATABASE=datalakeDB
@@ -96,15 +96,15 @@ MEMORY_LIMIT=$MEMORY_LIMIT
 INSTANCE_TYPE=master
 
 #env
-PORT=3000
+PORT=3001
 
 JWT_SECRET=$(openssl rand -hex 32)
 
 # Auth
-SSO_INTERNAL_SERVER=http://host.docker.internal:8888
+SSO_INTERNAL_SERVER=http://host.docker.internal:8889
 
 # studio
-ANNO_INTERNAL_SERVER=http://host.docker.internal:8080
+ANNO_INTERNAL_SERVER=http://host.docker.internal:9090
 
 # storage
 STORAGE_TYPE=AWS_S3
@@ -130,7 +130,7 @@ fi
 cat > $dataset_env <<EOL
 #DB
 DB_HOST=host.docker.internal
-DB_PORT=47017
+DB_PORT=47018
 DB_USER=dataset_user
 DB_PASS=$(openssl rand -hex 10)
 DATABASE=datasetDB
@@ -150,7 +150,7 @@ CPU_LIMIT=$CPU_LIMIT
 MEMORY_LIMIT=$MEMORY_LIMIT
 
 #env
-PORT=4000
+PORT=4001
 
 JWT_SECRET=$(openssl rand -hex 32)
 
@@ -158,9 +158,9 @@ BASE_URL=https://dataset.$SETUP_CUSTOMER.layerx.ai
 API_URL=https://api.$SETUP_CUSTOMER.layerx.ai
 FRONT_END_BASE_URL=http://dataset.$SETUP_CUSTOMER.layerx.ai
 
-SSO_INTERNAL_SERVER=http://host.docker.internal:8888
-ANNO_INTERNAL_SERVER=http://host.docker.internal:8080
-DATALAKE_INTERNAL_SERVER=http://host.docker.internal:3000
+SSO_INTERNAL_SERVER=http://host.docker.internal:8889
+ANNO_INTERNAL_SERVER=http://host.docker.internal:9090
+DATALAKE_INTERNAL_SERVER=http://host.docker.internal:3001
 
 DATALAKE_BASE_URL=http://datalake.$SETUP_CUSTOMER.layerx.ai
 
@@ -183,7 +183,7 @@ fi
 cat > $studio_env <<EOL
 #DB
 DB_HOST=host.docker.internal
-DB_PORT=27017
+DB_PORT=27018
 DB_USER=studio_user
 DB_PASS=$(openssl rand -hex 10)
 DATABASE=studioDB
@@ -203,20 +203,20 @@ CPU_LIMIT=$CPU_LIMIT
 MEMORY_LIMIT=$MEMORY_LIMIT
 
 #For uploadx listener
-EXPRESS_PORT=8082
+EXPRESS_PORT=9092
 
 JWT_SECRET = $(openssl rand -hex 32)
 
 # Auth
-SSO_INTERNAL_SERVER=http://host.docker.internal:8888
+SSO_INTERNAL_SERVER=http://host.docker.internal:8889
 
-PYTHON_BASE_URL=http://host.docker.internal:8081
+PYTHON_BASE_URL=http://host.docker.internal:9091
 BASE_URL=https://studio.$SETUP_CUSTOMER.layerx.ai
 PYTHON_SERVER=../../../contents/uploads/
 FRONT_END_BASE_URL=https://studio.$SETUP_CUSTOMER.layerx.ai
 #ENVIRONMENT=enterprise
-DATALAKE_INTERNAL_SERVER=http://host.docker.internal:3000
-DATALAKE_BASE_URL=http://host.docker.internal:3000
+DATALAKE_INTERNAL_SERVER=http://host.docker.internal:3001
+DATALAKE_BASE_URL=http://host.docker.internal:3001
 # DATALAKE_BASE_URL=https://datalake.$SETUP_CUSTOMER.layerx.ai
 
 #S3

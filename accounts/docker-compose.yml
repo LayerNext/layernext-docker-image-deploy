@@ -5,7 +5,7 @@ services:
       container_name: sso_mongodb_${SETUP_CUSTOMER}
       restart: always
       ports:
-        - 17017:27017
+        - 17018:27017
       volumes:
         - ./mongoData:/data/db
         - ./DB_initial_data/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js
@@ -25,7 +25,7 @@ services:
     container_name: sso_node_backend_${SETUP_CUSTOMER}
     restart: always
     ports:
-      - "8888:8888"
+      - "8889:8889"
     depends_on:
       - sso_mongodb
     extra_hosts:
@@ -41,7 +41,7 @@ services:
     container_name: sso_frontend_${SETUP_CUSTOMER}
     restart: always
     ports:
-      - "8097:8097"
+      - "9097:9097"
     environment:
       - TZ:utc
 
@@ -56,15 +56,15 @@ services:
     extra_hosts:
       - "host.docker.internal:host-gateway"
     ports:
-      - "81:80"
+      - "82:80"
     environment:
       - NGINX_PORT=80
-      - SSO_BACKEND_PORT=8888
-      - SSO_FRONTEND_PORT=8097
-      - DATALAKE_BACKEND_PORT=3000
-      - DATALAKE_FRONTEND_PORT=8095
-      - DATASET_BACKEND_PORT=4000
-      - DATASET_FRONTEND_PORT=8098
-      - STUDIO_BACKEND_PORT=8080
-      - STUDIO_FRONTEND_PORT=8096
+      - SSO_BACKEND_PORT=8889
+      - SSO_FRONTEND_PORT=9097
+      - DATALAKE_BACKEND_PORT=3001
+      - DATALAKE_FRONTEND_PORT=9095
+      - DATASET_BACKEND_PORT=4001
+      - DATASET_FRONTEND_PORT=9098
+      - STUDIO_BACKEND_PORT=9090
+      - STUDIO_FRONTEND_PORT=9096
       - SETUP_CUSTOMER

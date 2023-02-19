@@ -5,7 +5,7 @@ services:
       container_name: datalake_mongodb_${SETUP_CUSTOMER}
       restart: always
       ports:
-        - 37017:27017
+        - 37018:27017
       volumes:
         - ./mongoData:/data/db
         - ./DB_initial_data/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js
@@ -31,7 +31,7 @@ services:
     container_name: datalake_node_backend_${SETUP_CUSTOMER}
     restart: always
     ports:
-      - "3000:3000"
+      - "3001:3001"
     depends_on:
       - datalake_mongodb
     extra_hosts:
@@ -47,6 +47,6 @@ services:
     container_name: datalake_frontend_${SETUP_CUSTOMER}
     restart: always
     ports:
-      - "8095:8095"
+      - "9095:9095"
     environment:
       - TZ:utc

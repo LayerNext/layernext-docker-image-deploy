@@ -5,7 +5,7 @@ services:
       container_name: dataset_mongodb_${SETUP_CUSTOMER}
       restart: always
       ports:
-        - 47017:27017
+        - 47018:27017
       volumes:
         - ./mongoData:/data/db
         - ./DB_initial_data/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js
@@ -25,7 +25,7 @@ services:
     container_name: dataset_node_backend_${SETUP_CUSTOMER}
     restart: always
     ports:
-      - "4000:4000"
+      - "4001:4001"
     depends_on:
       - dataset_mongodb
     extra_hosts:
@@ -41,6 +41,6 @@ services:
     container_name: dataset_frontend_${SETUP_CUSTOMER}
     restart: always
     ports:
-      - "8098:8098"
+      - "9098:9098"
     environment:
       - TZ:utc
