@@ -27,7 +27,7 @@ services:
     ports:
       - "8889:8889"
     depends_on:
-      - sso_mongodb_demo
+      - sso_mongodb
     extra_hosts:
       - "host.docker.internal:host-gateway"
     volumes:

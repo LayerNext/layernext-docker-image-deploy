@@ -31,7 +31,7 @@ services:
       - ./layerx-python-backend/logs:/app/logs
       - ./contents:/app/contents
     depends_on:
-      - studio_mongodb_demo
+      - studio_mongodb
     extra_hosts:
       - "host.docker.internal:host-gateway"
     deploy:
@@ -50,7 +50,7 @@ services:
       - "9090:9090"
       - "9092:9092"
     depends_on:
-      - studio_mongodb_demo
+      - studio_mongodb
     extra_hosts:
       - "host.docker.internal:host-gateway"
     volumes:
