@@ -1,5 +1,5 @@
 version: "3.8"
-project: ${SETUP_CUSTOMER}
+project: "demo"
 services:
   datalake_mongodb:
       image: mongo:5.0.13
