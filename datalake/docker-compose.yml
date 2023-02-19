@@ -1,5 +1,4 @@
 version: "3.8"
-x-compose-project-name: layernext
 services:
   datalake_mongodb:
       image: mongo:5.0.13
