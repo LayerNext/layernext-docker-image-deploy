@@ -70,4 +70,4 @@ services:
       - STUDIO_FRONTEND_PORT=9096
       - SETUP_CUSTOMER
 
-x-compose-project-name: my-project
+project_name: myproject
