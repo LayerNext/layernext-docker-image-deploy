@@ -2,6 +2,7 @@ version: "3.8"
 services:
   studio_mongodb:
       image: mongo:5.0.13
+      container_name: studio_mongodb_${SETUP_CUSTOMER}
       restart: always
       ports:
         - 27017:27017
@@ -21,6 +22,7 @@ services:
         
   studio_python_app:
     image: layernextai/studio_python_app:1.0.12
+    container_name: studio_python_app_${SETUP_CUSTOMER}
     restart: always
     ports:
       - "8081:8081"
@@ -41,6 +43,7 @@ services:
 
   studio_node_backend:
     image: layernextai/studio_node_backend:1.0.12
+    container_name: studio_node_backend_${SETUP_CUSTOMER}
     restart: always
     ports:
       - "8080:8080"
@@ -58,6 +61,7 @@ services:
 
   studio_frontend:
     image: layernextai/studio_frontend_${SETUP_CUSTOMER}:1.0.12
+    container_name: studio_frontend_${SETUP_CUSTOMER}
     restart: always
     ports:
       - "8096:8096"

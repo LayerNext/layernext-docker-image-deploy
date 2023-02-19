@@ -2,6 +2,7 @@ version: "3.8"
 services:
   dataset_mongodb:
       image: mongo:5.0.13
+      container_name: dataset_mongodb_${SETUP_CUSTOMER}
       restart: always
       ports:
         - 47017:27017
@@ -21,6 +22,7 @@ services:
 
   dataset_node_backend:
     image: layernextai/dataset_node_backend:1.0.12
+    container_name: dataset_node_backend_${SETUP_CUSTOMER}
     restart: always
     ports:
       - "4000:4000"
@@ -36,6 +38,7 @@ services:
 
   dataset_frontend:
     image: layernextai/dataset_frontend_${SETUP_CUSTOMER}:1.0.12
+    container_name: dataset_frontend_${SETUP_CUSTOMER}
     restart: always
     ports:
       - "8098:8098"

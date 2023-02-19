@@ -2,6 +2,7 @@ version: "3.8"
 services:
   ssl_nginx:
     image: nginx
+    container_name: ssl_nginx_${SETUP_CUSTOMER}
     volumes:
       - ./dummy_templates:/etc/nginx/templates
       - ./certbot/conf:/etc/letsencrypt
@@ -16,6 +17,7 @@ services:
 
   certbot:
     image: certbot/certbot
+    container_name: certbot_${SETUP_CUSTOMER}
     volumes:
       - ./certbot/conf:/etc/letsencrypt
       - ./certbot/www:/var/www/certbot
