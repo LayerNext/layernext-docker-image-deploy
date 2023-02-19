@@ -28,7 +28,7 @@ services:
     ports:
       - "4001:4001"
     depends_on:
-      - dataset_mongodb
+      - dataset_mongodb_demo
     extra_hosts:
       - "host.docker.internal:host-gateway"
     volumes:

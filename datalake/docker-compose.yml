@@ -34,7 +34,7 @@ services:
     ports:
       - "3001:3001"
     depends_on:
-      - datalake_mongodb
+      - datalake_mongodb_demo
     extra_hosts:
       - "host.docker.internal:host-gateway"
     volumes:
