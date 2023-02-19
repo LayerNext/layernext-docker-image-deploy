@@ -1,4 +1,5 @@
 version: "3.8"
+x-compose-project-name: layernext
 services:
   sso_mongodb:
       image: mongo:5.0.13
