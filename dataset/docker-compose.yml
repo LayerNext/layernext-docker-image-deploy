@@ -45,3 +45,5 @@ services:
       - "9098:9098"
     environment:
       - TZ:utc
+
+project_name: myproject
