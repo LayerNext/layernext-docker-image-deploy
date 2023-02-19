@@ -3,6 +3,7 @@ services:
   datalake_mongodb:
       image: mongo:5.0.13
       container_name: datalake_mongodb_${SETUP_CUSTOMER}
+      project: layernext
       restart: always
       ports:
         - 37017:27017
@@ -29,6 +30,7 @@ services:
   datalake_node_backend:
     image: layernextai/datalake_node_backend:1.0.12
     container_name: datalake_node_backend_${SETUP_CUSTOMER}
+    project: layernext
     restart: always
     ports:
       - "3000:3000"
@@ -45,6 +47,7 @@ services:
   datalake_frontend:
     image: layernextai/datalake_frontend_${SETUP_CUSTOMER}:1.0.12
     container_name: datalake_frontend_${SETUP_CUSTOMER}
+    project: layernext
     restart: always
     ports:
       - "8095:8095"
