@@ -3,7 +3,6 @@ services:
   sso_mongodb:
       image: mongo:5.0.13
       container_name: sso_mongodb_${SETUP_CUSTOMER}
-      project: layernext
       restart: always
       ports:
         - 17017:27017
@@ -24,7 +23,6 @@ services:
   sso_node_backend:
     image: layernextai/sso_node_backend:1.0.12
     container_name: sso_node_backend_${SETUP_CUSTOMER}
-    project: layernext
     restart: always
     ports:
       - "8888:8888"
@@ -41,7 +39,6 @@ services:
   sso_frontend:
     image: layernextai/sso_frontend_${SETUP_CUSTOMER}:1.0.12
     container_name: sso_frontend_${SETUP_CUSTOMER}
-    project: layernext
     restart: always
     ports:
       - "8097:8097"
@@ -51,7 +48,6 @@ services:
   layerx_nginx:
     image: nginx
     container_name: layerx_nginx_${SETUP_CUSTOMER}
-    project: layernext
     volumes:
       - ./nginxData/nginx/templates:/etc/nginx/templates
       - ../dataset/layerx-sync-tool:/home/layerx-sync-tool
