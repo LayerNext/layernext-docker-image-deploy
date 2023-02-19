@@ -1,7 +1,7 @@
 version: "3.8"
 
 services:
-  studio_mongodb_demo:
+  studio_mongodb:
       image: mongo:5.0.13
       container_name: studio_mongodb_${SETUP_CUSTOMER}
       restart: always
@@ -21,7 +21,7 @@ services:
         - DUMP_USER
         - DUMP_USER_PWD
         
-  studio_python_app_demo:
+  studio_python_app:
     image: layernextai/studio_python_app:1.0.12
     container_name: studio_python_app_${SETUP_CUSTOMER}
     restart: always
@@ -42,7 +42,7 @@ services:
     env_file:
       - ./.env
 
-  studio_node_backend_demo:
+  studio_node_backend:
     image: layernextai/studio_node_backend:1.0.12
     container_name: studio_node_backend_${SETUP_CUSTOMER}
     restart: always
@@ -60,7 +60,7 @@ services:
     env_file:
       - ./.env
 
-  studio_frontend_demo:
+  studio_frontend:
     image: layernextai/studio_frontend_${SETUP_CUSTOMER}:1.0.12
     container_name: studio_frontend_${SETUP_CUSTOMER}
     restart: always

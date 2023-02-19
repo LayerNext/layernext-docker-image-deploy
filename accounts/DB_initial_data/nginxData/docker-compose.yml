@@ -1,7 +1,7 @@
 version: "3.8"
 
 services:
-  ssl_nginx_demo:
+  ssl_nginx:
     image: nginx
     container_name: ssl_nginx_${SETUP_CUSTOMER}
     volumes:
@@ -16,7 +16,7 @@ services:
     environment:
       - SETUP_CUSTOMER
 
-  certbot_demo:
+  certbot:
     image: certbot/certbot
     container_name: certbot_${SETUP_CUSTOMER}
     volumes:

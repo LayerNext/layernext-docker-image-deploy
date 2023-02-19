@@ -1,7 +1,7 @@
 version: "3.8"
 
 services:
-  dataset_mongodb_demo:
+  dataset_mongodb:
       image: mongo:5.0.13
       container_name: dataset_mongodb_${SETUP_CUSTOMER}
       restart: always
@@ -21,7 +21,7 @@ services:
         - DUMP_USER_PWD
         - SETUP_CUSTOMER
 
-  dataset_node_backend_demo:
+  dataset_node_backend:
     image: layernextai/dataset_node_backend:1.0.12
     container_name: dataset_node_backend_${SETUP_CUSTOMER}
     restart: always
@@ -37,7 +37,7 @@ services:
     env_file:
       - ./.env
 
-  dataset_frontend_demo:
+  dataset_frontend:
     image: layernextai/dataset_frontend_${SETUP_CUSTOMER}:1.0.12
     container_name: dataset_frontend_${SETUP_CUSTOMER}
     restart: always

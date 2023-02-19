@@ -1,6 +1,7 @@
 version: "3.8"
+
 services:
-  sso_mongodb_demo:
+  sso_mongodb:
       image: mongo:5.0.13
       container_name: sso_mongodb_${SETUP_CUSTOMER}
       restart: always
@@ -20,7 +21,7 @@ services:
         - DUMP_USER_PWD
         - SETUP_CUSTOMER
 
-  sso_node_backend_demo:
+  sso_node_backend:
     image: layernextai/sso_node_backend:1.0.12
     container_name: sso_node_backend_${SETUP_CUSTOMER}
     restart: always
@@ -36,7 +37,7 @@ services:
     env_file:
       - ./.env
 
-  sso_frontend_demo:
+  sso_frontend:
     image: layernextai/sso_frontend_${SETUP_CUSTOMER}:1.0.12
     container_name: sso_frontend_${SETUP_CUSTOMER}
     restart: always
@@ -45,7 +46,7 @@ services:
     environment:
       - TZ:utc
 
-  layerx_nginx_demo:
+  layerx_nginx:
     image: nginx
     container_name: layerx_nginx_${SETUP_CUSTOMER}
     volumes:
