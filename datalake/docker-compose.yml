@@ -52,4 +52,4 @@ services:
     environment:
       - TZ:utc
 
-project_name: myproject
+x-compose-project-name: my-project
