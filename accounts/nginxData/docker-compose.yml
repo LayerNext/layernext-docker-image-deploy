@@ -1,4 +1,5 @@
 version: "3.8"
+project_name: ${SETUP_CUSTOMER}
 services:
   ssl_nginx:
     image: nginx
