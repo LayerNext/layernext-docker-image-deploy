@@ -51,5 +51,3 @@ services:
       - "9095:9095"
     environment:
       - TZ:utc
-
-project_name: myproject

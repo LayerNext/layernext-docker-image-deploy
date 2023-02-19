@@ -68,5 +68,3 @@ services:
       - "9096:9096"
     environment:
       - TZ:utc
-
-project_name: myproject

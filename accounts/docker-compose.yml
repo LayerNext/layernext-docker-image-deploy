@@ -69,5 +69,3 @@ services:
       - STUDIO_BACKEND_PORT=9090
       - STUDIO_FRONTEND_PORT=9096
       - SETUP_CUSTOMER
-
-project_name: myproject
