@@ -1,5 +1,5 @@
 version: "3.8"
-project: "demo"
+
 services:
   ssl_nginx:
     image: nginx
