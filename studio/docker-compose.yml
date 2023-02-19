@@ -1,5 +1,4 @@
 version: "3.8"
-
 services:
   studio_mongodb_demo:
       image: mongo:5.0.13
