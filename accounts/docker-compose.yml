@@ -20,7 +20,7 @@ services:
         - SETUP_CUSTOMER
 
   sso_node_backend:
-    image: layernextai/sso_node_backend:1.0.12
+    image: layernextai/sso_node_backend:1.0.13
     restart: always
     ports:
       - "8888:8888"
@@ -35,7 +35,7 @@ services:
       - ./.env
 
   sso_frontend:
-    image: layernextai/sso_frontend_${SETUP_CUSTOMER}:1.0.12
+    image: layernextai/sso_frontend_${SETUP_CUSTOMER}:1.0.13
     restart: always
     ports:
       - "8097:8097"
