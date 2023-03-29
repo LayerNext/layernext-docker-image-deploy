@@ -20,7 +20,7 @@ services:
         - SETUP_CUSTOMER
 
   dataset_node_backend:
-    image: layernextai/dataset_node_backend:1.0.14
+    image: layernextai/dataset_node_backend:1.0.14.1
     restart: always
     ports:
       - "4000:4000"
@@ -35,7 +35,7 @@ services:
       - ./.env
 
   dataset_frontend:
-    image: layernextai/dataset_frontend_${SETUP_CUSTOMER}:1.0.14
+    image: layernextai/dataset_frontend_${SETUP_CUSTOMER}:1.0.14.1
     restart: always
     ports:
       - "8098:8098"
