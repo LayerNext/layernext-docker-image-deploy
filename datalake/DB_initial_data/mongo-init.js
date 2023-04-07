@@ -144,6 +144,7 @@ db.MetaData.createIndex({"datasetVersionList.datasetMetaId": 1}, {name: 'dataset
 db.MetaData.createIndex({"statPendingAt": 1}, {name: 'statPendingAt_1'})
 db.MetaData.createIndex({ "isError": 1 }, { name: 'isError_1' })
 db.MetaData.createIndex({ "isAccessible": 1 }, { name: 'isAccessible_1' })
+db.MetaData.createIndex({ "operationList.operationId": 1 }, { name: 'operationList.operationId_1' })
 
 db.MetaData.createIndex({"teamId": 1, "objectType": 1}, {name: 'teamId_1_objectType_1'})
 db.MetaData.createIndex({"objectType": 1, "isError": 1, "teamId": 1}, {name: 'objectType_1_isError_1_teamId_1'})
