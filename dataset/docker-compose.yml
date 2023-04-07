@@ -30,6 +30,7 @@ services:
       - "host.docker.internal:host-gateway"
     volumes:
       - ./dataset-manager-nodejs/logs:/usr/src/app/dataset-manager-nodejs/logs
+      - ./dataset-manager-nodejs/logs:/usr/src/app/dataset-manager-python-processor/logs
       - ./dataset-manager-nodejs/storage:/usr/src/app/dataset-manager-nodejs/storage
     env_file:
       - ./.env
