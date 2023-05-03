@@ -253,4 +253,5 @@ SETUP_CUSTOMER=$SETUP_CUSTOMER
 
 EOL
 
+pip install python-dotenv
 
