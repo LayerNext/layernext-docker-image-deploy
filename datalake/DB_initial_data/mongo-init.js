@@ -114,6 +114,7 @@ db.MetaData.createIndex({"collectionId": 1}, {name: 'collectionId_1'})
 db.MetaData.createIndex({"parentList": 1}, {name: 'parentList_1'})
 db.MetaData.createIndex({"teamId": 1}, {name: 'teamId_1'})
 db.MetaData.createIndex({"objectType": 1}, {name: 'objectType_1'})
+db.MetaData.createIndex({"objectStatus": 1}, {name: 'objectStatus_1'})
 db.MetaData.createIndex({"labelList.label": 1}, {name: 'labelList.label_1'})
 db.MetaData.createIndex({"frameCount": 1}, {name: 'frameCount_1'})
 db.MetaData.createIndex({"isPendingThumbnail": 1}, {name: 'isPendingThumbnail_1'})
@@ -161,8 +162,9 @@ db.MetaData.createIndex({"datasetVersionList.datasetMetaId": 1, "objectType": 1}
 
 
 db.MetaData.createIndex({"updatedAt": -1, "_id": -1}, {name: 'updatedAt_-1__id_-1'})
+db.MetaData.createIndex({"trashedAt": -1, "_id": -1}, {name: 'trashedAt_-1__id_-1'})
 db.MetaData.createIndex({"sourceVideoId": 1, "videoFrameIndex": 1, "_id": 1}, {name: 'sourceVideoId_1_videoFrameIndex_1__id_1'})
-
+db.MetaData.createIndex({"sourceVideoId": 1, "videoFrameIndex": 1, "_id": -1}, {name: 'sourceVideoId_1_videoFrameIndex_1__id_-1'})
 
 db.MetaData.createIndex({"customMeta.$**": 1}, {name: 'customMeta.$**_1'})
 
