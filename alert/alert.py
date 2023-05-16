@@ -10,7 +10,7 @@ load_dotenv()
 SERVER_NAME = os.getenv('SERVER_NAME')
 
 MEMORY_THRESHOLD_PERCENTAGE = 70
-DISK_THRESHOLD_PERCENTAGE = 20#75
+DISK_THRESHOLD_PERCENTAGE = 90
 LOAD_AVERAGE_THRESHOLD = 2
 PERCENTAGE_90 = 90
 DEFAULT_EMAILS = ["chathushka@zoomi.ca", "channa@zoomi.ca", "kelum@zoomi.ca", "isuru@zoomi.ca"]
