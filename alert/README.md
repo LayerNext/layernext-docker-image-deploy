@@ -22,14 +22,14 @@ pip install psutil
 ## .env file
 
 ```sh
-SERVER_NAME = <Server name>
-EMAIL_PASS = <Email password>
-SENDER_EMAIL  = <sender email address>
+SERVER_NAME=<Server name>
+EMAIL_PASS=<Email password>
+SENDER_EMAIL=<sender email address>
 ```
 
 ## Configurations
 
-Configurations can be found in `main.py`.
+Configurations can be found in `alert.py`.
 
 ```sh
 MEMORY_THRESHOLD_PERCENTAGE = 70
@@ -46,11 +46,11 @@ crontab -e
 ``` 
 * Run the cron job at a desired time interval.
 ```sh
-* * * * * python3 <path>/main.py >>  <path>/output.log 2>&1
+* * * * * python3 <path>/alert.py >>  <path>/output.log 2>&1
 ```
 * For an example,
 ```sh
-*/5 * * * * python3 vps-pro-dev/backend/vps-pro-backend/server-alert/main.py >> vps-pro-dev/backend/vps-pro-backend/server-alert/output.log 2>&1)
+*/5 * * * * python3 /home/ubuntu/layernext-dev/layerx-docker-image-deploy/alert/alert.py  >>  /home/ubuntu/layernext-dev/layerx-docker-image-deploy/alert/output.log 2>&1
 ```
 * Output logs can be found in `output.log`.
 
