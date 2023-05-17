@@ -1,4 +1,8 @@
 
+variable1=$1
+variable2=$2
+variable3=$3
+
 # configure crontab
 PATH_DIR=$(realpath .)
 (crontab -l 2>/dev/null; echo "*/5 * * * * python3 $PATH_DIR/alert.py  >>  $PATH_DIR/output.log 2>&1") | crontab -
@@ -11,11 +15,11 @@ if [ -f $alert_env ]; then
 fi
 cat > $alert_env <<EOL
 #email configurations
-EMAIL_PASS=**********
-SENDER_EMAIL=*********
+EMAIL_PASS=$variable3
+SENDER_EMAIL=$variable2
 
 #server configurations
-SERVER_NAME=Layerx-Dev
+SERVER_NAME=Layerx-$variable1
 MEMORY_THRESHOLD_PERCENTAGE=70
 DISK_THRESHOLD_PERCENTAGE=75
 LOAD_AVERAGE_THRESHOLD=2
