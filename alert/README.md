@@ -22,9 +22,16 @@ pip install psutil
 ## .env file
 
 ```sh
-SERVER_NAME=<Server name>
-EMAIL_PASS=<Email password>
+#email configurations
+EMAIL_PASS=<sender email password>
 SENDER_EMAIL=<sender email address>
+
+#server configurations
+SERVER_NAME=<server name>
+MEMORY_THRESHOLD_PERCENTAGE=70
+DISK_THRESHOLD_PERCENTAGE=90
+LOAD_AVERAGE_THRESHOLD=2
+PERCENTAGE_90=90
 ```
 
 ## Configurations
