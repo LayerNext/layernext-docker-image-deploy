@@ -11,8 +11,8 @@ if [ -f $alert_env ]; then
 fi
 cat > $alert_env <<EOL
 #email configurations
-EMAIL_PASS=yuchpcpqpfcxxlbb
-SENDER_EMAIL=support@layerx.ai
+EMAIL_PASS=**********
+SENDER_EMAIL=*********
 
 #server configurations
 SERVER_NAME=Layerx-Dev
