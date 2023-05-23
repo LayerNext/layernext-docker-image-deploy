@@ -150,6 +150,14 @@ db.MetaData.createIndex({ "operationList.operationId": 1 }, { name: 'operationLi
 db.MetaData.createIndex({ "isAugmentedImage": 1 }, { name: 'isAugmentedImage_1' })
 db.MetaData.createIndex({ "augmentationType.id": 1 }, { name: 'augmentationType.id_1' })
 db.MetaData.createIndex({ "augmentationType.property.id": 1 }, { name: 'augmentationType.property.id_1' })
+db.MetaData.createIndex({'analytics.operationId':1})
+db.MetaData.createIndex({'analytics.precision':1})
+db.MetaData.createIndex({'analytics.recall':1})
+db.MetaData.createIndex({'analytics.f1Score':1})
+db.MetaData.createIndex({'resolution.height':1})
+db.MetaData.createIndex({'resolution.width':1})
+db.MetaData.createIndex({'showInTrash':1})
+
 
 db.MetaData.createIndex({"teamId": 1, "objectType": 1}, {name: 'teamId_1_objectType_1'})
 db.MetaData.createIndex({"objectType": 1, "isError": 1, "teamId": 1}, {name: 'objectType_1_isError_1_teamId_1'})
