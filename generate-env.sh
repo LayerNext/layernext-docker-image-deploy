@@ -1,6 +1,7 @@
 #!/bin/bash
 
 export $(grep -v '^#' .env | xargs -d '\n')
+JWT_SECRET=$(openssl rand -hex 32)
 
 # generate accounts env
 accounts_env="./accounts/.env"
@@ -32,7 +33,7 @@ SYNC_TOOL_PATH=./../dataset
 #env
 PORT=8888
 
-JWT_SECRET=$(openssl rand -hex 32)
+JWT_SECRET=$JWT_SECRET
 
 #apps
 DATALAKE=2E7GG9DZB7J8G45
@@ -98,7 +99,7 @@ INSTANCE_TYPE=master
 #env
 PORT=3000
 
-JWT_SECRET=$(openssl rand -hex 32)
+JWT_SECRET=$JWT_SECRET
 
 # Auth
 SSO_INTERNAL_SERVER=http://host.docker.internal:8888
@@ -152,7 +153,7 @@ MEMORY_LIMIT=$MEMORY_LIMIT
 #env
 PORT=4000
 
-JWT_SECRET=$(openssl rand -hex 32)
+JWT_SECRET=$JWT_SECRET
 
 BASE_URL=https://dataset.$SETUP_CUSTOMER.layerx.ai
 API_URL=https://api.$SETUP_CUSTOMER.layerx.ai
@@ -205,7 +206,7 @@ MEMORY_LIMIT=$MEMORY_LIMIT
 #For uploadx listener
 EXPRESS_PORT=8082
 
-JWT_SECRET = $(openssl rand -hex 32)
+JWT_SECRET = $JWT_SECRET
 
 # Auth
 SSO_INTERNAL_SERVER=http://host.docker.internal:8888
