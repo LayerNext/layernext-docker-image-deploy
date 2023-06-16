@@ -54,7 +54,7 @@ db.getCollection('User').insert({
 //insert default user credentials
 db.getCollection('AppUserCredentials').insert({
   "_id": ObjectId("6374c597cb468b7a7a68a118"),
-  "password": "$2a$10$7eTCIWw6K8uGD.akHaVPdu7B4e6HbBWar1j5xBXAFgGqWYrfMnqqS",
+  "password": _getEnv('ADMIN_PASSWORD'),
   "userId": ObjectId("6374c47ecb468b7a7a68a117"),
   "annotationUserId": ObjectId("6374c47ecb468b7a7a68a117")
 })
@@ -71,6 +71,6 @@ db.getCollection('AnnotationTeam').insert({
 db.getCollection('ApiKey').insert({
   "_id": ObjectId("6374eb51e3ac085579e53442"),
   "teamId": ObjectId("6374c3decb468b7a7a68a116"),
-  "key": "key_nuzplkko0b5jvdzp38c9uwfce5glr0lk",
-  "secret": "7yu90ssqspkou9y6mpe1"
+  "key": "key_" + Math.random().toString(36).substr(2, 24)+Math.random().toString(36).substr(2, 24)+Math.random().toString(36).substr(2, 24),
+  "secret": Math.random().toString(36).substr(2, 24)+Math.random().toString(36).substr(2, 24)
 })
