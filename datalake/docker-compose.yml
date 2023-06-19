@@ -37,6 +37,7 @@ services:
     volumes:
       - ./datalake-nodejs/logs:/usr/src/app/datalake-nodejs/logs
       - ./datalake-nodejs/storage:/usr/src/app/datalake-nodejs/storage
+      - ./datalake-python-processor/logs:/usr/src/app/datalake-python-processor/logs
     env_file:
       - ./.env
 
