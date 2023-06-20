@@ -90,8 +90,8 @@ db.getCollection('SystemData').insert({
 //insert default APIKey
 db.getCollection('ApiKey').insert({
   "_id": ObjectId("62e92a1ae33130c211632eeb"),
-  "key": "key_f3saacoc7xd67lychexxs0e5sky4p0q0",
-  "secret": "sd2n18fw3omid1lrokrd",
+  "key": "key_" + Math.random().toString(36).substr(2, 24)+Math.random().toString(36).substr(2, 24)+Math.random().toString(36).substr(2, 24),
+  "secret": Math.random().toString(36).substr(2, 24)+Math.random().toString(36).substr(2, 24),
   "teamId": ObjectId("6374c3decb468b7a7a68a116"),
   "apiConfigs": {
     "maxSyncInterval": 50000.0
