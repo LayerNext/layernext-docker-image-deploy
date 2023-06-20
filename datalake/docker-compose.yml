@@ -42,7 +42,7 @@ services:
       - ./.env
 
   datalake_frontend:
-    image: layernextai/datalake_frontend_${SETUP_CUSTOMER}:1.0.17.2
+    image: layernextai/datalake_frontend:1.0.17.2
     restart: always
     ports:
       - "8095:8095"
