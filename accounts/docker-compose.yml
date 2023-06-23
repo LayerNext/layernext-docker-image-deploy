@@ -18,6 +18,8 @@ services:
         - DUMP_USER
         - DUMP_USER_PWD
         - SETUP_CUSTOMER
+        - ADMIN_EMAIL
+        - ADMIN_PASSWORD
 
   sso_node_backend:
     image: layernextai/sso_node_backend:1.0.17.2
