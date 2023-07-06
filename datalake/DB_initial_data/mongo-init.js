@@ -173,6 +173,7 @@ db.MetaData.createIndex({"updatedAt": -1, "_id": -1}, {name: 'updatedAt_-1__id_-
 db.MetaData.createIndex({"trashedAt": -1, "_id": -1}, {name: 'trashedAt_-1__id_-1'})
 db.MetaData.createIndex({"sourceVideoId": 1, "videoFrameIndex": 1, "_id": 1}, {name: 'sourceVideoId_1_videoFrameIndex_1__id_1'})
 db.MetaData.createIndex({"collectionId": 1, "sourceVideoId": 1, "videoFrameIndex": 1, "_id": -1}, {name: 'collectionId_1_sourceVideoId_1_videoFrameIndex_1__id_-1'})
+db.MetaData.createIndex({"Tags":1, "updatedAt": -1, "_id": -1},{name: 'Tags_1_updatedAt_-1__id_-1'})
 
 db.MetaData.createIndex({"customMeta.$**": 1}, {name: 'customMeta.$**_1'})
 
