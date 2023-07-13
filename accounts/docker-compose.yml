@@ -47,6 +47,7 @@ services:
 
   layerx_nginx:
     image: nginx
+    restart: always
     volumes:
       - ./nginxData/nginx/templates:/etc/nginx/templates
       - ../dataset/layerx-sync-tool:/home/layerx-sync-tool
