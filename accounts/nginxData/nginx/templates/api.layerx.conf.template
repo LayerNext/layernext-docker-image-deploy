@@ -18,14 +18,14 @@
 ##
 
 
-# Virtual Host configuration for api.${SETUP_CUSTOMER}.layerx.ai
+# Virtual Host configuration for api.${SETUP_CUSTOMER}.layernext.ai
 
 
 server {
 
 	    client_max_body_size 100M;
 
-	    server_name api.${SETUP_CUSTOMER}.layerx.ai;
+	    server_name api.${SETUP_CUSTOMER}.layernext.ai;
 
 	    root /var/www/index.html;
 	    index index.html;
