@@ -45,7 +45,7 @@ services:
       - TZ:utc
       - LAYERNEXT_SUB_DOMAIN=${SETUP_CUSTOMER}
 
-  layerx_nginx:
+  layernext_nginx:
     image: nginx
     restart: always
     volumes:
