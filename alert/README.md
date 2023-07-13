@@ -57,7 +57,7 @@ crontab -e
 ```
 * For an example,
 ```sh
-*/5 * * * * python3 /home/ubuntu/layernext-dev/layerx-docker-image-deploy/alert/alert.py  >>  /home/ubuntu/layernext-dev/layerx-docker-image-deploy/alert/output.log 2>&1
+*/5 * * * * python3 /home/ubuntu/layernext-dev/layernext-docker-image-deploy/alert/alert.py  >>  /home/ubuntu/layernext-dev/layernext-docker-image-deploy/alert/output.log 2>&1
 ```
 * Output logs can be found in `output.log`.
 

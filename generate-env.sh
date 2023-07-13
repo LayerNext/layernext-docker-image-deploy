@@ -43,8 +43,8 @@ STUDIO=ZQ9YR6HDFGFRJKQ
 SSO=1RMBHCWM8QIJ6QH
 DATASET=8F7TT5VB77K0GGH
 
-BASE_URL=https://accounts.$SETUP_CUSTOMER.layerx.ai
-FRONT_END_BASE_URL=https://accounts.$SETUP_CUSTOMER.layerx.ai
+BASE_URL=https://accounts.$SETUP_CUSTOMER.layernext.ai
+FRONT_END_BASE_URL=https://accounts.$SETUP_CUSTOMER.layernext.ai
 ANNO_INTERNAL_SERVER=http://host.docker.internal:8080
 
 #support email sendgrid
@@ -161,15 +161,15 @@ PORT=4000
 
 JWT_SECRET=$JWT_SECRET
 
-BASE_URL=https://dataset.$SETUP_CUSTOMER.layerx.ai
-API_URL=https://api.$SETUP_CUSTOMER.layerx.ai
-FRONT_END_BASE_URL=http://dataset.$SETUP_CUSTOMER.layerx.ai
+BASE_URL=https://dataset.$SETUP_CUSTOMER.layernext.ai
+API_URL=https://api.$SETUP_CUSTOMER.layernext.ai
+FRONT_END_BASE_URL=http://dataset.$SETUP_CUSTOMER.layernext.ai
 
 SSO_INTERNAL_SERVER=http://host.docker.internal:8888
 ANNO_INTERNAL_SERVER=http://host.docker.internal:8080
 DATALAKE_INTERNAL_SERVER=http://host.docker.internal:3000
 
-DATALAKE_BASE_URL=http://datalake.$SETUP_CUSTOMER.layerx.ai
+DATALAKE_BASE_URL=http://datalake.$SETUP_CUSTOMER.layernext.ai
 
 EOL
 
@@ -212,12 +212,12 @@ JWT_SECRET = $JWT_SECRET
 SSO_INTERNAL_SERVER=http://host.docker.internal:8888
 
 PYTHON_BASE_URL=http://host.docker.internal:8081
-BASE_URL=https://studio.$SETUP_CUSTOMER.layerx.ai
+BASE_URL=https://studio.$SETUP_CUSTOMER.layernext.ai
 PYTHON_SERVER=../../../contents/uploads/
-FRONT_END_BASE_URL=https://studio.$SETUP_CUSTOMER.layerx.ai
+FRONT_END_BASE_URL=https://studio.$SETUP_CUSTOMER.layernext.ai
 DATALAKE_INTERNAL_SERVER=http://host.docker.internal:3000
 DATALAKE_BASE_URL=http://host.docker.internal:3000
-# DATALAKE_BASE_URL=https://datalake.$SETUP_CUSTOMER.layerx.ai
+# DATALAKE_BASE_URL=https://datalake.$SETUP_CUSTOMER.layernext.ai
 
 #support email sendgrid
 SUPPORT_EMAIL=$SUPPORT_EMAIL

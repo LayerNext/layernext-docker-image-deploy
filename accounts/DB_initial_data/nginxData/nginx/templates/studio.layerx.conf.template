@@ -1,6 +1,6 @@
 server {
     listen 80;
-    server_name studio.${SETUP_CUSTOMER}.layerx.ai;
+    server_name studio.${SETUP_CUSTOMER}.layernext.ai;
 
 	location /.well-known/acme-challenge/ {
 		root /var/www/certbot;
@@ -15,7 +15,7 @@ server{
 	listen 443 ssl;
    index index.html index.htm index.nginx-debian.html;
    client_max_body_size 100M;
-   server_name studio.${SETUP_CUSTOMER}.layerx.ai;
+   server_name studio.${SETUP_CUSTOMER}.layernext.ai;
 
        location / {
 		proxy_set_header        Host $host;
@@ -58,8 +58,8 @@ server{
         	proxy_set_header 'Access-Control-Allow-Origin' '*';
         }
        
-	ssl_certificate /etc/letsencrypt/live/studio.${SETUP_CUSTOMER}.layerx.ai/fullchain.pem;
-	ssl_certificate_key /etc/letsencrypt/live/studio.${SETUP_CUSTOMER}.layerx.ai/privkey.pem;
+	ssl_certificate /etc/letsencrypt/live/studio.${SETUP_CUSTOMER}.layernext.ai/fullchain.pem;
+	ssl_certificate_key /etc/letsencrypt/live/studio.${SETUP_CUSTOMER}.layernext.ai/privkey.pem;
 	include /etc/letsencrypt/options-ssl-nginx.conf;
 	ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem;
 

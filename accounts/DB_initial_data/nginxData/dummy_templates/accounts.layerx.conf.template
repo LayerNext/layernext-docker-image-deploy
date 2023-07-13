@@ -1,7 +1,7 @@
 
 server {
     listen 80;
-    server_name accounts.${SETUP_CUSTOMER}.layerx.ai;
+    server_name accounts.${SETUP_CUSTOMER}.layernext.ai;
 
 	location /.well-known/acme-challenge/ {
 		root /var/www/certbot;

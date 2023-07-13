@@ -25,7 +25,7 @@ var SETUP_CUSTOMER = _getEnv('SETUP_CUSTOMER')
 
 var adminMail = _getEnv('ADMIN_EMAIL')
 var teamName = `${SETUP_CUSTOMER} team`
-var imageUrl = `https://accounts.${SETUP_CUSTOMER}.layerx.ai/api/user/profileImage/6374c47ecb468b7a7a68a117/defaultProfileImage.png?1669197094012`
+var imageUrl = `https://accounts.${SETUP_CUSTOMER}.layernext.ai/api/user/profileImage/6374c47ecb468b7a7a68a117/defaultProfileImage.png?1669197094012`
 
 //insert default user
 db.getCollection('User').insert({

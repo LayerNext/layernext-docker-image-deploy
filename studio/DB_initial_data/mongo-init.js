@@ -531,7 +531,7 @@ db.getCollection('MasterData').insert({
 
 // insert default system user - admin
 var SETUP_CUSTOMER = _getEnv('SETUP_CUSTOMER')
-var adminMail = `admin@${SETUP_CUSTOMER}.layerx.ai`
+var adminMail = `admin@${SETUP_CUSTOMER}.layernext.ai`
 db.getCollection('AnnotationUser').insert({
     "_id": ObjectId("6374c47ecb468b7a7a68a117"),
     "userType" : 2,

@@ -31,8 +31,8 @@ services:
     extra_hosts:
       - "host.docker.internal:host-gateway"
     volumes:
-      - ./sso-layerx-backend/logs:/usr/src/app/logs
-      - ./sso-layerx-backend/storage:/usr/src/app/storage
+      - ./sso-layernext-backend/logs:/usr/src/app/logs
+      - ./sso-layernext-backend/storage:/usr/src/app/storage
     env_file:
       - ./.env
 
@@ -50,7 +50,7 @@ services:
     restart: always
     volumes:
       - ./nginxData/nginx/templates:/etc/nginx/templates
-      - ../dataset/layerx-sync-tool:/home/layerx-sync-tool
+      - ../dataset/layernext-sync-tool:/home/layernext-sync-tool
       - ./nginxData/certbot/conf:/etc/letsencrypt
       - ./nginxData/certbot/www:/var/www/certbot
     extra_hosts:
