@@ -1,6 +1,6 @@
 server {
     listen 80;
-    server_name datalake.${SETUP_CUSTOMER}.layerx.ai;
+    server_name datalake.${SETUP_CUSTOMER}.layernext.ai;
 
 	location /.well-known/acme-challenge/ {
 		root /var/www/certbot;

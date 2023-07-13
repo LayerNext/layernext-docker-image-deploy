@@ -1,7 +1,7 @@
 server{
    	index index.html index.htm index.nginx-debian.html;
    	client_max_body_size 100M;
-   	server_name accounts.${SETUP_CUSTOMER}.layerx.ai; 
+   	server_name accounts.${SETUP_CUSTOMER}.layernext.ai; 
 
        location / {
 		proxy_set_header        Host $host;
