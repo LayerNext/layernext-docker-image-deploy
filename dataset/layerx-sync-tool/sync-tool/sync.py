@@ -38,7 +38,7 @@ api_key = cmd_args[4]
 secret = cmd_args[5]   
 
 
-client = layernext.LayerxClient(api_key, secret, serverUrl)
+client = layernext.LayerNextClient(api_key, secret, serverUrl)
 
 """
 @param version_id - dataset version id
