@@ -220,6 +220,7 @@ FRONT_END_BASE_URL=https://studio.$SETUP_CUSTOMER.layerx.ai
 DATALAKE_INTERNAL_SERVER=http://host.docker.internal:3000
 DATALAKE_BASE_URL=http://host.docker.internal:3000
 # DATALAKE_BASE_URL=https://datalake.$SETUP_CUSTOMER.layerx.ai
+API_URL=https://api.$SETUP_CUSTOMER.layerx.ai
 
 #support email sendgrid
 SUPPORT_EMAIL=$SUPPORT_EMAIL
