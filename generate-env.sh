@@ -46,7 +46,6 @@ DATASET=8F7TT5VB77K0GGH
 BASE_URL=https://accounts.$SETUP_CUSTOMER.layerx.ai
 FRONT_END_BASE_URL=https://accounts.$SETUP_CUSTOMER.layerx.ai
 ANNO_INTERNAL_SERVER=http://host.docker.internal:8080
-ENVIRONMENT=enterprise
 
 #support email sendgrid
 SUPPORT_EMAIL=$SUPPORT_EMAIL
@@ -216,7 +215,6 @@ PYTHON_BASE_URL=http://host.docker.internal:8081
 BASE_URL=https://studio.$SETUP_CUSTOMER.layerx.ai
 PYTHON_SERVER=../../../contents/uploads/
 FRONT_END_BASE_URL=https://studio.$SETUP_CUSTOMER.layerx.ai
-#ENVIRONMENT=enterprise
 DATALAKE_INTERNAL_SERVER=http://host.docker.internal:3000
 DATALAKE_BASE_URL=http://host.docker.internal:3000
 # DATALAKE_BASE_URL=https://datalake.$SETUP_CUSTOMER.layerx.ai
