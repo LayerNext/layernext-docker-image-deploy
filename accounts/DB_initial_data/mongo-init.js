@@ -31,7 +31,7 @@ var imageUrl = `https://accounts.${SETUP_CUSTOMER}.layernext.ai/api/user/profile
 db.getCollection('User').insert({
   "_id": ObjectId("6374c47ecb468b7a7a68a117"),
   "email": adminMail,
-  "name": "LayerX Admin",
+  "name": "layernext Admin",
   "userType": 3,
   "profileImgUrl": "defaultProfileImage.png",
   "projectList": null,
