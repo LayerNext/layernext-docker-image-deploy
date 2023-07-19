@@ -10,11 +10,11 @@ maintainers : isuruj
 
 Script to download images and text files to local machine and generate path file
 
-Utilizes layerx python sdk
+Utilizes layernext python sdk
 """
 
 import sys
-import layerx
+import layernext
 
 # IP+port or url of the server # (eg: https://qa.deepzea.com)
 serverUrl = 'http://localhost:8080' # default
@@ -38,7 +38,7 @@ api_key = cmd_args[4]
 secret = cmd_args[5]   
 
 
-client = layerx.LayerxClient(api_key, secret, serverUrl)
+client = layernext.LayerNextClient(api_key, secret, serverUrl)
 
 """
 @param version_id - dataset version id

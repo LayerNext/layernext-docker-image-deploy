@@ -1,11 +1,11 @@
 #!/bin/bash
 
 setup_customer=$1
-account_domain="accounts.$setup_customer.layerx.ai"
-datalake_domain="datalake.$setup_customer.layerx.ai"
-dataset_domain="dataset.$setup_customer.layerx.ai"
-studio_domain="studio.$setup_customer.layerx.ai"
-api_domain="api.$setup_customer.layerx.ai"
+account_domain="accounts.$setup_customer.layernext.ai"
+datalake_domain="datalake.$setup_customer.layernext.ai"
+dataset_domain="dataset.$setup_customer.layernext.ai"
+studio_domain="studio.$setup_customer.layernext.ai"
+api_domain="api.$setup_customer.layernext.ai"
 
 if ! [ -x "$(command -v docker-compose)" ]; then
   echo 'Error: docker-compose is not installed.' >&2
