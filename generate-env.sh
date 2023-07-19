@@ -47,6 +47,8 @@ BASE_URL=https://accounts.$SETUP_CUSTOMER.layernext.ai
 FRONT_END_BASE_URL=https://accounts.$SETUP_CUSTOMER.layernext.ai
 ANNO_INTERNAL_SERVER=http://host.docker.internal:8080
 
+ENVIRONMENT=enterprise
+
 #support email sendgrid
 SUPPORT_EMAIL=$SUPPORT_EMAIL
 SENDGRID_API_KEY=$SENDGRID_API_KEY
@@ -221,6 +223,7 @@ DATALAKE_BASE_URL=http://host.docker.internal:3000
 # DATALAKE_BASE_URL=https://datalake.$SETUP_CUSTOMER.layernext.ai
 API_URL=https://api.$SETUP_CUSTOMER.layernext.ai
 
+ENVIRONMENT=enterprise
 
 #support email sendgrid
 SUPPORT_EMAIL=$SUPPORT_EMAIL
