@@ -1,13 +1,24 @@
 // NOTE: change bucketName to your default bucket name
 
+var storageNamesArray = db.getCollection('SystemData').aggregate([
+  {
+    $project: {
+      "uniqueStorageNames":{$arrayElemAt:["$cloudStorages.storageName",0]},
+      "_id": 0
+    }
+  }
+]).toArray()
+  
+var storageName = storageNamesArray[0].uniqueStorageNames
+
 // 1. set default bucket name for existing files
 db.getCollection('MetaData').updateMany({ objectType: { $in: [1, 2, 6] } },
-  { $set: { bucketName: 'test-layernext-dev-bucket-1' } }
+  { $set: { bucketName: storageName } }
 )
 
 // 2. set existing objectKey as storagePath for existing files in MetaData collection
 db.getCollection('MetaData').updateMany(
-  { bucketName: 'test-layernext-dev-bucket-1' },
+  { bucketName: storageName },
   [{ $set: { "storagePath": "$objectKey" } }]
 )
 
