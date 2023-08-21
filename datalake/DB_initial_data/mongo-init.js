@@ -157,6 +157,8 @@ db.MetaData.createIndex({'analytics.f1Score':1})
 db.MetaData.createIndex({'resolution.height':1})
 db.MetaData.createIndex({'resolution.width':1})
 db.MetaData.createIndex({'showInTrash':1})
+db.MetaData.createIndex({'bucketName':1})
+db.MetaData.createIndex({'storagePath':1})
 
 
 db.MetaData.createIndex({"teamId": 1, "objectType": 1}, {name: 'teamId_1_objectType_1'})
