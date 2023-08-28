@@ -47,7 +47,7 @@ while (true) {
           for (const attr in anno.label.attributeValues) {
             //print(`${attr}: ${anno.label.attributeValues[attr]}`);
             if (Array.isArray(anno.label.attributeValues[attr])) {
-              continue
+              _attrs[attr] = anno.label.attributeValues[attr];
             } else {
               _attrs[attr] = [{
                 value: anno.label.attributeValues[attr],
