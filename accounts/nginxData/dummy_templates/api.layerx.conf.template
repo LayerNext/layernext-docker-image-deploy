@@ -18,11 +18,11 @@
 ##
 
 
-# Virtual Host configuration for api.${SETUP_CUSTOMER}.layerx.ai
+# Virtual Host configuration for api.${SETUP_CUSTOMER}.layernext.ai
 
 server {
     listen 80;
-    server_name api.${SETUP_CUSTOMER}.layerx.ai;
+    server_name api.${SETUP_CUSTOMER}.layernext.ai;
 
 	location /.well-known/acme-challenge/ {
 		root /var/www/certbot;

@@ -18,9 +18,11 @@ services:
         - DUMP_USER
         - DUMP_USER_PWD
         - SETUP_CUSTOMER
+        - ADMIN_EMAIL
+        - ADMIN_PASSWORD
 
   sso_node_backend:
-    image: layernextai/sso_node_backend:1.0.8
+    image: layernextai/sso_node_backend:1.0.21
     restart: always
     ports:
       - "8888:8888"
@@ -29,24 +31,26 @@ services:
     extra_hosts:
       - "host.docker.internal:host-gateway"
     volumes:
-      - ./sso-layerx-backend/logs:/usr/src/app/logs
-      - ./sso-layerx-backend/storage:/usr/src/app/storage
+      - ./sso-layernext-backend/logs:/usr/src/app/logs
+      - ./sso-layernext-backend/storage:/usr/src/app/storage
     env_file:
       - ./.env
 
   sso_frontend:
-    image: layernextai/sso_frontend_${SETUP_CUSTOMER}:1.0.8
+    image: layernextai/sso_frontend:1.0.21
     restart: always
     ports:
       - "8097:8097"
     environment:
       - TZ:utc
+      - LAYERNEXT_SUB_DOMAIN=${SETUP_CUSTOMER}
 
-  layerx_nginx:
+  layernext_nginx:
     image: nginx
+    restart: always
     volumes:
       - ./nginxData/nginx/templates:/etc/nginx/templates
-      - ../dataset/layerx-sync-tool:/home/layerx-sync-tool
+      - ../dataset/layernext-sync-tool:/home/layernext-sync-tool
       - ./nginxData/certbot/conf:/etc/letsencrypt
       - ./nginxData/certbot/www:/var/www/certbot
     extra_hosts:

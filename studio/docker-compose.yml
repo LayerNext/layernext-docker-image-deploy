@@ -20,12 +20,12 @@ services:
         - DUMP_USER_PWD
         
   studio_python_app:
-    image: layernextai/studio_python_app:1.0.8
+    image: layernextai/studio_python_app:1.0.21
     restart: always
     ports:
       - "8081:8081"
     volumes:
-      - ./layerx-python-backend/logs:/app/logs
+      - ./layernext-python-backend/logs:/app/logs
       - ./contents:/app/contents
     depends_on:
       - studio_mongodb
@@ -40,7 +40,7 @@ services:
       - ./.env
 
   studio_node_backend:
-    image: layernextai/studio_node_backend:1.0.8
+    image: layernextai/studio_node_backend:1.0.21
     restart: always
     ports:
       - "8080:8080"
@@ -51,15 +51,16 @@ services:
       - "host.docker.internal:host-gateway"
     volumes:
       - ./contents:/usr/src/app/contents
-      - ./layerx-nodejs-backend/logs:/usr/src/app/logs
-      - ./layerx-nodejs-backend/storage:/usr/src/app/storage
+      - ./layernext-nodejs-backend/logs:/usr/src/app/logs
+      - ./layernext-nodejs-backend/storage:/usr/src/app/storage
     env_file:
       - ./.env
 
   studio_frontend:
-    image: layernextai/studio_frontend_${SETUP_CUSTOMER}:1.0.8
+    image: layernextai/studio_frontend:1.0.21
     restart: always
     ports:
       - "8096:8096"
     environment:
       - TZ:utc
+      - LAYERNEXT_SUB_DOMAIN=${SETUP_CUSTOMER}

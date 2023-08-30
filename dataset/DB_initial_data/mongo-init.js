@@ -192,12 +192,22 @@ db.getCollection('MasterData').insert(
               "id": "FLIP_HORIZONTAL",
               "values": [
                 true
+              ],
+              "propertyType": 1,
+              "propertyValues": [
+                true,
+                false
               ]
             },
             {
               "id": "FLIP_VERTICAL",
               "values": [
                 true
+              ],
+              "propertyType": 1,
+              "propertyValues": [
+                true,
+                false
               ]
             }
           ],
@@ -211,6 +221,11 @@ db.getCollection('MasterData').insert(
               "id": "PERCENTAGE_SCALE",
               "values": [
                 45.0
+              ],
+              "propertyType": 2,
+              "propertyValues": [
+                -360,
+                360
               ]
             }
           ],
@@ -224,6 +239,11 @@ db.getCollection('MasterData').insert(
               "id": "BLUR",
               "values": [
                 25.0
+              ],
+              "propertyType": 2,
+              "propertyValues": [
+                0,
+                15
               ]
             }
           ],
@@ -237,18 +257,33 @@ db.getCollection('MasterData').insert(
               "id": "CLOCKWISE",
               "values": [
                 true
+              ],
+              "propertyType": 1,
+              "propertyValues": [
+                true,
+                false
               ]
             },
             {
               "id": "COUNTER_CLOCKWISE",
               "values": [
                 true
+              ],
+              "propertyType": 1,
+              "propertyValues": [
+                true,
+                false
               ]
             },
             {
               "id": "UPSIDE_DOWN",
               "values": [
                 true
+              ],
+              "propertyType": 1,
+              "propertyValues": [
+                true,
+                false
               ]
             }
           ],
@@ -259,15 +294,25 @@ db.getCollection('MasterData').insert(
           "description": "Add variability to perspective to help your model be more resilient to camera and subject pitch and yaw.",
           "properties": [
             {
-              "id": "SHEAR HORIZONTAL",
+              "id": "SHEAR_HORIZONTAL",
               "values": [
                 45.0
+              ],
+              "propertyType": 2,
+              "propertyValues": [
+                -90,
+                90
               ]
             },
             {
-              "id": "SHEAR VERTICAL",
+              "id": "SHEAR_VERTICAL",
               "values": [
                 45.0
+              ],
+              "propertyType": 2,
+              "propertyValues": [
+                -90,
+                90
               ]
             }
           ],
@@ -281,6 +326,11 @@ db.getCollection('MasterData').insert(
               "id": "GRAYSCALE_PERCENTAGE",
               "values": [
                 100.0
+              ],
+              "propertyType": 2,
+              "propertyValues": [
+                0,
+                100
               ]
             }
           ],
@@ -319,6 +369,11 @@ db.getCollection('MasterData').insert(
               "id": "HUE_DEGREES",
               "values": [
                 180.0
+              ],
+              "propertyType": 2,
+              "propertyValues": [
+                -100,
+                100
               ]
             }
           ],
@@ -332,6 +387,11 @@ db.getCollection('MasterData').insert(
               "id": "SATURATION_DEGREES",
               "values": [
                 99.0
+              ],
+              "propertyType": 2,
+              "propertyValues": [
+                -100,
+                100
               ]
             }
           ],
@@ -358,6 +418,11 @@ db.getCollection('MasterData').insert(
               "id": "BRIGHTNESS_DEGREES",
               "values": [
                 99.0
+              ],
+              "propertyType": 2,
+              "propertyValues": [
+                -100,
+                100
               ]
             },
             {
@@ -383,6 +448,11 @@ db.getCollection('MasterData').insert(
               "id": "NOISE_PERCENTAGE",
               "values": [
                 25.0
+              ],
+              "propertyType": 2,
+              "propertyValues": [
+                0,
+                100
               ]
             }
           ],
@@ -396,6 +466,11 @@ db.getCollection('MasterData').insert(
               "id": "CROP_PERCENTAGE",
               "values": [
                 99.0
+              ],
+              "propertyType": 2,
+              "propertyValues": [
+                0,
+                100
               ]
             }
           ],

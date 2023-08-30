@@ -20,7 +20,7 @@ services:
         - SETUP_CUSTOMER
 
   dataset_node_backend:
-    image: layernextai/dataset_node_backend:1.0.8
+    image: layernextai/dataset_node_backend:1.0.21
     restart: always
     ports:
       - "4000:4000"
@@ -30,14 +30,16 @@ services:
       - "host.docker.internal:host-gateway"
     volumes:
       - ./dataset-manager-nodejs/logs:/usr/src/app/dataset-manager-nodejs/logs
+      - ./dataset-manager-python-processor/logs:/usr/src/app/dataset-manager-python-processor/logs
       - ./dataset-manager-nodejs/storage:/usr/src/app/dataset-manager-nodejs/storage
     env_file:
       - ./.env
 
   dataset_frontend:
-    image: layernextai/dataset_frontend_${SETUP_CUSTOMER}:1.0.8
+    image: layernextai/dataset_frontend:1.0.21
     restart: always
     ports:
       - "8098:8098"
     environment:
       - TZ:utc
+      - LAYERNEXT_SUB_DOMAIN=${SETUP_CUSTOMER}

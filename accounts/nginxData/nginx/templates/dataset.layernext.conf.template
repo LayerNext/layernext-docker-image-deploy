@@ -3,7 +3,7 @@ server{
 
    index index.html index.htm index.nginx-debian.html;
    client_max_body_size 100M;
-   server_name dataset.${SETUP_CUSTOMER}.layerx.ai;
+   server_name dataset.${SETUP_CUSTOMER}.layernext.ai;
 
        location / {
 		proxy_set_header        Host $host;
@@ -31,7 +31,7 @@ server{
 
        
         location /sync-tool {
-	        root /home/layerx-sync-tool;
+	        root /home/layernext-sync-tool;
 		add_header Content-disposition "attachment;";
 		proxy_set_header X-Forwarded-Proto https;
         }
