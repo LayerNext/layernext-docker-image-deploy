@@ -4,7 +4,7 @@ services:
       image: mongo:5.0.13
       restart: always
       ports:
-        - 67017:27017
+        - 51017:27017
       volumes:
         - ./mongoData:/data/db
         - ./DB_initial_data/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js
