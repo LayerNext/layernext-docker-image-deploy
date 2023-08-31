@@ -241,6 +241,50 @@ RESET_ASSIGNEE_ON_NEW_CYCLE=$RESET_ASSIGNEE_ON_NEW_CYCLE
 EOL
 
 
+# generate analytics env
+studio_env="./analytics/.env"
+if [ -f $studio_env ]; then
+  echo "Existing env file found for analytics. replacing..."
+  echo "Warning: If the system was already built, the system may become non functional due to regeneration of db passwords"
+fi
+cat > $studio_env <<EOL
+#DB
+DB_HOST=host.docker.internal
+DB_PORT=51017
+DB_USER=analytics_user
+DB_PASS=$(openssl rand -hex 10)
+DATABASE=analyticsDB
+
+#DUMP
+DUMP_USER=layernext_dumprestoreuser
+DUMP_USER_PWD=$(openssl rand -hex 10)
+OUTPUT_DIRECTORY=analytics
+#change dump keepeing days as prefer and use dump per day like 1,2,3,4,6,12,24
+DUMP_KEEPING_DAYS=30
+DUMP_PER_DAY=4
+
+# Build time
+SETUP_CUSTOMER=$SETUP_CUSTOMER
+MONGODB_ADMIN_PASSWORD=$(openssl rand -hex 16)
+CPU_LIMIT=$CPU_LIMIT
+MEMORY_LIMIT=$MEMORY_LIMIT
+
+JWT_SECRET = $JWT_SECRET
+ADMIN_EMAIL=$ADMIN_EMAIL
+
+# Auth
+SSO_INTERNAL_SERVER=http://host.docker.internal:8888
+
+BASE_URL=https://studio.$SETUP_CUSTOMER.layernext.ai
+DATALAKE_INTERNAL_SERVER=http://host.docker.internal:3000
+DATALAKE_BASE_URL=https://datalake.$SETUP_CUSTOMER.layernext.ai
+API_URL=https://api.$SETUP_CUSTOMER.layernext.ai
+
+ENVIRONMENT=enterprise
+
+EOL
+
+
 # generate ssl creator nginx env
 ssl_nginx_env="./accounts/nginxData/.env"
 if [ -f $ssl_nginx_env ]; then
