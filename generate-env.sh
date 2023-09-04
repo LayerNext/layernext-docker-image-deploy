@@ -32,6 +32,7 @@ SYNC_TOOL_PATH=./../dataset
 
 #env
 PORT=8888
+TEAM_ID=6374c3decb468b7a7a68a116
 
 JWT_SECRET=$JWT_SECRET
 ADMIN_EMAIL=$ADMIN_EMAIL
@@ -94,6 +95,7 @@ INSTANCE_TYPE=master
 
 #env
 PORT=3000
+TEAM_ID=6374c3decb468b7a7a68a116
 
 JWT_SECRET=$JWT_SECRET
 
@@ -160,6 +162,7 @@ MEMORY_LIMIT=$MEMORY_LIMIT
 
 #env
 PORT=4000
+TEAM_ID=6374c3decb468b7a7a68a116
 
 JWT_SECRET=$JWT_SECRET
 
@@ -172,6 +175,7 @@ ANNO_INTERNAL_SERVER=http://host.docker.internal:8080
 DATALAKE_INTERNAL_SERVER=http://host.docker.internal:3000
 
 DATALAKE_BASE_URL=http://datalake.$SETUP_CUSTOMER.layernext.ai
+
 
 EOL
 
@@ -207,6 +211,7 @@ MEMORY_LIMIT=$MEMORY_LIMIT
 
 #For uploadx listener
 EXPRESS_PORT=8082
+TEAM_ID=6374c3decb468b7a7a68a116
 
 JWT_SECRET = $JWT_SECRET
 ADMIN_EMAIL=$ADMIN_EMAIL
@@ -242,18 +247,19 @@ EOL
 
 
 # generate analytics env
-studio_env="./analytics/.env"
-if [ -f $studio_env ]; then
+analytics_env="./analytics/.env"
+if [ -f $analytics_env ]; then
   echo "Existing env file found for analytics. replacing..."
   echo "Warning: If the system was already built, the system may become non functional due to regeneration of db passwords"
 fi
-cat > $studio_env <<EOL
+cat > $analytics_env <<EOL
 #DB
 DB_HOST=host.docker.internal
 DB_PORT=51017
 DB_USER=analytics_user
 DB_PASS=$(openssl rand -hex 10)
 DATABASE=analyticsDB
+MODEL_DATABASE=modelDB
 
 #DUMP
 DUMP_USER=layernext_dumprestoreuser
@@ -281,6 +287,24 @@ DATALAKE_BASE_URL=https://datalake.$SETUP_CUSTOMER.layernext.ai
 API_URL=https://api.$SETUP_CUSTOMER.layernext.ai
 
 ENVIRONMENT=enterprise
+TEAM_ID=6374c3decb468b7a7a68a116
+
+# storage
+STORAGE_TYPE=$STORAGE_TYPE
+
+#S3
+AWS_ACCESS_KEY=$AWS_ACCESS_KEY
+AWS_SECRET_KEY=$AWS_SECRET_KEY
+AWS_REGION=$AWS_REGION
+AWS_BUCKET_NAME=$AWS_BUCKET_NAME
+
+#analytics
+ACCOUNT_ID=$ACCOUNT_ID
+MODEL=$MODEL
+INSTANCE_TYPE=$INSTANCE_TYPE
+INFERENCE_PLATFORM=$INFERENCE_PLATFORM
+INFERENCE_METHOD=$INFERENCE_METHOD
+
 
 EOL
 

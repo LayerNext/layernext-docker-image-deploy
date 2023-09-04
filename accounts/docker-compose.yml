@@ -20,6 +20,7 @@ services:
         - SETUP_CUSTOMER
         - ADMIN_EMAIL
         - ADMIN_PASSWORD
+        - TEAM_ID
 
   sso_node_backend:
     image: layernextai/sso_node_backend:1.0.22

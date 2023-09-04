@@ -19,6 +19,7 @@ services:
         - DUMP_USER_PWD
         - AWS_BUCKET_NAME
         - SETUP_CUSTOMER
+        - TEAM_ID
       deploy:
         resources:
             limits:

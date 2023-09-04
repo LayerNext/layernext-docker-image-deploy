@@ -13,12 +13,14 @@ services:
         - MONGO_INITDB_ROOT_PASSWORD=${MONGODB_ADMIN_PASSWORD}
         - MONGO_INITDB_DATABASE=admin
         - DATABASE
+        - MODEL_DATABASE
         - DB_USER
         - DB_PASS
         - DUMP_USER
         - DUMP_USER_PWD
         - AWS_BUCKET_NAME
         - SETUP_CUSTOMER
+        - TEAM_ID
       deploy:
         resources:
             limits:
@@ -26,7 +28,7 @@ services:
               memory: ${MEMORY_LIMIT}
 
   automatic_analysis_app:
-    image: layernextai/automatic_analysis_app:1.0.22
+    image: layernextai/automatic_analysis_app:1.0.23
     restart: always
     ports:
       - "5081:5081"

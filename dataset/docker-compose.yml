@@ -18,6 +18,7 @@ services:
         - DUMP_USER
         - DUMP_USER_PWD
         - SETUP_CUSTOMER
+        - TEAM_ID
 
   dataset_node_backend:
     image: layernextai/dataset_node_backend:1.0.22

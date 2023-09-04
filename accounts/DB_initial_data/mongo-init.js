@@ -35,7 +35,7 @@ db.getCollection('User').insert({
   "userType": 3,
   "profileImgUrl": "defaultProfileImage.png",
   "projectList": null,
-  "teamId": ObjectId("6374c3decb468b7a7a68a116"),
+  "teamId": ObjectId(_getEnv('TEAM_ID')),
   "teamName": teamName,
   "userStatus": 1,
   "isAll": false,
@@ -61,7 +61,7 @@ db.getCollection('AppUserCredentials').insert({
 
 //insert default team
 db.getCollection('AnnotationTeam').insert({
-  "_id": ObjectId("6374c3decb468b7a7a68a116"),
+  "_id": ObjectId(_getEnv('TEAM_ID')),
   "teamName": teamName,
   "create_team_folder": true,
   "apiKeyGenerated": true
@@ -70,7 +70,7 @@ db.getCollection('AnnotationTeam').insert({
 //insert default APIKey
 db.getCollection('ApiKey').insert({
   "_id": ObjectId("6374eb51e3ac085579e53442"),
-  "teamId": ObjectId("6374c3decb468b7a7a68a116"),
+  "teamId": ObjectId(_getEnv('TEAM_ID')),
   "key": "key_" + Math.random().toString(36).substr(2, 24)+Math.random().toString(36).substr(2, 24)+Math.random().toString(36).substr(2, 24),
   "secret": Math.random().toString(36).substr(2, 24)+Math.random().toString(36).substr(2, 24)
 })

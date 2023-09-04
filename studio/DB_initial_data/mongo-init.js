@@ -542,5 +542,5 @@ db.getCollection('AnnotationUser').insert({
     "isAll" : false,
     "timeZoneOffset" : 0,
     "isUserDeactivated": false,
-    "teamId": ObjectId("6374c3decb468b7a7a68a116")
+    "teamId": ObjectId(_getEnv('TEAM_ID'))
 })

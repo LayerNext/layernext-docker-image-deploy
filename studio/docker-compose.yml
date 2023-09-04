@@ -18,6 +18,7 @@ services:
         - SETUP_CUSTOMER
         - DUMP_USER
         - DUMP_USER_PWD
+        - TEAM_ID
         
   studio_python_app:
     image: layernextai/studio_python_app:1.0.22

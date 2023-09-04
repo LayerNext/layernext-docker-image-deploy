@@ -25,7 +25,7 @@ db.createUser(
 db.getCollection('SystemData').insert({
 
   "_id": ObjectId("62c68556ebeb17f23b74823d"),
-  "teamId": ObjectId("6374c3decb468b7a7a68a116"),
+  "teamId": ObjectId(_getEnv('TEAM_ID')),
   "apiConfigs": {
     "maxSyncInterval": 50000.0
   },
@@ -92,7 +92,7 @@ db.getCollection('ApiKey').insert({
   "_id": ObjectId("62e92a1ae33130c211632eeb"),
   "key": "key_" + Math.random().toString(36).substr(2, 24)+Math.random().toString(36).substr(2, 24)+Math.random().toString(36).substr(2, 24),
   "secret": Math.random().toString(36).substr(2, 24)+Math.random().toString(36).substr(2, 24),
-  "teamId": ObjectId("6374c3decb468b7a7a68a116"),
+  "teamId": ObjectId(_getEnv('TEAM_ID')),
   "apiConfigs": {
     "maxSyncInterval": 50000.0
   },
