@@ -295,6 +295,10 @@ db.MetaDataUpdate.createIndex(
   { objectKey: 1, operationId: 1, operationMode: 1, operationType: 1 },
   { name: "objectKey_1_operationId_1_operationMode_1_operationType_1" }
 );
+db.MetaDataUpdate.createIndex(
+  { objectKey: 1, operationId: 1 },
+  { unique: true, name: "objectKey_1_operationId_1" }
+);
 
 // 'Job' collection
 db.Job.createIndex({ jobName: 1 });
