@@ -1,56 +1,56 @@
 version: "3.8"
 services:
-  datalake_mongodb:
-      image: mongo:5.0.13
-      restart: always
-      ports:
-        - 37017:27017
-      volumes:
-        - ./mongoData:/data/db
-        - ./DB_initial_data/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js
-      environment:
-        - MONGO_INITDB_ROOT_USERNAME=admin
-        - MONGO_INITDB_ROOT_PASSWORD=${MONGODB_ADMIN_PASSWORD}
-        - MONGO_INITDB_DATABASE=admin
-        - DATABASE
-        - DB_USER
-        - DB_PASS
-        - DUMP_USER
-        - DUMP_USER_PWD
-        - AWS_BUCKET_NAME
-        - SETUP_CUSTOMER
-        - TEAM_ID
-      deploy:
-        resources:
-            limits:
-              cpus: ${CPU_LIMIT}
-              memory: ${MEMORY_LIMIT}
+  # datalake_mongodb:
+  #     image: mongo:5.0.13
+  #     restart: always
+  #     ports:
+  #       - 37017:27017
+  #     volumes:
+  #       - ./mongoData:/data/db
+  #       - ./DB_initial_data/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js
+  #     environment:
+  #       - MONGO_INITDB_ROOT_USERNAME=admin
+  #       - MONGO_INITDB_ROOT_PASSWORD=${MONGODB_ADMIN_PASSWORD}
+  #       - MONGO_INITDB_DATABASE=admin
+  #       - DATABASE
+  #       - DB_USER
+  #       - DB_PASS
+  #       - DUMP_USER
+  #       - DUMP_USER_PWD
+  #       - AWS_BUCKET_NAME
+  #       - SETUP_CUSTOMER
+  #       - TEAM_ID
+  #     deploy:
+  #       resources:
+  #           limits:
+  #             cpus: ${CPU_LIMIT}
+  #             memory: ${MEMORY_LIMIT}
 
-  datalake_node_backend:
-    image: layernextai/datalake_node_backend:1.0.23
-    restart: always
-    ports:
-      - "3000:3000"
-    depends_on:
-      - datalake_mongodb
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
-    volumes:
-      - ./datalake-nodejs/logs:/usr/src/app/datalake-nodejs/logs
-      - ./datalake-nodejs/storage:/usr/src/app/datalake-nodejs/storage
-      - ./datalake-python-processor/logs:/usr/src/app/datalake-python-processor/logs
-      - ./datalake-nodejs/config:/usr/src/app/datalake-nodejs/config
-    env_file:
-      - ./.env
+  # datalake_node_backend:
+  #   image: layernextai/datalake_node_backend:1.0.23
+  #   restart: always
+  #   ports:
+  #     - "3000:3000"
+  #   depends_on:
+  #     - datalake_mongodb
+  #   extra_hosts:
+  #     - "host.docker.internal:host-gateway"
+  #   volumes:
+  #     - ./datalake-nodejs/logs:/usr/src/app/datalake-nodejs/logs
+  #     - ./datalake-nodejs/storage:/usr/src/app/datalake-nodejs/storage
+  #     - ./datalake-python-processor/logs:/usr/src/app/datalake-python-processor/logs
+  #     - ./datalake-nodejs/config:/usr/src/app/datalake-nodejs/config
+  #   env_file:
+  #     - ./.env
 
-  datalake_frontend:
-    image: layernextai/datalake_frontend:1.0.23
-    restart: always
-    ports:
-      - "8095:8095"
-    environment:
-      - TZ:utc
-      - LAYERNEXT_SUB_DOMAIN=${SETUP_CUSTOMER}
+  # datalake_frontend:
+  #   image: layernextai/datalake_frontend:1.0.23
+  #   restart: always
+  #   ports:
+  #     - "8095:8095"
+  #   environment:
+  #     - TZ:utc
+  #     - LAYERNEXT_SUB_DOMAIN=${SETUP_CUSTOMER}
   
   etcd:
     container_name: milvus-etcd
