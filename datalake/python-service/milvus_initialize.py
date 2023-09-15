@@ -6,7 +6,7 @@ from pymilvus import (
     db
 )
 
-connections.connect("default", host="host.docker.internal", port="19530", user="root", password="Milvus")
+connections.connect("default", host="localhost", port="19530", user="root", password="Milvus")
 
 database = db.create_database("layerNext")
 
