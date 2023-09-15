@@ -30,7 +30,7 @@ index = {
 
 LayerNextEmbeddings = Collection("LayerNextEmbeddings")
 
-LayerNextEmbeddings.create_index("embeddings", index)
+LayerNextEmbeddings.create_index("embeddings", index, index_name="vec_index")
 
 
 time.sleep(20000)
