@@ -112,6 +112,8 @@ services:
     build: ./python-service
     depends_on:
       - standalone
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
 
 networks:
   default:
