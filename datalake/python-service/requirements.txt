@@ -1,1 +1,2 @@
 pymilvus==2.3.0
+numpy

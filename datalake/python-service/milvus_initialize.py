@@ -1,4 +1,5 @@
 import time
+import numpy as np
 from pymilvus import (
     connections,
     utility,
@@ -9,28 +10,40 @@ from pymilvus import (
 
 connections.connect("default", host="host.docker.internal", port="19530", user="root", password="Milvus")
 
-database = db.create_database("layerNext")
+db_list = db.list_database()
 
-db.using_database("layerNext")
+if "LayerNext" not in db_list:
+    database = db.create_database("LayerNext")
 
-fields = [
-    FieldSchema(name="uniqueName", dtype=DataType.VARCHAR, is_primary=True, auto_id=False, max_length=256),
-    FieldSchema(name="embeddings", dtype=DataType.FLOAT_VECTOR, dim=2048)
-]
+    db.using_database("layerNext")
 
-schema = CollectionSchema(fields, "layernext embeddings")
+    fields = [
+        FieldSchema(name="uniqueName", dtype=DataType.VARCHAR, is_primary=True, auto_id=False, max_length=256),
+        FieldSchema(name="embeddings", dtype=DataType.FLOAT_VECTOR, dim=2048)
+    ]
 
-LayerNextEmbeddings = Collection("LayerNextEmbeddings", schema, consistency_level="Strong")
+    schema = CollectionSchema(fields, "layernext embeddings")
 
-index = {
-    "index_type": "IVF_FLAT",
-    "metric_type": "IP",
-    "params": {"nlist": 128},
-}
+    LayerNextEmbeddings = Collection("LayerNextEmbeddings", schema, consistency_level="Strong")
 
-LayerNextEmbeddings = Collection("LayerNextEmbeddings")
+    LayerNextEmbeddings.insert(
+    [
+        {
+        "uniqueName": "test",
+        "embeddings": np.random.rand(2048).astype(np.float32)
+        }
+    ]
+    )
 
-LayerNextEmbeddings.create_index("embeddings", index, index_name="vec_index")
+    index = {
+        "index_type": "IVF_FLAT",
+        "metric_type": "IP",
+        "params": {"nlist": 128},
+    }
+
+    LayerNextEmbeddings = Collection("LayerNextEmbeddings")
+
+    LayerNextEmbeddings.create_index("embeddings", index, index_name="vec_index")
 
 
-time.sleep(20000)
+    time.sleep(20000)
