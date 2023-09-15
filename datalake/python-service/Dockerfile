@@ -8,7 +8,9 @@ WORKDIR /app
 RUN pip install pymilvus
 
 # Copy the current directory contents into the container
-COPY . /app
+COPY . /app/
 
 # Set the command to run your Python script
-CMD ["python", "milvus_initialize.py"]
+ENTRYPOINT [ "python3" ]
+
+CMD ["app.py"]
