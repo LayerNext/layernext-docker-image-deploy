@@ -19,4 +19,12 @@ fields = [
 
 schema = CollectionSchema(fields, "layernext embeddings")
 
-layernextembeddings = Collection("layernextembeddings", schema, consistency_level="Strong")
+layernextembeddings = Collection("LayerNextEmbeddings", schema, consistency_level="Strong")
+
+index = {
+    "index_type": "IVF_FLAT",
+    "metric_type": "IP",
+    "params": {"nlist": 128},
+}
+
+LayerNextEmbeddings = Collection("LayerNextEmbeddings")
