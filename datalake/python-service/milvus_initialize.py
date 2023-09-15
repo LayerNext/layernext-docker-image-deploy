@@ -20,7 +20,7 @@ fields = [
 
 schema = CollectionSchema(fields, "layernext embeddings")
 
-layernextembeddings = Collection("LayerNextEmbeddings", schema, consistency_level="Strong")
+LayerNextEmbeddings = Collection("LayerNextEmbeddings", schema, consistency_level="Strong")
 
 index = {
     "index_type": "IVF_FLAT",

@@ -1,13 +1,20 @@
 # Use an official Python runtime as a base image
-FROM python:3.8
+FROM ubuntu:20.04
 
-# Set the working directory
+ENV DEBIAN_FRONTEND noninteractive
+
+# install dependancies
+RUN apt-get update -y && \
+    apt-get install -y python3-pip python3-dev && \
+    apt install -y git-all 
+
+# We copy just the requirements.txt first to leverage Docker cache
+COPY ./requirements.txt /app/requirements.txt
+
 WORKDIR /app
 
-# Install the Milvus Python SDK
-RUN pip install pymilvus
+RUN pip3 install --upgrade -r requirements.txt
 
-# Copy the current directory contents into the container
 COPY . /app/
 
 # Set the command to run your Python script
