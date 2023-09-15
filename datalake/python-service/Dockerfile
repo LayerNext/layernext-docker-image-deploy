@@ -13,4 +13,4 @@ COPY . /app/
 # Set the command to run your Python script
 ENTRYPOINT [ "python3" ]
 
-CMD ["app.py"]
+CMD ["milvus_initialize.py"]

@@ -1,3 +1,4 @@
+import time
 from pymilvus import (
     connections,
     utility,
@@ -28,3 +29,7 @@ index = {
 }
 
 LayerNextEmbeddings = Collection("LayerNextEmbeddings")
+
+
+
+time.sleep(200)
