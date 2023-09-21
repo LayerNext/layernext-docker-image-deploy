@@ -15,14 +15,14 @@ db_list = db.list_database()
 if "LayerNext" not in db_list:
     database = db.create_database("LayerNext")
 
-    db.using_database("layerNext")
+    db.using_database("LayerNext")
 
     fields = [
         FieldSchema(name="uniqueName", dtype=DataType.VARCHAR, is_primary=True, auto_id=False, max_length=256),
         FieldSchema(name="embeddings", dtype=DataType.FLOAT_VECTOR, dim=2048)
     ]
 
-    schema = CollectionSchema(fields, "layernext embeddings")
+    schema = CollectionSchema(fields, "LayerNext embeddings")
 
     LayerNextEmbeddings = Collection("LayerNextEmbeddings", schema, consistency_level="Strong")
 
