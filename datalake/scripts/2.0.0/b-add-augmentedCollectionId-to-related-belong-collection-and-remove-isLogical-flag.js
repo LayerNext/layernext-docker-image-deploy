@@ -1,3 +1,5 @@
+print("Start adding augmentationCollectionId to related belong collection");
+
 var augmentedCollection = db
   .getCollection("MetaData")
   .aggregate([

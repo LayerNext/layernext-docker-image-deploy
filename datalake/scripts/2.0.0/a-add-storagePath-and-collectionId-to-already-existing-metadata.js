@@ -1,3 +1,7 @@
+print(
+  "Started to add storagePath and collectionId to already existing metadata"
+);
+
 var uniqueNamesObj = db
   .getCollection("MetaData")
   .aggregate([
@@ -123,3 +127,7 @@ for (var nameObj of uniqueNamesObj) {
     }
   } while (isExist);
 }
+
+print(
+  "Completed to add storagePath and collectionId to already existing metadata"
+);

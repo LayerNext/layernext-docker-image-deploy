@@ -1,3 +1,5 @@
+print("started adding the datasetMetaId to the vCollectionList");
+
 var idListObj = db
   .getCollection("MetaData")
   .aggregate([
@@ -31,3 +33,5 @@ for (var oId of idList) {
     }
   );
 }
+
+print("The datasetMetaId has been completely added to the vCollectionList.");

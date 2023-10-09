@@ -1,3 +1,5 @@
+print("started adding the customMeta to the relevant collection");
+
 var collectionArray = db
   .getCollection("MetaData")
   .find({ objectType: { $in: [4, 5, 7] } })
@@ -32,3 +34,5 @@ for (var collection of collectionArray) {
     { $set: { customMeta: customMeta } }
   );
 }
+
+print("The customMeta has been completely added to the relevant collection.");

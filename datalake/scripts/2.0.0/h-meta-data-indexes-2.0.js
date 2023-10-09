@@ -1,3 +1,5 @@
+print("Start setting indexes for MetaData collection");
+
 db.MetaData.dropIndexes();
 
 db.MetaData.createIndex({ objectKey: 1 }, { name: "objectKey_1" });
@@ -192,3 +194,5 @@ db.getCollection("MetaData").createIndex(
     },
   }
 );
+
+print("Completed setting indexes for SystemData collection");

@@ -1,3 +1,5 @@
+print("started adding the storagePrefixPath to the relevant collection");
+
 var layerNextAugCollectionIdList = db
   .getCollection("MetaData")
   .distinct("collectionId", { storagePath: /^LayerNext\/augmentations/ });

@@ -1,3 +1,5 @@
+print("started adding the customMeta to the relevant collection");
+
 function addMissingMetaFieldsToSystem() {
   var missingFields = db
     .getCollection("MetaData")
@@ -61,3 +63,5 @@ function addMissingMetaFieldsToSystem() {
   db.getCollection("MetaField").insertMany(metaFieldArray);
 }
 addMissingMetaFieldsToSystem();
+
+print("The customMeta has been completely added to the relevant collection.");

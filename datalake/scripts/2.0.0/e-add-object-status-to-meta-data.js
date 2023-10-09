@@ -1,3 +1,5 @@
+print("started adding the objectStatus to the MetaData");
+
 //Add new field to write previous object status,
 db.getCollection("MetaData").updateMany({ objectStatus: { $exists: true } }, [
   { $set: { old_object_status: "$objectStatus" } },
@@ -94,3 +96,5 @@ db.getCollection("MetaData").updateMany(
 
 //Check if all documents have the flag
 // db.getCollection('MetaData').find({ objectStatus: { $exists: false } }).count()
+
+print("The objectStatus has been completely added to the MetaData.");
