@@ -24,16 +24,8 @@ fields = [
 
 schema = CollectionSchema(fields, "LayerNext embeddings")
 
-LayerNextEmbeddings = Collection("LayerNextEmbeddings", schema, consistency_level="Strong")
+LayerNext_embeddings_collection = Collection("Resnet50", schema, consistency_level="Strong")
 
-LayerNextEmbeddings.insert(
-[
-    {
-    "uniqueName": "test",
-    "embeddings": np.random.rand(2048).astype(np.float32)
-    }
-]
-)
 
 index = {
     "index_type": "IVF_FLAT",
@@ -41,9 +33,12 @@ index = {
     "params": {"nlist": 128},
 }
 
-LayerNextEmbeddings = Collection("LayerNextEmbeddings")
+LayerNext_embeddings_collection = Collection("Resnet50")
 
-LayerNextEmbeddings.create_index("embeddings", index, index_name="vec_index")
+has_index = LayerNext_embeddings_collection.has_index(index_name="vec_index")
+
+if has_index == False or has_index == None:
+    LayerNext_embeddings_collection.create_index("embeddings", index, index_name="vec_index")
 
 
 time.sleep(20000)

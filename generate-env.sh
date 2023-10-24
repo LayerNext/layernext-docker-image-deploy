@@ -129,6 +129,18 @@ ALL_BUCKETS=$ALL_BUCKETS
 # Enabling optional features
 SUBSEQUENT_CRAWL=$SUBSEQUENT_CRAWL
 
+# Vecttor Database
+VECTOR_DB_CONNECTION=enable
+VECTOR_DB_HOST=host.docker.internal
+VECTOR_DB_PORT=19530
+VECTOR_DB_USER=root
+VECTOR_DB_PASS=Milvus
+VECTOR_DB_NAME=LayerNext
+VECTOR_DB_COLLECTION=Resnet50
+
+
+PYTHON_BASE_URL=http://host.docker.internal:3100
+
 EOL
 
 
