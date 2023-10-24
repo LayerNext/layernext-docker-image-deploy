@@ -3,14 +3,14 @@ server{
 
    index index.html index.htm index.nginx-debian.html;
    client_max_body_size 100M;
-   server_name analytics.${SETUP_CUSTOMER}.layernext.ai;
+   server_name metalake.${SETUP_CUSTOMER}.layernext.ai;
 
        location / {
 		proxy_set_header        Host $host;
 		proxy_set_header        X-Real-IP $remote_addr;
 	 	proxy_set_header        X-Forwarded-For $proxy_add_x_forwarded_for;
 		proxy_set_header        X-Forwarded-Proto $scheme;
-		proxy_pass          http://host.docker.internal:${ANALYTICS_BACKEND_PORT};
+		proxy_pass          http://host.docker.internal:${DATALAKE_FRONTEND_PORT};
 	        proxy_read_timeout  90;
                 proxy_set_header 'Access-Control-Allow-Origin' '*';
         }
@@ -20,9 +20,20 @@ server{
 		proxy_set_header        X-Real-IP $remote_addr;
 		proxy_set_header        X-Forwarded-For $proxy_add_x_forwarded_for;
 		proxy_set_header        X-Forwarded-Proto $scheme;
-		proxy_pass          http://host.docker.internal:${ANALYTICS_BACKEND_PORT};
+		proxy_pass          http://host.docker.internal:${DATALAKE_BACKEND_PORT};
 	        proxy_read_timeout  90;
                 proxy_set_header 'Access-Control-Allow-Origin' '*';
+        }
+
+       
+        location /users {
+	        proxy_set_header        Host $host;
+		proxy_set_header        X-Real-IP $remote_addr;
+		proxy_set_header        X-Forwarded-For $proxy_add_x_forwarded_for;
+		proxy_set_header        X-Forwarded-Proto $scheme;
+		proxy_pass          http://host.docker.internal:${DATALAKE_BACKEND_PORT};
+	        proxy_read_timeout  90;
+        	proxy_set_header 'Access-Control-Allow-Origin' '*';
         }
 
 }

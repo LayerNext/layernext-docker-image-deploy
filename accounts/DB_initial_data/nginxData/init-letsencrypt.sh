@@ -2,7 +2,7 @@
 
 setup_customer=$1
 account_domain="accounts.$setup_customer.layernext.ai"
-datalake_domain="datalake.$setup_customer.layernext.ai"
+datalake_domain="metalake.$setup_customer.layernext.ai"
 dataset_domain="dataset.$setup_customer.layernext.ai"
 studio_domain="studio.$setup_customer.layernext.ai"
 api_domain="api.$setup_customer.layernext.ai"
