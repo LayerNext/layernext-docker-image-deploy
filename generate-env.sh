@@ -65,7 +65,7 @@ EOL
 # generate datalake env
 datalake_env="./datalake/.env"
 if [ -f $datalake_env ]; then
-  echo "Existing env file found for metalake. replacing..."
+  echo "Existing env file found for datalake. replacing..."
   echo "Warning: If the system was already built, the system may become non functional due to regeneration of db passwords"
 fi
 cat > $datalake_env <<EOL
@@ -185,7 +185,7 @@ SSO_INTERNAL_SERVER=http://host.docker.internal:8888
 ANNO_INTERNAL_SERVER=http://host.docker.internal:8080
 DATALAKE_INTERNAL_SERVER=http://host.docker.internal:3000
 
-DATALAKE_BASE_URL=http://metalake.$SETUP_CUSTOMER.layernext.ai
+DATALAKE_BASE_URL=http://datalake.$SETUP_CUSTOMER.layernext.ai
 
 
 EOL
@@ -236,7 +236,7 @@ PYTHON_SERVER=../../../contents/uploads/
 FRONT_END_BASE_URL=https://studio.$SETUP_CUSTOMER.layernext.ai
 DATALAKE_INTERNAL_SERVER=http://host.docker.internal:3000
 DATALAKE_BASE_URL=http://host.docker.internal:3000
-# DATALAKE_BASE_URL=https://metalake.$SETUP_CUSTOMER.layernext.ai
+# DATALAKE_BASE_URL=https://datalake.$SETUP_CUSTOMER.layernext.ai
 API_URL=https://api.$SETUP_CUSTOMER.layernext.ai
 
 ENVIRONMENT=enterprise
@@ -294,7 +294,7 @@ SSO_INTERNAL_SERVER=http://host.docker.internal:8888
 
 BASE_URL=https://studio.$SETUP_CUSTOMER.layernext.ai
 DATALAKE_INTERNAL_SERVER=http://host.docker.internal:3000
-DATALAKE_BASE_URL=https://metalake.$SETUP_CUSTOMER.layernext.ai
+DATALAKE_BASE_URL=https://datalake.$SETUP_CUSTOMER.layernext.ai
 API_URL=https://api.$SETUP_CUSTOMER.layernext.ai
 
 ENVIRONMENT=enterprise
