@@ -233,10 +233,10 @@ db.MetaData.createIndex(
   { teamId: 1, objectType: 1 },
   { name: "teamId_1_objectType_1" }
 );
-db.MetaData.createIndex(
-  { objectType: 1, isError: 1, teamId: 1 },
-  { name: "objectType_1_isError_1_teamId_1" }
-);
+// db.MetaData.createIndex(
+//   { objectType: 1, isError: 1, teamId: 1 },
+//   { name: "objectType_1_isError_1_teamId_1" }
+// );
 
 db.MetaData.createIndex(
   { teamId: 1, collectionId: 1, objectStatus: 1 },
@@ -387,3 +387,6 @@ db.getCollection('MetaData').createIndex(
   },
 );
 
+
+//Create metadata index for name in lowercase
+db.MetaData.createIndex({nameInLowerCase: 1, _id: 1}, {name: 'nameInLowerCase_1 _id_1'});
