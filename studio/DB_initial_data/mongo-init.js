@@ -542,5 +542,11 @@ db.getCollection('AnnotationUser').insert({
     "isAll" : false,
     "timeZoneOffset" : 0,
     "isUserDeactivated": false,
-    "teamId": ObjectId(_getEnv('TEAM_ID'))
+    "teamId": ObjectId(_getEnv('TEAM_ID')),
+    "shapeActionDailyStats": [],
+    "shapeActionMonthlyStats": []
 })
+
+db.getCollection('ShapeAction').createIndex({time: 1}, {expireAfterSeconds: 5260000});
+
+db.getCollection('ShapeAction').createIndex({userId: 1, time: 1});
