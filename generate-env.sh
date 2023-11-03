@@ -2,6 +2,14 @@
 
 export $(grep -v '^#' .env | xargs -d '\n')
 JWT_SECRET=$(openssl rand -hex 32)
+STUDIO_KEY=key_$(openssl rand -base64 60 | tr -dc 'a-z0-9' | head -c 32)
+STUDIO_SECRET=$(openssl rand -base64 45 | tr -dc 'a-z0-9' | head -c 20)
+DATASET_KEY=key_$(openssl rand -base64 60 | tr -dc 'a-z0-9' | head -c 32)
+DATASET_SECRET=$(openssl rand -base64 45 | tr -dc 'a-z0-9' | head -c 20)
+DATALAKE_KEY=key_$(openssl rand -base64 60 | tr -dc 'a-z0-9' | head -c 32)
+DATALAKE_SECRET=$(openssl rand -base64 45 | tr -dc 'a-z0-9' | head -c 20)
+ANALYTICS_KEY=key_$(openssl rand -base64 60 | tr -dc 'a-z0-9' | head -c 32)
+ANALYTICS_SECRET=$(openssl rand -base64 45 | tr -dc 'a-z0-9' | head -c 20)
 
 # generate accounts env
 accounts_env="./accounts/.env"
@@ -59,6 +67,16 @@ GOOGLE_API_KEY=$GOOGLE_API_KEY
 GOOGLE_CLIENT_ID=$GOOGLE_CLIENT_ID
 GOOGLE_CLIENT_SECRET=$GOOGLE_CLIENT_SECRET
 GOOGLE_REFRESH_TOKEN=$GOOGLE_REFRESH_TOKEN
+
+#api key secrets
+STUDIO_KEY=$STUDIO_KEY
+STUDIO_SECRET=$STUDIO_SECRET
+DATASET_KEY=$DATASET_KEY
+DATASET_SECRET=$DATASET_KEY
+DATALAKE_KEY=$DATALAKE_KEY
+DATALAKE_SECRET=$DATALAKE_SECRET
+ANALYTICS_KEY=$ANALYTICS_KEY
+ANALYTICS_SECRET=$ANALYTICS_SECRET
 EOL
 
 
@@ -140,6 +158,9 @@ SIMILARITY_SCORE_THRESHOLD=0.65
 
 PYTHON_BASE_URL=http://host.docker.internal:3100
 
+#api key secrets
+DATALAKE_KEY=$DATALAKE_KEY
+DATALAKE_SECRET=$DATALAKE_SECRET
 EOL
 
 
@@ -187,7 +208,9 @@ DATALAKE_INTERNAL_SERVER=http://host.docker.internal:3000
 
 DATALAKE_BASE_URL=http://datalake.$SETUP_CUSTOMER.layernext.ai
 
-
+#api key secrets
+DATASET_KEY=$DATASET_KEY
+DATASET_SECRET=$DATASET_KEY
 EOL
 
 
@@ -254,6 +277,10 @@ GOOGLE_REFRESH_TOKEN=$GOOGLE_REFRESH_TOKEN
 # Enabling optional features
 RESET_ASSIGNEE_ON_NEW_CYCLE=$RESET_ASSIGNEE_ON_NEW_CYCLE
 
+#api key secrets
+STUDIO_KEY=$STUDIO_KEY
+STUDIO_SECRET=$STUDIO_SECRET
+
 EOL
 
 
@@ -313,6 +340,10 @@ AWS_ROLE=$AWS_ROLE
 INSTANCE_TYPE=$INSTANCE_TYPE
 INFERENCE_PLATFORM=$INFERENCE_PLATFORM
 INFERENCE_METHOD=$INFERENCE_METHOD
+
+#api key secrets
+ANALYTICS_KEY=$ANALYTICS_KEY
+ANALYTICS_SECRET=$ANALYTICS_SECRET
 
 EOL
 
