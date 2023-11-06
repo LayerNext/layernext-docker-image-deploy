@@ -59,6 +59,20 @@ db.getCollection('AppUserCredentials').insert({
   "annotationUserId": ObjectId("6374c47ecb468b7a7a68a117")
 })
 
+db.getCollection('ApiKey').insert({
+  "_id": ObjectId("6374eb51e3ac085579e53442"),
+  "email": adminMail,
+  "userId": ObjectId("6374c47ecb468b7a7a68a117"),
+  "name": "LayerNext Admin Key",
+  "userType": 3,
+  "userName": "LayerNext Admin",
+  "teamId": ObjectId(_getEnv('TEAM_ID')),
+  "key": "key_" + Math.random().toString(36).substr(2, 24)+Math.random().toString(36).substr(2, 24)+Math.random().toString(36).substr(2, 24),
+  "secret": Math.random().toString(36).substr(2, 24)+Math.random().toString(36).substr(2, 24),
+  "type": 1,
+  "createdAt": new Date()
+})
+
 //insert default team
 db.getCollection('AnnotationTeam').insert({
   "_id": ObjectId(_getEnv('TEAM_ID')),
