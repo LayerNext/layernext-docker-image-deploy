@@ -70,7 +70,7 @@ db.getCollection('AnnotationTeam').insert({
 //insert analytics APIKey
 db.getCollection('ApiKey').insert({
   "_id": ObjectId("6374eb51e3ac085579e53443"),
-  "name": "Analytics App",
+  "name": "Automatic Analysis",
   "teamId": ObjectId(_getEnv('TEAM_ID')),
   "key": _getEnv('ANALYTICS_KEY'),
   "secret": _getEnv('ANALYTICS_SECRET'),
@@ -90,7 +90,7 @@ db.getCollection('ApiKey').insert({
 //insert dataset APIKey
 db.getCollection('ApiKey').insert({
   "_id": ObjectId("6374eb51e3ac085579e53445"),
-  "name": "Dataset App",
+  "name": "Dataset Manager",
   "teamId": ObjectId(_getEnv('TEAM_ID')),
   "key": _getEnv('DATASET_KEY'),
   "secret": _getEnv('DATASET_SECRET'),
@@ -100,7 +100,7 @@ db.getCollection('ApiKey').insert({
 //insert studio APIKey
 db.getCollection('ApiKey').insert({
   "_id": ObjectId("6374eb51e3ac085579e53446"),
-  "name": "Studio App",
+  "name": "Annotation Studio",
   "teamId": ObjectId(_getEnv('TEAM_ID')),
   "key": _getEnv('STUDIO_KEY'),
   "secret": _getEnv('STUDIO_SECRET'),
