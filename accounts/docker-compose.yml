@@ -23,7 +23,7 @@ services:
         - TEAM_ID
 
   sso_node_backend:
-    image: layernextai/sso_node_backend:2.1.0
+    image: layernextai/sso_node_backend:2.2.0
     restart: always
     ports:
       - "8888:8888"
@@ -38,7 +38,7 @@ services:
       - ./.env
 
   sso_frontend:
-    image: layernextai/sso_frontend:2.1.0
+    image: layernextai/sso_frontend:2.2.0
     restart: always
     ports:
       - "8097:8097"
