@@ -183,6 +183,7 @@ db.getCollection("MetaData").createIndex(
     partialFilterExpression: {
       objectType: 5,
     },
+    name: "name_1_objectType_5"
   }
 );
 db.getCollection("MetaData").createIndex(
@@ -192,6 +193,7 @@ db.getCollection("MetaData").createIndex(
     partialFilterExpression: {
       objectType: 7,
     },
+    name: "name_1_objectType_7"
   }
 );
 
