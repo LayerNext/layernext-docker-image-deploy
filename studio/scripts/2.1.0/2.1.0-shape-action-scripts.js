@@ -17,6 +17,7 @@ for (var user of users) {
         deletedShapeCount: 0,
         notChangedShapeCount: 0,
         modifiedCount: 0,
+        totalCount: dailyStat.completedBoxes
       });
     }
   }
@@ -29,6 +30,7 @@ for (var user of users) {
         deletedShapeCount: 0,
         notChangedShapeCount: 0,
         modifiedCount: 0,
+        totalCount: monthlyStat.completedBoxes
       });
     }
   }
