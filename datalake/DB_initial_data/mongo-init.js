@@ -390,3 +390,13 @@ db.getCollection('MetaData').createIndex(
 
 //Create metadata index for name in lowercase
 db.MetaData.createIndex({nameInLowerCase: 1, _id: 1}, {name: 'nameInLowerCase_1 _id_1'});
+
+
+//insert default Embedding Model
+db.getCollection('EmbeddingModel').insert({
+  "embeddingModelName" : "Resnet50",
+  "embeddingDimension" : [2048],
+  "createdAt" : new Date(),
+  "createdBy" : "System",
+  "updatedAt" : new Date()
+})
