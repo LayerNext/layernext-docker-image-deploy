@@ -67,10 +67,34 @@ db.getCollection('AnnotationTeam').insert({
   "apiKeyGenerated": true
 })
 
-//insert default APIKey
+//insert analytics APIKey
 db.getCollection('ApiKey').insert({
-  "_id": ObjectId("6374eb51e3ac085579e53442"),
+  "_id": ObjectId("6374eb51e3ac085579e53443"),
+  "name": "Automatic Analysis",
   "teamId": ObjectId(_getEnv('TEAM_ID')),
-  "key": "key_" + Math.random().toString(36).substr(2, 24)+Math.random().toString(36).substr(2, 24)+Math.random().toString(36).substr(2, 24),
-  "secret": Math.random().toString(36).substr(2, 24)+Math.random().toString(36).substr(2, 24)
+  "key": _getEnv('ANALYTICS_KEY'),
+  "secret": _getEnv('ANALYTICS_SECRET'),
+  "type": 2
+})
+
+
+
+//insert dataset APIKey
+db.getCollection('ApiKey').insert({
+  "_id": ObjectId("6374eb51e3ac085579e53445"),
+  "name": "Dataset Manager",
+  "teamId": ObjectId(_getEnv('TEAM_ID')),
+  "key": _getEnv('DATASET_KEY'),
+  "secret": _getEnv('DATASET_SECRET'),
+  "type": 2
+})
+
+//insert studio APIKey
+db.getCollection('ApiKey').insert({
+  "_id": ObjectId("6374eb51e3ac085579e53446"),
+  "name": "Annotation Studio",
+  "teamId": ObjectId(_getEnv('TEAM_ID')),
+  "key": _getEnv('STUDIO_KEY'),
+  "secret": _getEnv('STUDIO_SECRET'),
+  "type": 2
 })
