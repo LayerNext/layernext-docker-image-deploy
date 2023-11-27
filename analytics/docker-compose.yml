@@ -24,8 +24,8 @@ services:
       deploy:
         resources:
             limits:
-              cpus: ${CPU_LIMIT}
-              memory: ${MEMORY_LIMIT}
+              cpus: ${DB_CPU_LIMIT}
+              memory: ${DB_MEMORY_LIMIT}
 
   automatic_analysis_app:
     image: layernextai/automatic_analysis_app:2.2.0
@@ -41,7 +41,7 @@ services:
     deploy:
         resources:
             limits:
-              cpus: ${CPU_LIMIT}
-              memory: ${MEMORY_LIMIT}
+              cpus: ${ANALYSIS_CPU_LIMIT}
+              memory: ${ANALYSIS_MEMORY_LIMIT}
     env_file:
       - ./.env
