@@ -390,3 +390,4 @@ db.getCollection('MetaData').createIndex(
 
 //Create metadata index for name in lowercase
 db.MetaData.createIndex({nameInLowerCase: 1, _id: 1}, {name: 'nameInLowerCase_1 _id_1'});
+db.MetaData.createIndex({'embeddingModels.modelName': 1});
