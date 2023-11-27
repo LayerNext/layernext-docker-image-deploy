@@ -23,8 +23,8 @@ services:
       deploy:
         resources:
             limits:
-              cpus: ${CPU_LIMIT}
-              memory: ${MEMORY_LIMIT}
+              cpus: ${DB_CPU_LIMIT}
+              memory: ${DB_MEMORY_LIMIT}
   
   etcd:
     container_name: milvus-etcd
@@ -127,8 +127,8 @@ services:
     deploy:
         resources:
             limits:
-              cpus: ${CPU_LIMIT}
-              memory: ${MEMORY_LIMIT}
+              cpus: ${FLASK_CPU_LIMIT}
+              memory: ${FLASK_MEMORY_LIMIT}
     env_file:
       - ./.env
 
