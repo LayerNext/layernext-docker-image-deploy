@@ -380,23 +380,24 @@ db.getCollection('QueryGraphData').createIndex(
 );
 
 db.getCollection('MetaData').createIndex(
-  {objectKey: 1},
+  { objectKey: 1 },
   {
     unique: true,
-    partialFilterExpression: {objectKey: {$exists: true}},
+    partialFilterExpression: { objectKey: { $exists: true } },
   },
 );
 
 
 //Create metadata index for name in lowercase
-db.MetaData.createIndex({nameInLowerCase: 1, _id: 1}, {name: 'nameInLowerCase_1 _id_1'});
+db.MetaData.createIndex({ nameInLowerCase: 1, _id: 1 }, { name: 'nameInLowerCase_1 _id_1' });
 
 
 //insert default Embedding Model
 db.getCollection('EmbeddingModel').insert({
-  "embeddingModelName" : "Resnet50",
-  "embeddingDimension" : [2048],
-  "createdAt" : new Date(),
-  "createdBy" : "System",
-  "updatedAt" : new Date()
+  "embeddingModelName": "Resnet50",
+  "embeddingDimension": [2048],
+  "createdAt": new Date(),
+  "createdBy": "System",
+  "updatedAt": new Date()
 })
+db.MetaData.createIndex({ 'embeddingModels.modelName': 1 });
