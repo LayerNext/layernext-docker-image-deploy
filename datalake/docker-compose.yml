@@ -133,7 +133,7 @@ services:
       - ./.env
 
   datalake_frontend:
-    image: layernextai/datalake_frontend:2.3.0
+    image: layernextai/datalake_frontend:2.3.0-sandbox
     restart: always
     ports:
       - "8095:8095"
