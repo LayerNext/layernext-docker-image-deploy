@@ -295,6 +295,8 @@ DB_PASS=$(openssl rand -hex 10)
 DATABASE=analyticsDB
 MODEL_DATABASE=modelDB
 
+APP_PORT=5081
+
 #DUMP
 DUMP_USER=layernext_dumprestoreuser
 DUMP_USER_PWD=$(openssl rand -hex 10)
