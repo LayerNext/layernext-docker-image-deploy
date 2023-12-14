@@ -17,28 +17,73 @@ if "LayerNext" not in db_list:
 
 db.using_database("LayerNext")
 
-fields = [
-    FieldSchema(name="uniqueName", dtype=DataType.VARCHAR, is_primary=True, auto_id=False, max_length=256),
-    FieldSchema(name="embeddings", dtype=DataType.FLOAT_VECTOR, dim=2048)
-]
+image_collection = "Resnet50"
+has = utility.has_collection(image_collection)
+print(f"Does collection {image_collection} exist in Milvus: {has}")
 
-schema = CollectionSchema(fields, "LayerNext embeddings")
+if has == False:
 
-LayerNext_embeddings_collection = Collection("Resnet50", schema, consistency_level="Strong")
+    fields = [
+        FieldSchema(name="uniqueName", dtype=DataType.VARCHAR, is_primary=True, auto_id=False, max_length=256),
+        FieldSchema(name="embeddings", dtype=DataType.FLOAT_VECTOR, dim=2048)
+    ]
 
+    schema = CollectionSchema(fields, "LayerNext embeddings", enable_dynamic_field=True)
 
-index = {
-    "index_type": "IVF_FLAT",
-    "metric_type": "IP",
-    "params": {"nlist": 128},
-}
-
-LayerNext_embeddings_collection = Collection("Resnet50")
-
-has_index = LayerNext_embeddings_collection.has_index(index_name="vec_index")
-
-if has_index == False or has_index == None:
-    LayerNext_embeddings_collection.create_index("embeddings", index, index_name="vec_index")
+    LayerNext_embeddings_collection = Collection(image_collection, schema, consistency_level="Strong")
 
 
+    index = {
+        "index_type": "IVF_FLAT",
+        "metric_type": "IP",
+        "params": {"nlist": 128},
+    }
+
+    LayerNext_embeddings_collection = Collection(image_collection)
+
+    LayerNext_embeddings_collection.load()
+
+    has_index = LayerNext_embeddings_collection.has_index(index_name="vec_index")
+
+    if has_index == False or has_index == None:
+        LayerNext_embeddings_collection.create_index("embeddings", index, index_name="vec_index")
+else:
+    LayerNext_embeddings_collection = Collection(image_collection)
+    LayerNext_embeddings_collection.load()
+
+
+# text embeddings
+text_collection = "text_similarity_babbage_001"
+has = utility.has_collection(text_collection)
+print(f"Does collection {text_collection} exist in Milvus: {has}")
+if has == False:
+    fields = [
+        FieldSchema(name="id", dtype=DataType.VARCHAR, is_primary=True, auto_id=False, max_length=256),
+        FieldSchema(name="uniqueName", dtype=DataType.VARCHAR, max_length=256),
+        FieldSchema(name="metadata", dtype=DataType.JSON),
+        FieldSchema(name="embeddings", dtype=DataType.FLOAT_VECTOR, dim=2048),
+    ]
+
+    schema_text = CollectionSchema(fields, "LayerNext Text Embeddings", enable_dynamic_field=True)
+
+    LayerNext_Text_embeddings_collection = Collection(text_collection, schema_text, consistency_level="Strong")
+
+
+    index = {
+        "index_type": "IVF_FLAT",
+        "metric_type": "IP",
+        "params": {"nlist": 128},
+    }
+
+    LayerNext_Text_embeddings_collection = Collection(text_collection)
+    LayerNext_Text_embeddings_collection.load()
+    has_index = LayerNext_Text_embeddings_collection.has_index(index_name="vec_index")
+
+    if has_index == False or has_index == None:
+        LayerNext_Text_embeddings_collection.create_index("embeddings", index, index_name="vec_index")
+
+else:
+    LayerNext_Text_embeddings_collection = Collection(text_collection)
+    LayerNext_Text_embeddings_collection.load()
+    
 time.sleep(20000)
