@@ -22,7 +22,7 @@ fields = [
     FieldSchema(name="embeddings", dtype=DataType.FLOAT_VECTOR, dim=2048)
 ]
 
-schema = CollectionSchema(fields, "LayerNext embeddings")
+schema = CollectionSchema(fields, "LayerNext embeddings", enable_dynamic_field=True)
 
 LayerNext_embeddings_collection = Collection("Resnet50", schema, consistency_level="Strong")
 
