@@ -19,7 +19,7 @@ db.using_database("LayerNext")
 
 image_collection = "Resnet50"
 has = utility.has_collection(image_collection)
-print(f"Does collection hello_milvus exist in Milvus: {has}")
+print(f"Does collection {image_collection} exist in Milvus: {has}")
 
 if has == False:
 
