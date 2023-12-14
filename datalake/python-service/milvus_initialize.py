@@ -17,7 +17,8 @@ if "LayerNext" not in db_list:
 
 db.using_database("LayerNext")
 
-has = utility.has_collection("Resnet50")
+image_collection = "Resnet50"
+has = utility.has_collection(image_collection)
 print(f"Does collection hello_milvus exist in Milvus: {has}")
 
 if has == False:
@@ -29,7 +30,7 @@ if has == False:
 
     schema = CollectionSchema(fields, "LayerNext embeddings", enable_dynamic_field=True)
 
-    LayerNext_embeddings_collection = Collection("Resnet50", schema, consistency_level="Strong")
+    LayerNext_embeddings_collection = Collection(image_collection, schema, consistency_level="Strong")
 
 
     index = {
@@ -38,12 +39,17 @@ if has == False:
         "params": {"nlist": 128},
     }
 
-    LayerNext_embeddings_collection = Collection("Resnet50")
+    LayerNext_embeddings_collection = Collection(image_collection)
+
+    LayerNext_embeddings_collection.load()
 
     has_index = LayerNext_embeddings_collection.has_index(index_name="vec_index")
 
     if has_index == False or has_index == None:
         LayerNext_embeddings_collection.create_index("embeddings", index, index_name="vec_index")
+else:
+    LayerNext_embeddings_collection = Collection(image_collection)
+    LayerNext_embeddings_collection.load()
 
 
 # text embeddings
@@ -70,11 +76,14 @@ if has == False:
     }
 
     LayerNext_Text_embeddings_collection = Collection(text_collection)
-
+    LayerNext_Text_embeddings_collection.load()
     has_index = LayerNext_Text_embeddings_collection.has_index(index_name="vec_index")
 
     if has_index == False or has_index == None:
         LayerNext_Text_embeddings_collection.create_index("embeddings", index, index_name="vec_index")
 
-
+else:
+    LayerNext_Text_embeddings_collection = Collection(text_collection)
+    LayerNext_Text_embeddings_collection.load()
+    
 time.sleep(20000)
