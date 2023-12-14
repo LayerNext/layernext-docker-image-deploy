@@ -8,6 +8,8 @@ DATASET_KEY=key_$(openssl rand -base64 60 | tr -dc 'a-z0-9' | head -c 32)
 DATASET_SECRET=$(openssl rand -base64 45 | tr -dc 'a-z0-9' | head -c 20)
 ANALYTICS_KEY=key_$(openssl rand -base64 60 | tr -dc 'a-z0-9' | head -c 32)
 ANALYTICS_SECRET=$(openssl rand -base64 45 | tr -dc 'a-z0-9' | head -c 20)
+DATALAKE_KEY=key_$(openssl rand -base64 60 | tr -dc 'a-z0-9' | head -c 32)
+DATALAKE_SECRET=$(openssl rand -base64 45 | tr -dc 'a-z0-9' | head -c 20)
 
 # generate accounts env
 accounts_env="./accounts/.env"
@@ -73,6 +75,8 @@ DATASET_KEY=$DATASET_KEY
 DATASET_SECRET=$DATASET_KEY
 ANALYTICS_KEY=$ANALYTICS_KEY
 ANALYTICS_SECRET=$ANALYTICS_SECRET
+DATALAKE_KEY=$DATALAKE_KEY
+DATALAKE_SECRET=$DATALAKE_SECRET
 EOL
 
 
