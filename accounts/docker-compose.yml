@@ -21,6 +21,15 @@ services:
         - ADMIN_EMAIL
         - ADMIN_PASSWORD
         - TEAM_ID
+        - ANALYTICS_KEY
+        - ANALYTICS_SECRET
+        - STUDIO_KEY
+        - STUDIO_SECRET
+        - DATASET_KEY
+        - DATASET_SECRET
+        - DATALAKE_KEY
+        - DATALAKE_SECRET
+
 
   sso_node_backend:
     image: layernextai/sso_node_backend:3.0.0
