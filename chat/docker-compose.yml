@@ -1,0 +1,10 @@
+version: "3.8"
+services:
+  datalake_frontend:
+    image: layernextai/chat_frontend:3.0.0
+    restart: always
+    ports:
+      - "8099:8099"
+    environment:
+      - TZ:utc
+      - LAYERNEXT_SUB_DOMAIN=${SETUP_CUSTOMER}
