@@ -119,6 +119,7 @@ services:
       - "3100:3100"
     volumes:
       - ./datalake-flask/logs:/app/logs
+      - ./datalake-nodejs/config:/app/config
     depends_on:
       - datalake_mongodb
       - standalone
