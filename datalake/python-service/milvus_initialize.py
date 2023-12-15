@@ -41,14 +41,22 @@ if has == False:
 
     LayerNext_embeddings_collection = Collection(image_collection)
 
-    LayerNext_embeddings_collection.load()
-
     has_index = LayerNext_embeddings_collection.has_index(index_name="vec_index")
 
     if has_index == False or has_index == None:
         LayerNext_embeddings_collection.create_index("embeddings", index, index_name="vec_index")
+    
+    LayerNext_embeddings_collection.load()
 else:
     LayerNext_embeddings_collection = Collection(image_collection)
+    index = {
+        "index_type": "IVF_FLAT",
+        "metric_type": "IP",
+        "params": {"nlist": 128},
+    }
+    has_index = LayerNext_embeddings_collection.has_index(index_name="vec_index")
+    if has_index == False or has_index == None:
+        LayerNext_embeddings_collection.create_index("embeddings", index, index_name="vec_index")
     LayerNext_embeddings_collection.load()
 
 
@@ -76,14 +84,26 @@ if has == False:
     }
 
     LayerNext_Text_embeddings_collection = Collection(text_collection)
-    LayerNext_Text_embeddings_collection.load()
     has_index = LayerNext_Text_embeddings_collection.has_index(index_name="vec_index")
 
     if has_index == False or has_index == None:
         LayerNext_Text_embeddings_collection.create_index("embeddings", index, index_name="vec_index")
-
+    LayerNext_Text_embeddings_collection.load()
 else:
+    index = {
+        "index_type": "IVF_FLAT",
+        "metric_type": "IP",
+        "params": {"nlist": 128},
+    }
     LayerNext_Text_embeddings_collection = Collection(text_collection)
+    index = {
+        "index_type": "IVF_FLAT",
+        "metric_type": "IP",
+        "params": {"nlist": 128},
+    }
+    has_index = LayerNext_Text_embeddings_collection.has_index(index_name="vec_index")
+    if has_index == False or has_index == None:
+        LayerNext_Text_embeddings_collection.create_index("embeddings", index, index_name="vec_index")
     LayerNext_Text_embeddings_collection.load()
     
 time.sleep(20000)
