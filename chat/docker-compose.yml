@@ -1,5 +1,30 @@
 version: "3.8"
 services:
+  datalake_mongodb:
+    image: mongo:5.0.13
+    restart: always
+    ports:
+      - 61017:27017
+    volumes:
+      - ./mongoData:/data/db
+      - ./DB_initial_data/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=admin
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGODB_ADMIN_PASSWORD}
+      - MONGO_INITDB_DATABASE=admin
+      - DATABASE
+      - DB_USER
+      - DB_PASS
+      - DUMP_USER
+      - DUMP_USER_PWD
+      - SETUP_CUSTOMER
+      - TEAM_ID
+    deploy:
+      resources:
+        limits:
+          cpus: ${DB_CPU_LIMIT}
+          memory: ${DB_MEMORY_LIMIT}
+
   datalake_frontend:
     image: layernextai/chat_frontend:3.0.0
     restart: always
