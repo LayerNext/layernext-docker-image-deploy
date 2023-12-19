@@ -1,6 +1,6 @@
 version: "3.8"
 services:
-  datalake_mongodb:
+  chat_mongodb:
     image: mongo:5.0.13
     restart: always
     ports:
@@ -25,7 +25,7 @@ services:
           cpus: ${DB_CPU_LIMIT}
           memory: ${DB_MEMORY_LIMIT}
 
-  datalake_frontend:
+  chat_frontend:
     image: layernextai/chat_frontend:3.0.0
     restart: always
     ports:
