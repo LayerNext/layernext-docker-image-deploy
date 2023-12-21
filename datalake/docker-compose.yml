@@ -121,6 +121,7 @@ services:
       - ./datalake-flask/logs:/app/logs
       - ./datalake-nodejs/config:/app/config
     depends_on:
+      - datalake_node_backend
       - datalake_mongodb
       - standalone
     extra_hosts:
