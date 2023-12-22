@@ -226,6 +226,7 @@ db.MetaData.createIndex({ "resolution.height": 1 });
 db.MetaData.createIndex({ "resolution.width": 1 });
 db.MetaData.createIndex({ showInTrash: 1 });
 db.MetaData.createIndex({ bucketName: 1 });
+db.MetaData.createIndex({ "fileUploadIdList": 1 }, { name: 'fileUploadIdList_1' })
 
 db.MetaData.createIndex({ storagePath: 1 });
 
