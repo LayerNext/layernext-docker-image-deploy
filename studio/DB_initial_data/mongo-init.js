@@ -550,3 +550,8 @@ db.getCollection('AnnotationUser').insert({
 db.getCollection('ShapeAction').createIndex({time: 1}, {expireAfterSeconds: 5260000});
 
 db.getCollection('ShapeAction').createIndex({userId: 1, time: 1});
+
+db.getCollection('ShapeAction').createIndex(
+    { "objectKey": 1, "taskId": 1, "userId": 1 }, 
+    { name: "shape action fetch" }
+)
