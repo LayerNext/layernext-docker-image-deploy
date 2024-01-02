@@ -65,7 +65,7 @@ services:
 
   standalone:
     container_name: milvus-standalone
-    image: milvusdb/milvus:v2.3.0
+    image: milvusdb/milvus:v2.3.1
     restart: always
     command: ["milvus", "run", "standalone"]
     environment:
@@ -95,7 +95,7 @@ services:
       - "host.docker.internal:host-gateway"
   
   datalake_node_backend:
-    image: layernextai/datalake_node_backend:2.3.0
+    image: layernextai/datalake_node_backend:2.3.1
     restart: always
     ports:
       - "3000:3000"
@@ -113,7 +113,7 @@ services:
       - ./.env
   
   datalake_flask_backend:
-    image: layernextai/datalake_flask_backend:2.3.0
+    image: layernextai/datalake_flask_backend:2.3.1
     restart: always
     ports:
       - "3100:3100"
@@ -133,7 +133,7 @@ services:
       - ./.env
 
   datalake_frontend:
-    image: layernextai/datalake_frontend:2.3.0
+    image: layernextai/datalake_frontend:2.3.1
     restart: always
     ports:
       - "8095:8095"
