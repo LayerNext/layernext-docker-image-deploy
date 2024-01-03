@@ -46,7 +46,11 @@ if has == False:
     if has_index == False or has_index == None:
         LayerNext_embeddings_collection.create_index("embeddings", index, index_name="vec_index")
     
-    LayerNext_embeddings_collection.load()
+    try:
+        LayerNext_embeddings_collection.load()
+    except Exception as e:
+        print(e)
+
 else:
     LayerNext_embeddings_collection = Collection(image_collection)
     index = {
@@ -57,7 +61,10 @@ else:
     has_index = LayerNext_embeddings_collection.has_index(index_name="vec_index")
     if has_index == False or has_index == None:
         LayerNext_embeddings_collection.create_index("embeddings", index, index_name="vec_index")
-    LayerNext_embeddings_collection.load()
+    try:
+        LayerNext_embeddings_collection.load()
+    except Exception as e:
+        print(e)
 
 
 # text embeddings
@@ -88,7 +95,10 @@ if has == False:
 
     if has_index == False or has_index == None:
         LayerNext_Text_embeddings_collection.create_index("embeddings", index, index_name="vec_index")
-    LayerNext_Text_embeddings_collection.load()
+    try:
+        LayerNext_Text_embeddings_collection.load()
+    except Exception as e:
+        print(e)    
 else:
     index = {
         "index_type": "IVF_FLAT",
@@ -104,6 +114,9 @@ else:
     has_index = LayerNext_Text_embeddings_collection.has_index(index_name="vec_index")
     if has_index == False or has_index == None:
         LayerNext_Text_embeddings_collection.create_index("embeddings", index, index_name="vec_index")
-    LayerNext_Text_embeddings_collection.load()
+    try:
+        LayerNext_Text_embeddings_collection.load()
+    except Exception as e:
+        print(e)
     
 time.sleep(20000)
