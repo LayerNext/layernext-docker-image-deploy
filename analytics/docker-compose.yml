@@ -28,7 +28,7 @@ services:
               memory: ${DB_MEMORY_LIMIT}
 
   automatic_analysis_app:
-    image: layernextai/automatic_analysis_app:3.0.0
+    image: layernextai/automatic_analysis_app:3.0.1
     restart: always
     ports:
       - "5081:5081"
