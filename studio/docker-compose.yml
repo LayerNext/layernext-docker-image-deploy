@@ -21,7 +21,7 @@ services:
         - TEAM_ID
         
   studio_python_app:
-    image: layernextai/studio_python_app:3.0.0
+    image: layernextai/studio_python_app:3.0.1
     restart: always
     ports:
       - "8081:8081"
@@ -41,7 +41,7 @@ services:
       - ./.env
 
   studio_node_backend:
-    image: layernextai/studio_node_backend:3.0.0
+    image: layernextai/studio_node_backend:3.0.1
     restart: always
     ports:
       - "8080:8080"
@@ -58,7 +58,7 @@ services:
       - ./.env
 
   studio_frontend:
-    image: layernextai/studio_frontend:3.0.0
+    image: layernextai/studio_frontend:3.0.1
     restart: always
     ports:
       - "8096:8096"
