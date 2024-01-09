@@ -77,8 +77,6 @@ db.getCollection('ApiKey').insert({
   "type": 2
 })
 
-
-
 //insert dataset APIKey
 db.getCollection('ApiKey').insert({
   "_id": ObjectId("6374eb51e3ac085579e53445"),
