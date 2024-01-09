@@ -32,7 +32,7 @@ services:
 
 
   sso_node_backend:
-    image: layernextai/sso_node_backend:3.0.1
+    image: layernextai/sso_node_backend:3.0.0
     restart: always
     ports:
       - "8888:8888"
@@ -47,7 +47,7 @@ services:
       - ./.env
 
   sso_frontend:
-    image: layernextai/sso_frontend:3.0.1
+    image: layernextai/sso_frontend:3.0.0
     restart: always
     ports:
       - "8097:8097"
