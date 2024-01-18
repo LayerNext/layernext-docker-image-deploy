@@ -32,7 +32,7 @@ services:
       ports:
         - 38017:27017
       volumes:
-        - ./mongoData:/data/db
+        - ./connectionMongoData:/data/db
         - ./Connection_DB_initial_data/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js
       environment:
         - MONGO_INITDB_ROOT_USERNAME=admin
