@@ -59,7 +59,7 @@ services:
       MYSQL_USER: ${MYSQL_USER}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
     ports:
-      - "3306:3306"
+      - "3406:3306"
     volumes:
       - ./Connection_DB_initial_data/init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
     deploy:
