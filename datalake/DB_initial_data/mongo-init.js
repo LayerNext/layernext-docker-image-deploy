@@ -403,16 +403,16 @@ db.getCollection('EmbeddingModel').insert({
 db.MetaData.createIndex({ 'embeddingModels.modelName': 1 });
 
 db.MetaData.createIndex(
-  { "Tags": "text", "customMeta.namedEntities": "text", "customMeta.title": "text", "name": "text" },
+  { "searchString": "text" },
   { name: "TextIndex" }
 )
 
 db.TextChunkEmbedding.createIndex(
-  { "uniqueName": 1},
+  { "uniqueName": 1 },
   { name: "uniqueName" }
 )
-  
+
 db.TextChunkEmbedding.createIndex(
-  { "id": 1},
+  { "id": 1 },
   { name: "id_field", unique: true }
 )
