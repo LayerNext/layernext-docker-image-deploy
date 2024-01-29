@@ -33,3 +33,22 @@ services:
     environment:
       - TZ:utc
       - LAYERNEXT_SUB_DOMAIN=${SETUP_CUSTOMER}
+
+  llm_fast_api_backend:
+    image: layernext/llm_fast_api_backend:0.0.1
+    restart: always
+    ports:
+      - "5083:5083"
+    volumes:
+      - ./LLM-integration/logs:/app/logs
+    depends_on:
+      - chat_mongodb
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    deploy:
+        resources:
+            limits:
+              cpus: ${FAST_CPU_LIMIT}
+              memory: ${FAST_MEMORY_LIMIT}
+    env_file:
+      - ./.env
