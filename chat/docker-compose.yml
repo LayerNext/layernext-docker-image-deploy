@@ -41,6 +41,7 @@ services:
       - "5082:5082"
     volumes:
       - ./LLM-integration/logs:/app/logs
+      - ./LLM-integration/images:/app/images
     depends_on:
       - chat_mongodb
     extra_hosts:
