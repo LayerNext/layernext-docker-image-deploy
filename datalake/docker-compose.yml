@@ -34,7 +34,6 @@ services:
       volumes:
         - ./connectionMongoData:/data/db
         - ./Connection_DB_initial_data/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js
-        - ./datalake_connection_mysql_data:/var/lib/mysql
       environment:
         - MONGO_INITDB_ROOT_USERNAME=admin
         - MONGO_INITDB_ROOT_PASSWORD=${CONNECTION_MONGODB_ADMIN_PASSWORD}
@@ -63,6 +62,7 @@ services:
       - "3406:3306"
     volumes:
       - ./Connection_DB_initial_data/init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
+      - ./datalake_connection_mysql_data:/var/lib/mysql
     deploy:
         resources:
             limits:
