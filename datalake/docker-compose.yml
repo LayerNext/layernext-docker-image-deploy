@@ -178,7 +178,7 @@ services:
       - ./.env
 
   datalake_frontend:
-    image: layernextai/datalake_frontend:3.0.2
+    image: layernextai/datalake_frontend:3.0.0
     restart: always
     ports:
       - "8095:8095"
