@@ -58,7 +58,7 @@ services:
       - ./.env
 
   studio_frontend:
-    image: layernextai/studio_frontend:3.0.0
+    image: layernextai/studio_frontend:3.0.2
     restart: always
     ports:
       - "8096:8096"
