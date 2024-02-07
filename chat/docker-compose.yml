@@ -37,7 +37,7 @@ services:
   llm_fast_api_backend_test:
     image: layernext/llm_fast_api_backend_test:3.0.2
     restart: always
-    container_name: llm_fast_api_backend_test:1.0
+    container_name: llm_fast_api_backend_test-1.0
     ports:
       - "5086:5086"
     volumes:
