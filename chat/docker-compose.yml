@@ -35,7 +35,7 @@ services:
       - LAYERNEXT_SUB_DOMAIN=${SETUP_CUSTOMER}
 
   llm_fast_api_backend:
-    image: layernext/llm_fast_api_backend:3.0.2
+    image: layernext/llm_fast_api_backend:3.1.0
     restart: always
     ports:
       - "5082:5082"
