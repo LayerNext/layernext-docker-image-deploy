@@ -43,7 +43,7 @@ services:
     volumes:
       - ./LLM-integration/logs:/app/logs
       - ./LLM-integration/images:/app/images
-      - ./LLM-integration/papackages:/usr/local/lib/python3.8/dist-packages
+      - ./LLM-integration/packages:/usr/local/lib/python3.8/dist-packages
     # depends_on:
     #   - chat_mongodb
     extra_hosts:
