@@ -34,16 +34,16 @@ services:
       - TZ:utc
       - LAYERNEXT_SUB_DOMAIN=${SETUP_CUSTOMER}
 
-  llm_fast_api_backend:
-    image: layernext/llm_fast_api_backend:3.0.2
+  llm_fast_api_backend_test:
+    image: layernext/llm_fast_api_backend_test:3.0.2
     restart: always
     ports:
       - "5082:5082"
     volumes:
       - ./LLM-integration/logs:/app/logs
       - ./LLM-integration/images:/app/images
-    depends_on:
-      - chat_mongodb
+    # depends_on:
+    #   - chat_mongodb
     extra_hosts:
       - "host.docker.internal:host-gateway"
     deploy:
