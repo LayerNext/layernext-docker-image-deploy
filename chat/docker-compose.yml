@@ -38,7 +38,7 @@ services:
     image: layernext/llm_fast_api_backend_test:3.0.2
     restart: always
     ports:
-      - "5082:5082"
+      - "5086:5086"
     volumes:
       - ./LLM-integration/logs:/app/logs
       - ./LLM-integration/images:/app/images
