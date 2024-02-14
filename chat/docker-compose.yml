@@ -42,6 +42,7 @@ services:
     volumes:
       - ./LLM-integration/logs:/app/logs
       - ./LLM-integration/images:/app/images
+      - ./LLM-integration/media:/app/media
     depends_on:
       - chat_mongodb
     extra_hosts:
