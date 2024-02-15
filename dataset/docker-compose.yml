@@ -37,7 +37,7 @@ services:
       - ./.env
 
   dataset_frontend:
-    image: layernextai/dataset_frontend:3.0.2
+    image: layernextai/dataset_frontend:3.1.0
     restart: always
     ports:
       - "8098:8098"
