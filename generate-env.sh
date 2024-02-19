@@ -10,6 +10,8 @@ ANALYTICS_KEY=key_$(openssl rand -base64 60 | tr -dc 'a-z0-9' | head -c 32)
 ANALYTICS_SECRET=$(openssl rand -base64 45 | tr -dc 'a-z0-9' | head -c 20)
 DATALAKE_KEY=key_$(openssl rand -base64 60 | tr -dc 'a-z0-9' | head -c 32)
 DATALAKE_SECRET=$(openssl rand -base64 45 | tr -dc 'a-z0-9' | head -c 20)
+CHAT_KEY=key_$(openssl rand -base64 60 | tr -dc 'a-z0-9' | head -c 32)
+CHAT_SECRET=$(openssl rand -base64 45 | tr -dc 'a-z0-9' | head -c 20)
 
 # generate accounts env
 accounts_env="./accounts/.env"
@@ -77,6 +79,8 @@ ANALYTICS_KEY=$ANALYTICS_KEY
 ANALYTICS_SECRET=$ANALYTICS_SECRET
 DATALAKE_KEY=$DATALAKE_KEY
 DATALAKE_SECRET=$DATALAKE_SECRET
+CHAT_KEY=$CHAT_KEY
+CHAT_SECRET=$CHAT_SECRET
 EOL
 
 
@@ -519,6 +523,68 @@ SECRET_PERSISTENCE=TESTING_CONFIG_DB_TABLE
 
 # To test local catalog changes, set the below variable to the path of your local catalog.
 LOCAL_CONNECTOR_CATALOG_PATH=
+EOL
+
+
+# generate dataset env
+source_env="./chat/.env"
+if [ -f $source_env ]; then
+  echo "Existing env file found for chat. replacing..."
+  echo "Warning: If the system was already built, the system may become non functional due to regeneration of db passwords"
+fi
+cat > $source_env <<EOL
+#DB
+DB_HOST=host.docker.internal
+DB_PORT=61017
+DB_USER=chat_user
+DB_PASS=$(openssl rand -hex 10)
+DATABASE=chatDB
+
+#DUMP
+DUMP_USER=layernext_dumprestoreuser
+DUMP_USER_PWD=$(openssl rand -hex 10)
+
+#change dump keepeing days as prefer and use dump per day like 1,2,3,4,6,12,24
+DUMP_KEEPING_DAYS=30
+DUMP_PER_DAY=4
+
+# Build time
+SETUP_CUSTOMER=qa-agent
+MONGODB_ADMIN_PASSWORD=$(openssl rand -hex 20)
+
+DB_CPU_LIMIT=2
+DB_MEMORY_LIMIT=3GB
+
+JWT_SECRET = $JWT_SECRET
+
+
+#LLM FAST-API
+OPENAI_API_KEY=
+LLM_TYPE=openai
+#MODEL=gpt-4-1106-preview
+MODEL=gpt-4-0125-preview
+API_KEY=key_z3fpungyhn15jqpz6ar267g1yp5fyc90
+SECRET_KEY=7p2pnxqbi6441gdyfec5
+URL=https://api.$SETUP_CUSTOMER.layernext.ai
+APP_PORT=5082
+DEBUG=False
+COUNT_TOKENS=True
+COMPANY=demo
+#COMPANY=pdrmax
+#limitation
+FAST_CPU_LIMIT=2
+FAST_MEMORY_LIMIT=2GB
+
+#Sendgrid credentails
+SUPPORT_EMAIL=$SUPPORT_EMAIL
+SENDGRID_API_KEY=$SENDGRID_API_KEY
+
+FRONTEND_URL=https://chat.$SETUP_CUSTOMER.layernext.ai
+
+
+#api key secrets
+CHAT_KEY=$CHAT_KEY
+CHAT_SECRET=$CHAT_SECRET
 EOL
 
 pip install python-dotenv
