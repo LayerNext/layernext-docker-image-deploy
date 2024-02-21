@@ -20,9 +20,19 @@ services:
         - SETUP_CUSTOMER
         - ADMIN_EMAIL
         - ADMIN_PASSWORD
+        - TEAM_ID
+        - ANALYTICS_KEY
+        - ANALYTICS_SECRET
+        - STUDIO_KEY
+        - STUDIO_SECRET
+        - DATASET_KEY
+        - DATASET_SECRET
+        - DATALAKE_KEY
+        - DATALAKE_SECRET
+
 
   sso_node_backend:
-    image: layernextai/sso_node_backend:1.0.21
+    image: layernextai/sso_node_backend:3.0.0
     restart: always
     ports:
       - "8888:8888"
@@ -37,7 +47,7 @@ services:
       - ./.env
 
   sso_frontend:
-    image: layernextai/sso_frontend:1.0.21
+    image: layernextai/sso_frontend:3.1.0
     restart: always
     ports:
       - "8097:8097"
@@ -67,4 +77,7 @@ services:
       - DATASET_FRONTEND_PORT=8098
       - STUDIO_BACKEND_PORT=8080
       - STUDIO_FRONTEND_PORT=8096
+      - ANALYTICS_BACKEND_PORT=5081
+      - CHAT_FRONTEND_PORT=8099
+      - CHAT_BACKEND_PORT=5082
       - SETUP_CUSTOMER

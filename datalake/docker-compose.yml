@@ -19,19 +19,133 @@ services:
         - DUMP_USER_PWD
         - AWS_BUCKET_NAME
         - SETUP_CUSTOMER
+        - TEAM_ID
       deploy:
         resources:
             limits:
-              cpus: ${CPU_LIMIT}
-              memory: ${MEMORY_LIMIT}
+              cpus: ${DB_CPU_LIMIT}
+              memory: ${DB_MEMORY_LIMIT}
+  
+  datalake_connection_mongodb:
+      image: mongo:5.0.13
+      restart: always
+      ports:
+        - 38017:27017
+      volumes:
+        - ./connectionMongoData:/data/db
+        - ./Connection_DB_initial_data/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js
+      environment:
+        - MONGO_INITDB_ROOT_USERNAME=admin
+        - MONGO_INITDB_ROOT_PASSWORD=${CONNECTION_MONGODB_ADMIN_PASSWORD}
+        - MONGO_INITDB_DATABASE=admin
+        - CONNECTION_DATABASE
+        - CONNECTION_DB_USER
+        - CONNECTION_DB_PASS
+        - CONNECTION_DUMP_USER
+        - CONNECTION_DUMP_USER_PWD
+      deploy:
+        resources:
+            limits:
+              cpus: ${DB_CPU_LIMIT}
+              memory: ${DB_MEMORY_LIMIT}
 
+  datalake_connection_mysql:
+    image: mysql:8.0
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    ports:
+      - "3406:3306"
+    volumes:
+      - ./Connection_DB_initial_data/init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
+      - ./datalake_connection_mysql_data:/var/lib/mysql
+    deploy:
+        resources:
+            limits:
+              cpus: ${DB_CPU_LIMIT}
+              memory: ${DB_MEMORY_LIMIT}
+
+  
+  etcd:
+    container_name: milvus-etcd
+    image: quay.io/coreos/etcd:v3.5.5
+    restart: always
+    environment:
+      - ETCD_AUTO_COMPACTION_MODE=revision
+      - ETCD_AUTO_COMPACTION_RETENTION=1000
+      - ETCD_QUOTA_BACKEND_BYTES=4294967296
+      - ETCD_SNAPSHOT_COUNT=50000
+    volumes:
+      - ${DOCKER_VOLUME_DIRECTORY:-.}/volumes/etcd:/etcd
+    command: etcd -advertise-client-urls=http://127.0.0.1:2379 -listen-client-urls http://0.0.0.0:2379 --data-dir /etcd
+    healthcheck:
+      test: ["CMD", "etcdctl", "endpoint", "health"]
+      interval: 30s
+      timeout: 20s
+      retries: 3
+
+  minio:
+    container_name: milvus-minio
+    image: minio/minio:RELEASE.2023-03-20T20-16-18Z
+    restart: always
+    environment:
+      MINIO_ACCESS_KEY: minioadmin
+      MINIO_SECRET_KEY: minioadmin
+    ports:
+      - "9001:9001"
+      - "9000:9000"
+    volumes:
+      - ${DOCKER_VOLUME_DIRECTORY:-.}/volumes/minio:/minio_data
+    command: minio server /minio_data --console-address ":9001"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
+      interval: 30s
+      timeout: 20s
+      retries: 3
+
+  standalone:
+    container_name: milvus-standalone
+    image: milvusdb/milvus:v2.3.0
+    restart: always
+    command: ["milvus", "run", "standalone"]
+    environment:
+      ETCD_ENDPOINTS: etcd:2379
+      MINIO_ADDRESS: minio:9000
+    volumes:
+      - ${DOCKER_VOLUME_DIRECTORY:-.}/volumes/milvus:/var/lib/milvus
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9091/healthz"]
+      interval: 30s
+      start_period: 90s
+      timeout: 20s
+      retries: 3
+    ports:
+      - "19530:19530"
+      - "9091:9091"
+    depends_on:
+      - "etcd"
+      - "minio"
+
+  python-service:
+    build: ./python-service
+    restart: always
+    depends_on:
+      - standalone
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+  
   datalake_node_backend:
-    image: layernextai/datalake_node_backend:1.0.21
+    image: layernextai/datalake_node_backend:3.1.0
     restart: always
     ports:
       - "3000:3000"
     depends_on:
       - datalake_mongodb
+      - standalone
     extra_hosts:
       - "host.docker.internal:host-gateway"
     volumes:
@@ -41,12 +155,38 @@ services:
       - ./datalake-nodejs/config:/usr/src/app/datalake-nodejs/config
     env_file:
       - ./.env
+  
+  datalake_flask_backend:
+    image: layernextai/datalake_flask_backend:3.1.0
+    restart: always
+    ports:
+      - "3100:3100"
+    volumes:
+      - ./datalake-flask/logs:/app/logs
+      - ./datalake-nodejs/config:/app/config
+    depends_on:
+      - datalake_node_backend
+      - datalake_mongodb
+      - standalone
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    deploy:
+        resources:
+            limits:
+              cpus: ${FLASK_CPU_LIMIT}
+              memory: ${FLASK_MEMORY_LIMIT}
+    env_file:
+      - ./.env
 
   datalake_frontend:
-    image: layernextai/datalake_frontend:1.0.21
+    image: layernextai/datalake_frontend:3.1.0
     restart: always
     ports:
       - "8095:8095"
     environment:
       - TZ:utc
       - LAYERNEXT_SUB_DOMAIN=${SETUP_CUSTOMER}
+
+networks:
+  default:
+    name: milvus

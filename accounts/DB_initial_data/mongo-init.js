@@ -35,7 +35,7 @@ db.getCollection('User').insert({
   "userType": 3,
   "profileImgUrl": "defaultProfileImage.png",
   "projectList": null,
-  "teamId": ObjectId("6374c3decb468b7a7a68a116"),
+  "teamId": ObjectId(_getEnv('TEAM_ID')),
   "teamName": teamName,
   "userStatus": 1,
   "isAll": false,
@@ -61,16 +61,48 @@ db.getCollection('AppUserCredentials').insert({
 
 //insert default team
 db.getCollection('AnnotationTeam').insert({
-  "_id": ObjectId("6374c3decb468b7a7a68a116"),
+  "_id": ObjectId(_getEnv('TEAM_ID')),
   "teamName": teamName,
   "create_team_folder": true,
   "apiKeyGenerated": true
 })
 
-//insert default APIKey
+//insert analytics APIKey
 db.getCollection('ApiKey').insert({
-  "_id": ObjectId("6374eb51e3ac085579e53442"),
-  "teamId": ObjectId("6374c3decb468b7a7a68a116"),
-  "key": "key_" + Math.random().toString(36).substr(2, 24)+Math.random().toString(36).substr(2, 24)+Math.random().toString(36).substr(2, 24),
-  "secret": Math.random().toString(36).substr(2, 24)+Math.random().toString(36).substr(2, 24)
+  "_id": ObjectId("6374eb51e3ac085579e53443"),
+  "name": "Automatic Analysis",
+  "teamId": ObjectId(_getEnv('TEAM_ID')),
+  "key": _getEnv('ANALYTICS_KEY'),
+  "secret": _getEnv('ANALYTICS_SECRET'),
+  "type": 2
+})
+
+//insert dataset APIKey
+db.getCollection('ApiKey').insert({
+  "_id": ObjectId("6374eb51e3ac085579e53445"),
+  "name": "Dataset Manager",
+  "teamId": ObjectId(_getEnv('TEAM_ID')),
+  "key": _getEnv('DATASET_KEY'),
+  "secret": _getEnv('DATASET_SECRET'),
+  "type": 2
+})
+
+//insert studio APIKey
+db.getCollection('ApiKey').insert({
+  "_id": ObjectId("6374eb51e3ac085579e53446"),
+  "name": "Annotation Studio",
+  "teamId": ObjectId(_getEnv('TEAM_ID')),
+  "key": _getEnv('STUDIO_KEY'),
+  "secret": _getEnv('STUDIO_SECRET'),
+  "type": 2
+})
+
+//insert datalake APIKey
+db.getCollection('ApiKey').insert({
+  "_id": ObjectId("6374eb51e3ac085579e53447"),
+  "name": "Metalake",
+  "teamId": ObjectId(_getEnv('TEAM_ID')),
+  "key": _getEnv('DATALAKE_KEY'),
+  "secret": _getEnv('DATALAKE_SECRET'),
+  "type": 2
 })

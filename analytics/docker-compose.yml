@@ -1,10 +1,10 @@
 version: "3.8"
 services:
-  dataset_mongodb:
+  analysis_mongodb:
       image: mongo:5.0.13
       restart: always
       ports:
-        - 47017:27017
+        - 51017:27017
       volumes:
         - ./mongoData:/data/db
         - ./DB_initial_data/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js
@@ -13,34 +13,35 @@ services:
         - MONGO_INITDB_ROOT_PASSWORD=${MONGODB_ADMIN_PASSWORD}
         - MONGO_INITDB_DATABASE=admin
         - DATABASE
+        - MODEL_DATABASE
         - DB_USER
         - DB_PASS
         - DUMP_USER
         - DUMP_USER_PWD
+        - AWS_BUCKET_NAME
         - SETUP_CUSTOMER
         - TEAM_ID
+      deploy:
+        resources:
+            limits:
+              cpus: ${DB_CPU_LIMIT}
+              memory: ${DB_MEMORY_LIMIT}
 
-  dataset_node_backend:
-    image: layernextai/dataset_node_backend:3.0.0
+  automatic_analysis_app:
+    image: layernextai/automatic_analysis_app:3.0.0
     restart: always
     ports:
-      - "4000:4000"
+      - "5081:5081"
+    volumes:
+      - ./layernext-automatic-analysis/logs:/app/logs
     depends_on:
-      - dataset_mongodb
+      - analysis_mongodb
     extra_hosts:
       - "host.docker.internal:host-gateway"
-    volumes:
-      - ./dataset-manager-nodejs/logs:/usr/src/app/dataset-manager-nodejs/logs
-      - ./dataset-manager-python-processor/logs:/usr/src/app/dataset-manager-python-processor/logs
-      - ./dataset-manager-nodejs/storage:/usr/src/app/dataset-manager-nodejs/storage
+    deploy:
+        resources:
+            limits:
+              cpus: ${ANALYSIS_CPU_LIMIT}
+              memory: ${ANALYSIS_MEMORY_LIMIT}
     env_file:
       - ./.env
-
-  dataset_frontend:
-    image: layernextai/dataset_frontend:3.1.0
-    restart: always
-    ports:
-      - "8098:8098"
-    environment:
-      - TZ:utc
-      - LAYERNEXT_SUB_DOMAIN=${SETUP_CUSTOMER}
