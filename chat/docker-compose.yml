@@ -43,6 +43,7 @@ services:
       - ./LLM-integration/logs:/app/logs
       - ./LLM-integration/images:/app/images
       - ./LLM-integration/media:/app/media
+      - ./LLM-integration/files:/app/files
     depends_on:
       - chat_mongodb
     extra_hosts:
