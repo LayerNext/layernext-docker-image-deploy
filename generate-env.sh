@@ -583,8 +583,8 @@ FRONTEND_URL=https://chat.$SETUP_CUSTOMER.layernext.ai
 
 
 #api key secrets
-CHAT_KEY=$CHAT_KEY
-CHAT_SECRET=$CHAT_SECRET
+API_KEY=$CHAT_KEY
+SECRET_KEY=$CHAT_SECRET
 EOL
 
 pip install python-dotenv
