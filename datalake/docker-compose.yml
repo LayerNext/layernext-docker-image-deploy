@@ -139,7 +139,7 @@ services:
       - "host.docker.internal:host-gateway"
   
   datalake_node_backend:
-    image: layernextai/datalake_node_backend:3.1.1
+    image: layernextai/datalake_node_backend:3.1.2
     restart: always
     ports:
       - "3000:3000"
@@ -157,7 +157,7 @@ services:
       - ./.env
   
   datalake_flask_backend:
-    image: layernextai/datalake_flask_backend:3.1.1
+    image: layernextai/datalake_flask_backend:3.1.2
     restart: always
     ports:
       - "3100:3100"
