@@ -113,6 +113,6 @@ db.getCollection('ApiKey').insert({
   "name": "Chat App",
   "teamId": ObjectId(_getEnv('TEAM_ID')),
   "key": _getEnv('CHAT_KEY'),
-  "secret": _getEnv('DCHAT_SECRET'),
+  "secret": _getEnv('CHAT_SECRET'),
   "type": 2
 })
