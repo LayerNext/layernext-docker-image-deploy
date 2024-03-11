@@ -106,3 +106,13 @@ db.getCollection('ApiKey').insert({
   "secret": _getEnv('DATALAKE_SECRET'),
   "type": 2
 })
+
+//insert chat APIKey
+db.getCollection('ApiKey').insert({
+  "_id": ObjectId("6374eb51e3ac085579e53448"),
+  "name": "Chat App",
+  "teamId": ObjectId(_getEnv('TEAM_ID')),
+  "key": _getEnv('CHAT_KEY'),
+  "secret": _getEnv('CHAT_SECRET'),
+  "type": 2
+})
