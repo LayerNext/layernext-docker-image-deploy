@@ -580,7 +580,7 @@ SUPPORT_EMAIL=$SUPPORT_EMAIL
 SENDGRID_API_KEY=$SENDGRID_API_KEY
 
 FRONTEND_URL=https://chat.$SETUP_CUSTOMER.layernext.ai
-
+METALAKE_URL=https://datalake.$SETUP_CUSTOMER.layernext.ai
 
 #api key secrets
 API_KEY=$CHAT_KEY
