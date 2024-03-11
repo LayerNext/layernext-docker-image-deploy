@@ -190,6 +190,8 @@ MYSQL_ROOT_PASSWORD=$(openssl rand -hex 16)
 MYSQL_DATABASE=connectiondb
 MYSQL_USER=connection_user
 MYSQL_PASSWORD=$(openssl rand -hex 10)
+
+WORK_SPACE_ID=
 EOL
 
 
@@ -209,7 +211,7 @@ SETUP_CUSTOMER=$SETUP_CUSTOMER
 EOL
 
 
-# generate dataset env
+# generate source env
 source_env="./source/.env"
 if [ -f $source_env ]; then
   echo "Existing env file found for source. replacing..."
@@ -334,7 +336,7 @@ LOCAL_CONNECTOR_CATALOG_PATH=
 EOL
 
 
-# generate dataset env
+# generate chat env
 source_env="./chat/.env"
 if [ -f $source_env ]; then
   echo "Existing env file found for chat. replacing..."
