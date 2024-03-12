@@ -29,6 +29,8 @@ services:
         - DATASET_SECRET
         - DATALAKE_KEY
         - DATALAKE_SECRET
+        - CHAT_KEY
+        - CHAT_SECRET
 
 
   sso_node_backend:
