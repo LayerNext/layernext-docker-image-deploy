@@ -5,6 +5,14 @@ db.createUser({
   roles: [
     { role: "backup", db: "admin" },
     { role: "restore", db: "admin" },
+    {
+      role: "readWriteAnyDatabase",
+      db: "admin",
+    },
+    {
+      role: "readAnyDatabase",
+      db: "admin",
+    },
   ],
   mechanisms: ["SCRAM-SHA-1"],
 });
