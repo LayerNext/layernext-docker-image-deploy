@@ -148,6 +148,11 @@ services:
       - standalone
     extra_hosts:
       - "host.docker.internal:host-gateway"
+    deploy:
+        resources:
+            limits:
+              cpus: ${NODE_CPU_LIMIT}
+              memory: ${NODE_MEMORY_LIMIT}
     volumes:
       - ./datalake-nodejs/logs:/usr/src/app/datalake-nodejs/logs
       - ./datalake-nodejs/storage:/usr/src/app/datalake-nodejs/storage
