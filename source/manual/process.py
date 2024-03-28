@@ -4,6 +4,7 @@ from datetime import datetime
 from sendgrid_email import send_email_via_sendgrid
 from pymongo import MongoClient
 from dotenv import load_dotenv
+
 load_dotenv(dotenv_path="/home/ubuntu/layernext-docker-image-deploy/source/manual/.env")
 
 
@@ -27,7 +28,7 @@ REMOTE_FILE_PATH = os.getenv("REMOTE_FILE_PATH")
 # LOG_FILE_PATH = os.getenv("LOG_FILE_PATH")
 WORK_DIR = os.getenv("WORK_DIR")
 
-EMAILS = os.getenv('EMAILS')
+EMAILS = os.getenv("EMAILS")
 
 SOURCE_MONGO_USERNAME = os.getenv("SOURCE_MONGO_USERNAME")
 SOURCE_MONGO_PASSWORD = os.getenv("SOURCE_MONGO_PASSWORD")
@@ -35,9 +36,12 @@ SOURCE_MONGO_HOST = os.getenv("SOURCE_MONGO_HOST")
 SOURCE_MONGO_PORT = os.getenv("SOURCE_MONGO_PORT")
 SOURCE_MONGO_DATABASE = os.getenv("SOURCE_MONGO_DATABASE")
 
+
 def log_message(message):
 
-    log_file_path = f"{WORK_DIR}/layernext-docker-image-deploy/source/manual/logfile.log"
+    log_file_path = (
+        f"{WORK_DIR}/layernext-docker-image-deploy/source/manual/logfile.log"
+    )
     """
     Appends a given message to the specified log file.
 
@@ -87,10 +91,8 @@ remote_user = REMOTE_USER
 remote_host = REMOTE_HOST
 remote_file_path = REMOTE_FILE_PATH
 local_file_path = f"{WORK_DIR}/layernext-docker-image-deploy/source/manual/dump/"
-log_file_path = (
-    f"{WORK_DIR}/layernext-docker-image-deploy/source/manual/logfile.log"  # Replace with the path to your log file
-)
-email_array = EMAILS.split(',')
+log_file_path = f"{WORK_DIR}/layernext-docker-image-deploy/source/manual/logfile.log"  # Replace with the path to your log file
+email_array = EMAILS.split(",")
 
 
 current_time = datetime.now()
@@ -182,7 +184,10 @@ def dump_restore():
         with open(log_file_path, "a") as log_file:
             # Run the mongorestore command via the shell script and redirect stdout and stderr to the log file
             result = subprocess.run(
-                ["bash", "/home/ubuntu/db-dump/restore.sh"],
+                [
+                    "bash",
+                    f"{WORK_DIR}/layernext-docker-image-deploy/source/manual/restore.sh",
+                ],
                 stdout=log_file,
                 stderr=log_file,
             )
@@ -236,7 +241,10 @@ def run_db_script():
         with open(log_file_path, "a") as log_file:
             # Run the mongorestore command via the shell script and redirect stdout and stderr to the log file
             result = subprocess.run(
-                ["bash", f"{WORK_DIR}/layernext-docker-image-deploy/source/manual/correct_db.sh"],
+                [
+                    "bash",
+                    f"{WORK_DIR}/layernext-docker-image-deploy/source/manual/correct_db.sh",
+                ],
                 stdout=log_file,
                 stderr=log_file,
             )
@@ -464,4 +472,6 @@ def main():
         set_connection_last_sync_time()
 
 
-main()
+# main()
+
+set_connection_last_sync_time()
