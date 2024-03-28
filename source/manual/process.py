@@ -153,7 +153,9 @@ def dump_pull():
                 error = f"scp dump pull failed with error: {result.stderr}"
                 log_message(error)
 
-            send_email_via_sendgrid(email_array, "Mongo sync failed", error)
+            send_email_via_sendgrid(
+                email_array, "PDRMax-LayerNext prod server | Mongo sync failed", error
+            )
 
     except FileNotFoundError:
         error_occured = True
@@ -161,7 +163,9 @@ def dump_pull():
             "SCP command not found. Please ensure scp is installed and in your PATH."
         )
         send_email_via_sendgrid(
-            email_array, "Mongo sync failed", "SCP command not found."
+            email_array,
+            "PDRMax-LayerNext prod server | Mongo sync failed",
+            "SCP command not found.",
         )
     except Exception as e:
         error_occured = True
@@ -170,7 +174,7 @@ def dump_pull():
         )
         send_email_via_sendgrid(
             email_array,
-            "Mongo sync failed",
+            "PDRMax-LayerNext prod server | Mongo sync failed",
             f"Backup file {remote_file_name} has been failed copy to {local_full_path} due to an unexpected error: {e}",
         )
 
@@ -208,7 +212,7 @@ def dump_restore():
             )
             send_email_via_sendgrid(
                 email_array,
-                "Mongo sync failed",
+                "PDRMax-LayerNext prod server | Mongo sync failed",
                 f"Restore dump file failed. Check log {log_file_path} for details.",
             )
             error_occured = True
@@ -218,14 +222,16 @@ def dump_restore():
             "Restore script not found. Please check the path to your restore script."
         )
         send_email_via_sendgrid(
-            email_array, "Mongo sync failed", "Restore script not found."
+            email_array,
+            "PDRMax-LayerNext prod server | Mongo sync failed",
+            "Restore script not found.",
         )
         error_occured = True
     except Exception as e:
         log_message(f"Restore dump failed with an unexpected error: {e}")
         send_email_via_sendgrid(
             email_array,
-            "Mongo sync failed",
+            "PDRMax-LayerNext prod server | Mongo sync failed",
             f"Restore dump failed with an unexpected error: {e}",
         )
         error_occured = True
@@ -263,7 +269,7 @@ def run_db_script():
             )
             send_email_via_sendgrid(
                 email_array,
-                "Mongo sync failed",
+                "PDRMax-LayerNext prod server | Mongo sync failed",
                 f"correct db failed. Check log {log_file_path} for details.",
             )
             error_occured = True
@@ -272,14 +278,16 @@ def run_db_script():
             "correct db script not found. Please check the path to your correct db script."
         )
         send_email_via_sendgrid(
-            email_array, "Mongo sync failed", "correct db script not found."
+            email_array,
+            "PDRMax-LayerNext prod server | Mongo sync failed",
+            "correct db script not found.",
         )
         error_occured = True
     except Exception as e:
         log_message(f"correct db failed with an unexpected error: {e}")
         send_email_via_sendgrid(
             email_array,
-            "Mongo sync failed",
+            "PDRMax-LayerNext prod server | Mongo sync failed",
             f"correct db failed with an unexpected error: {e}",
         )
         error_occured = True
@@ -327,7 +335,7 @@ def db_collection_match():
             )
             send_email_via_sendgrid(
                 email_array,
-                "Mongo Job collection mismatch",
+                "PDRMax-LayerNext prod server | Mongo Job collection mismatch",
                 f"Job count mismatch source: {job_count_1} and destination: {job_count_2}",
             )
 
@@ -347,7 +355,7 @@ def db_collection_match():
             )
             send_email_via_sendgrid(
                 email_array,
-                "Mongo ActivityLog collection mismatch",
+                "PDRMax-LayerNext prod server | Mongo ActivityLog collection mismatch",
                 f"ActivityLog count mismatch source: {activity_count_1} and destination: {activity_count_2}",
             )
 
@@ -371,7 +379,11 @@ def db_collection_match():
                 )
                 message += f"Collection '{collection_name}' does not exist in the destination database.\n"
         if message != "":
-            send_email_via_sendgrid(email_array, "Mongo collection mismatch", message)
+            send_email_via_sendgrid(
+                email_array,
+                "PDRMax-LayerNext prod server | Mongo collection mismatch",
+                message,
+            )
 
     except Exception as e:
         log_message(f"collection count check failed with an unexpected error: {e}")
@@ -432,7 +444,9 @@ def db_collection_index_match():
                 message += f"Collection '{collection_name}' does not exist in the destination database.\n"
         if message != "":
             send_email_via_sendgrid(
-                email_array, "Mongo collection index mismatch", message
+                email_array,
+                "PDRMax-LayerNext prod server | Mongo collection index mismatch",
+                message,
             )
 
     except Exception as e:
