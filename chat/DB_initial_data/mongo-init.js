@@ -36,27 +36,26 @@ db.Messages.createIndex({
   "createdAt": 1
 })
 
-db.Agents.createIndex({
-  "userId": 1,
-  "updatedAt": -1
-})
+// db.Agents.createIndex({
+//   "userId": 1,
+//   "updatedAt": -1
+// })
 
-db.AgentLogs.createIndex({
-  "agentId": 1,
-  "createdAt": -1
-})
+// db.AgentLogs.createIndex({
+//   "agentId": 1,
+//   "createdAt": -1
+// })
 
-db.Agents.createIndex({"status": 1})
+// db.Agents.createIndex({"status": 1})
 
-db.AgentLogs.createIndex({
-  "agentId": 1,
-  "executionMode": 1,
-  "environmentId": 1
-})
+// db.AgentLogs.createIndex({
+//   "agentId": 1,
+//   "executionMode": 1,
+//   "environmentId": 1
+// })
 
-db.Agents.createIndex({"agentName": 1})
+// db.Agents.createIndex({"agentName": 1})
 
-db.Conversations.createIndex({"status": 1});
 
 
 
