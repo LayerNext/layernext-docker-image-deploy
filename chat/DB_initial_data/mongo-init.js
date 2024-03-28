@@ -19,3 +19,45 @@ db.createUser({
   roles: [{ role: "readWrite", db: _getEnv("DATABASE") }],
   mechanisms: ["SCRAM-SHA-1"],
 });
+
+
+// create indexes
+db.Conversations.createIndex({
+  "status": 1,
+  "type": 1,
+  "userId": 1,
+  "updatedAt": -1,
+  "_id": -1
+})
+
+db.Messages.createIndex({
+  "conversationId": 1,
+  "userId": 1,
+  "createdAt": 1
+})
+
+db.Agents.createIndex({
+  "userId": 1,
+  "updatedAt": -1
+})
+
+db.AgentLogs.createIndex({
+  "agentId": 1,
+  "createdAt": -1
+})
+
+db.Agents.createIndex({"status": 1})
+
+db.AgentLogs.createIndex({
+  "agentId": 1,
+  "executionMode": 1,
+  "environmentId": 1
+})
+
+db.Agents.createIndex({"agentName": 1})
+
+db.Conversations.createIndex({"status": 1});
+
+
+
+
