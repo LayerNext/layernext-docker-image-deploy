@@ -3,7 +3,7 @@ import sendgrid
 from sendgrid.helpers.mail import Mail, Email, To, Content
 from dotenv import load_dotenv
 
-load_dotenv(dotenv_path="")
+load_dotenv(dotenv_path="/home/ubuntu/layernext-docker-image-deploy/source/manual/.env")
 
 sendgrid_api_key = os.getenv("SENDGRID_API_KEY")
 from_email = os.getenv("FROM_EMAIL")
