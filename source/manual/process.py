@@ -472,6 +472,6 @@ def main():
         set_connection_last_sync_time()
 
 
-# main()
+main()
 
-set_connection_last_sync_time()
+# set_connection_last_sync_time()
