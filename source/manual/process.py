@@ -474,10 +474,10 @@ def update_unstructured_data_to_metalake():
     )
     datalake_db = datalake_client[f"{DATALAKE_MONGO_DB_NAME}"]
 
-    connection_clinet = MongoClient(
+    connection_client = MongoClient(
         f"mongodb://{CONNECTION_MONGO_USERNAME}:{CONNECTION_MONGO_PASSWORD}@{CONNECTION_MONGO_HOST}:{CONNECTION_MONGO_PORT}/"
     )
-    connection_db = connection_clinet[CONNECTION_DB_NAME]
+    connection_db = connection_client[CONNECTION_DB_NAME]
 
     result = datalake_db["Connection"].find_one(
         {"sourceName": "DCCHail"}, {"unstructuredCollections": 1}
@@ -485,10 +485,10 @@ def update_unstructured_data_to_metalake():
 
     for unstructured_collection in result["unstructuredCollections"]:
         pipeline = json.loads(unstructured_collection["dataAggregation"])
-        source_ollection = unstructured_collection["sourceCollection"]
+        source_collection = unstructured_collection["sourceCollection"]
         metalake_collection = unstructured_collection["metalakeCollection"]
         log_message(
-            f"pipeline: {source_ollection} | {metalake_collection} | {pipeline}"
+            f"source collection: {source_collection} | metalake collection: {metalake_collection} | pipeline: {pipeline}"
         )
 
         metalake_collection_details = datalake_db["MetaData"].find_one(
@@ -506,7 +506,7 @@ def update_unstructured_data_to_metalake():
                     "teamId": ObjectId("6374c3decb468b7a7a68a116"),
                     "isPendingThumbnail": False,
                     "nameInLowerCase": metalake_collection.lower(),
-                    "unstructredData": True,
+                    "unstructuredData": True,
                     "updatedAt": datetime.now(),
                     "createdAt": datetime.now(),
                     "isLeaf": False,
@@ -537,12 +537,12 @@ def update_unstructured_data_to_metalake():
             temp_pipeline.append({"$skip": limit * itr})
             temp_pipeline.append({"$limit": limit})
             unstructured_data_list = list(
-                connection_db[source_ollection].aggregate(temp_pipeline)
+                connection_db[source_collection].aggregate(temp_pipeline)
             )
             bulkwrite_operations = []
             for unstructured_data in unstructured_data_list:
                 _id = unstructured_data["_id"]
-                object_key = f"{source_ollection}_{metalake_collection}_{_id}"
+                object_key = f"{source_collection}_{metalake_collection}_{_id}"
                 key_info = {}
                 data = ""
                 for key, value in unstructured_data.items():
@@ -562,7 +562,7 @@ def update_unstructured_data_to_metalake():
                             "nameInLowerCase": object_key.lower(),
                             "keyInfo": key_info,
                             "data": data,
-                            "unstructredData": True,
+                            "unstructuredData": True,
                             "updatedAt": datetime.now(),
                         },
                         "$setOnInsert": {
@@ -616,6 +616,8 @@ def main():
     if not error_occured:
         db_collection_index_match()
         set_connection_last_sync_time()
+
+        # upsert unstructured data
         update_unstructured_data_to_metalake()
 
 
