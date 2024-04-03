@@ -1,7 +1,10 @@
 #!/bin/bash
 
+# Get the directory of the script
+SCRIPT_DIR=$(dirname "$0")
+
 # File path for the Docker stats log
-LOG_FILE="monitor/docker-stats.log"
+LOG_FILE="$SCRIPT_DIR/monitor/docker-stats.log"
 
 # Function to log Docker stats
 log_docker_stats() {
@@ -11,7 +14,6 @@ log_docker_stats() {
     echo "Docker stats at $DATE" >> "$LOG_FILE"
     docker stats --no-stream >> "$LOG_FILE"
 }
-
 
 # Log Docker stats
 log_docker_stats

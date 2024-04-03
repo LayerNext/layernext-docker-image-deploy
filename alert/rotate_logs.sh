@@ -1,7 +1,10 @@
 #!/bin/bash
 
-LOG_FILE="monitor/docker-stats.log"
-ARCHIVE_FOLDER="monitor/archive"
+# Get the directory of the script
+SCRIPT_DIR=$(dirname "$0")
+
+LOG_FILE="$SCRIPT_DIR/monitor/docker-stats.log"
+ARCHIVE_FOLDER="$SCRIPT_DIR/monitor/archive"
 
 # Create archive directory if it doesn't exist
 mkdir -p "$ARCHIVE_FOLDER"
