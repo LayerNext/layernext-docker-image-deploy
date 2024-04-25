@@ -195,6 +195,7 @@ MYSQL_USER=connection_user
 MYSQL_PASSWORD=$(openssl rand -hex 10)
 
 WORK_SPACE_ID=
+TEXT_SIMILARITY_THRESHOLD=0.75
 EOL
 
 
