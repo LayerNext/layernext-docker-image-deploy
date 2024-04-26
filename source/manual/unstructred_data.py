@@ -48,7 +48,8 @@ def update_unstructured_data_to_metalake():
 
     result_array = list(
         datalake_db["Connection"].find(
-            {}, {"unstructuredCollections": 1, "sourceName": 1}
+            {},
+            {"unstructuredCollections": 1, "sourceName": 1, "connectionCredentials": 1},
         )
     )
 
