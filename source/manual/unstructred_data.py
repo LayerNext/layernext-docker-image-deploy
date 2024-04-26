@@ -3,6 +3,9 @@ import os
 from datetime import datetime
 from bson import ObjectId
 from pymongo import MongoClient, UpdateOne
+from dotenv import load_dotenv
+
+load_dotenv()
 
 DATALAKE_MONGO_USERNAME = os.getenv("DATALAKE_MONGO_USERNAME")
 DATALAKE_MONGO_PASSWORD = os.getenv("DATALAKE_MONGO_PASSWORD")
