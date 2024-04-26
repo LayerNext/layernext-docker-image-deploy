@@ -46,11 +46,6 @@ def update_unstructured_data_to_metalake():
     )
     datalake_db = datalake_client[f"{DATALAKE_MONGO_DB_NAME}"]
 
-    connection_client = MongoClient(
-        f"mongodb://{CONNECTION_MONGO_USERNAME}:{CONNECTION_MONGO_PASSWORD}@{CONNECTION_MONGO_HOST}:{CONNECTION_MONGO_PORT}/"
-    )
-    connection_db = connection_client[CONNECTION_DB_NAME]
-
     result_array = list(
         datalake_db["Connection"].find(
             {}, {"unstructuredCollections": 1, "sourceName": 1}
@@ -59,7 +54,10 @@ def update_unstructured_data_to_metalake():
 
     if result_array and len(result_array) > 0:
         for result in result_array:
-            if "unstructuredCollections" not in result or "connectionCredentials" not in result:
+            if (
+                "unstructuredCollections" not in result
+                or "connectionCredentials" not in result
+            ):
                 continue
             log_message(
                 f"source name: {result['sourceName']} | unstructured collections count: {len(result['unstructuredCollections'])} | unstructured data populations started"
@@ -70,9 +68,7 @@ def update_unstructured_data_to_metalake():
             connection_db_name = result["connectionCredentials"].get("database")
             if not connection_db_name:
                 continue
-            log_message(
-                    f"connection_db_name: {connection_db_name}"
-                )
+            log_message(f"connection_db_name: {connection_db_name}")
             connection_db = connection_client[connection_db_name]
             for unstructured_collection in result["unstructuredCollections"]:
                 pipeline = json.loads(unstructured_collection["dataAggregation"])
