@@ -56,7 +56,9 @@ def update_unstructured_data_to_metalake():
     #     {"sourceName": "DCCHail"}, {"unstructuredCollections": 1}
     # )
 
-    result_array = datalake_db["Connection"].find({}, {"unstructuredCollections": 1})
+    result_array = list(
+        datalake_db["Connection"].find({}, {"unstructuredCollections": 1})
+    )
 
     if result_array and len(result_array) > 0:
         for result in result_array:
