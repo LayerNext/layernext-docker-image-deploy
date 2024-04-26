@@ -13,11 +13,6 @@ DATALAKE_MONGO_PORT = os.getenv("DATALAKE_MONGO_PORT")
 DATALAKE_MONGO_DB_NAME = os.getenv("DATALAKE_MONGO_DB_NAME")
 DATALAKE_MONGO_HOST = os.getenv("DATALAKE_MONGO_HOST")
 
-CONNECTION_MONGO_USERNAME = os.getenv("CONNECTION_MONGO_USERNAME")
-CONNECTION_MONGO_PASSWORD = os.getenv("CONNECTION_MONGO_PASSWORD")
-CONNECTION_MONGO_PORT = os.getenv("CONNECTION_MONGO_PORT")
-CONNECTION_MONGO_HOST = os.getenv("CONNECTION_MONGO_HOST")
-
 WORK_DIR = os.getenv("WORK_DIR")
 
 
@@ -63,8 +58,15 @@ def update_unstructured_data_to_metalake():
             log_message(
                 f"source name: {result['sourceName']} | unstructured collections count: {len(result['unstructuredCollections'])} | unstructured data populations started"
             )
+            connection_mongo_username = result["connectionCredentials"].get("username")
+            connection_mongo_password = result["connectionCredentials"].get("password")
+            connection_mongo_port = result["connectionCredentials"].get("port")
+            connection_mongo_host = result["connectionCredentials"].get("host")
+
+            if connection_mongo_host == "host.docker.internal":
+                connection_mongo_host = "localhost"
             connection_client = MongoClient(
-                f"mongodb://{CONNECTION_MONGO_USERNAME}:{CONNECTION_MONGO_PASSWORD}@{CONNECTION_MONGO_HOST}:{CONNECTION_MONGO_PORT}/"
+                f"mongodb://{connection_mongo_username}:{connection_mongo_password}@{connection_mongo_host}:{connection_mongo_port}/"
             )
             connection_db_name = result["connectionCredentials"].get("database")
             if not connection_db_name:
