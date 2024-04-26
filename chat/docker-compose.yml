@@ -26,7 +26,7 @@ services:
           memory: ${DB_MEMORY_LIMIT}
 
   chat_frontend:
-    image: layernextai/chat_frontend:3.3.0
+    image: layernextai/chat_frontend:3.4.0
     restart: always
     ports:
       - "8099:8099"
@@ -35,7 +35,7 @@ services:
       - LAYERNEXT_SUB_DOMAIN=${SETUP_CUSTOMER}
 
   llm_fast_api_backend:
-    image: layernextai/llm_fast_api_backend:3.3.0
+    image: layernextai/llm_fast_api_backend:3.4.0
     restart: always
     ports:
       - "5082:5082"
