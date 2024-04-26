@@ -52,18 +52,19 @@ def update_unstructured_data_to_metalake():
     )
     connection_db = connection_client[CONNECTION_DB_NAME]
 
-    # result = datalake_db["Connection"].find_one(
-    #     {"sourceName": "DCCHail"}, {"unstructuredCollections": 1}
-    # )
-
     result_array = list(
-        datalake_db["Connection"].find({}, {"unstructuredCollections": 1})
+        datalake_db["Connection"].find(
+            {}, {"unstructuredCollections": 1, "sourceName": 1}
+        )
     )
 
     if result_array and len(result_array) > 0:
         for result in result_array:
             if "unstructuredCollections" not in result:
                 continue
+            log_message(
+                f"source name: {result['sourceName']} | unstructured collections count: {len(result['unstructuredCollections'])} | unstructured data populations started"
+            )
             for unstructured_collection in result["unstructuredCollections"]:
                 pipeline = json.loads(unstructured_collection["dataAggregation"])
                 source_collection = unstructured_collection["sourceCollection"]
