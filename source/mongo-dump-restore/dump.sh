@@ -1,0 +1,1 @@
+mongodump --port=38017 --authenticationDatabase=admin --username=connection_dumprestoreuser --password=############## --db=sales-data --archive=sales-data_`date +%Y-%m-%dT%H`.gz

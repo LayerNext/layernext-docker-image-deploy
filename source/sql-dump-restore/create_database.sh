@@ -1,0 +1,1 @@
+mysql -u root -p -P 3406 -h 172.210.67.143 -e "CREATE DATABASE employee_db;"
