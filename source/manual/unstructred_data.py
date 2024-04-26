@@ -66,7 +66,7 @@ def update_unstructured_data_to_metalake():
             if connection_mongo_host == "host.docker.internal":
                 connection_mongo_host = "localhost"
             connection_client = MongoClient(
-                f"mongodb://{connection_mongo_username}:{connection_mongo_password}@{connection_mongo_host}:{connection_mongo_port}/"
+                f"mongodb://{connection_mongo_username}:{connection_mongo_password}@{connection_mongo_host}:{connection_mongo_port}/{connection_db_name}"
             )
             connection_db_name = result["connectionCredentials"].get("database")
             if not connection_db_name:
