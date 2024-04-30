@@ -45,6 +45,7 @@ services:
       - ./LLM-integration/media:/app/media
       - ./LLM-integration/files:/app/files
       - ./LLM-integration/storage/files:/app/storage/files
+      - ./LLM-integration/storage/public:/app/storage/public
       - ./LLM-integration/memory_dumps:/app/memory_dumps
     depends_on:
       - chat_mongodb
