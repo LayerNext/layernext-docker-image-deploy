@@ -8,7 +8,7 @@ from sendgrid_email import send_email_via_sendgrid
 from pymongo import MongoClient, UpdateOne
 from dotenv import load_dotenv
 
-from source.manual.unstructred_data import update_unstructured_data_to_metalake
+from unstructured_data import update_unstructured_data_to_metalake
 
 load_dotenv(dotenv_path="/home/ubuntu/layernext-docker-image-deploy/source/manual/.env")
 
