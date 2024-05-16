@@ -224,12 +224,15 @@ def update_unstructured_data_to_metalake():
                     _id = unstructured_data["_id"]
                     object_key = f"{source_collection}_{metalake_collection}_{_id}"
                     key_info = {}
-                    data = ""
+                    data = []
                     for key, value in unstructured_data.items():
                         if key != "_id" and key != "unstructuredData":
                             key_info[key] = value
                         if key == "unstructuredData":
-                            data = value
+                            if isinstance(value, list):
+                                data = value
+                            else:
+                                data.append(value)
 
                     bulkwrite_operation = UpdateOne(
                         {"objectKey": object_key},
