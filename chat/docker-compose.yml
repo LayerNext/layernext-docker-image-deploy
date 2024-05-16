@@ -26,7 +26,7 @@ services:
           memory: ${DB_MEMORY_LIMIT}
 
   chat_frontend:
-    image: layernextai/chat_frontend:3.4.0
+    image: layernextai/chat_frontend:3.5.0
     restart: always
     ports:
       - "8099:8099"
@@ -52,9 +52,9 @@ services:
     extra_hosts:
       - "host.docker.internal:host-gateway"
     deploy:
-        resources:
-            limits:
-              cpus: ${FAST_CPU_LIMIT}
-              memory: ${FAST_MEMORY_LIMIT}
+      resources:
+        limits:
+          cpus: ${FAST_CPU_LIMIT}
+          memory: ${FAST_MEMORY_LIMIT}
     env_file:
       - ./.env

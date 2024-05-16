@@ -1,37 +1,36 @@
 version: "3.8"
 services:
   sso_mongodb:
-      image: mongo:5.0.13
-      restart: always
-      ports:
-        - 17017:27017
-      volumes:
-        - ./mongoData:/data/db
-        - ./DB_initial_data/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js
-      environment:
-        - MONGO_INITDB_ROOT_USERNAME=admin
-        - MONGO_INITDB_ROOT_PASSWORD=${MONGODB_ADMIN_PASSWORD}
-        - MONGO_INITDB_DATABASE=admin
-        - DATABASE
-        - DB_USER
-        - DB_PASS
-        - DUMP_USER
-        - DUMP_USER_PWD
-        - SETUP_CUSTOMER
-        - ADMIN_EMAIL
-        - ADMIN_PASSWORD
-        - TEAM_ID
-        - ANALYTICS_KEY
-        - ANALYTICS_SECRET
-        - STUDIO_KEY
-        - STUDIO_SECRET
-        - DATASET_KEY
-        - DATASET_SECRET
-        - DATALAKE_KEY
-        - DATALAKE_SECRET
-        - CHAT_KEY
-        - CHAT_SECRET
-
+    image: mongo:5.0.13
+    restart: always
+    ports:
+      - 17017:27017
+    volumes:
+      - ./mongoData:/data/db
+      - ./DB_initial_data/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=admin
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGODB_ADMIN_PASSWORD}
+      - MONGO_INITDB_DATABASE=admin
+      - DATABASE
+      - DB_USER
+      - DB_PASS
+      - DUMP_USER
+      - DUMP_USER_PWD
+      - SETUP_CUSTOMER
+      - ADMIN_EMAIL
+      - ADMIN_PASSWORD
+      - TEAM_ID
+      - ANALYTICS_KEY
+      - ANALYTICS_SECRET
+      - STUDIO_KEY
+      - STUDIO_SECRET
+      - DATASET_KEY
+      - DATASET_SECRET
+      - DATALAKE_KEY
+      - DATALAKE_SECRET
+      - CHAT_KEY
+      - CHAT_SECRET
 
   sso_node_backend:
     image: layernextai/sso_node_backend:3.1.2
@@ -49,7 +48,7 @@ services:
       - ./.env
 
   sso_frontend:
-    image: layernextai/sso_frontend:3.4.0
+    image: layernextai/sso_frontend:3.5.0
     restart: always
     ports:
       - "8097:8097"

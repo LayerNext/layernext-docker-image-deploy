@@ -1,53 +1,53 @@
 version: "3.8"
 services:
   datalake_mongodb:
-      image: mongo:5.0.13
-      restart: always
-      ports:
-        - 37017:27017
-      volumes:
-        - ./mongoData:/data/db
-        - ./DB_initial_data/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js
-      environment:
-        - MONGO_INITDB_ROOT_USERNAME=admin
-        - MONGO_INITDB_ROOT_PASSWORD=${MONGODB_ADMIN_PASSWORD}
-        - MONGO_INITDB_DATABASE=admin
-        - DATABASE
-        - DB_USER
-        - DB_PASS
-        - DUMP_USER
-        - DUMP_USER_PWD
-        - AWS_BUCKET_NAME
-        - SETUP_CUSTOMER
-        - TEAM_ID
-      deploy:
-        resources:
-            limits:
-              cpus: ${DB_CPU_LIMIT}
-              memory: ${DB_MEMORY_LIMIT}
-  
+    image: mongo:5.0.13
+    restart: always
+    ports:
+      - 37017:27017
+    volumes:
+      - ./mongoData:/data/db
+      - ./DB_initial_data/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=admin
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGODB_ADMIN_PASSWORD}
+      - MONGO_INITDB_DATABASE=admin
+      - DATABASE
+      - DB_USER
+      - DB_PASS
+      - DUMP_USER
+      - DUMP_USER_PWD
+      - AWS_BUCKET_NAME
+      - SETUP_CUSTOMER
+      - TEAM_ID
+    deploy:
+      resources:
+        limits:
+          cpus: ${DB_CPU_LIMIT}
+          memory: ${DB_MEMORY_LIMIT}
+
   datalake_connection_mongodb:
-      image: mongo:5.0.13
-      restart: always
-      ports:
-        - 38017:27017
-      volumes:
-        - ./connectionMongoData:/data/db
-        - ./Connection_DB_initial_data/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js
-      environment:
-        - MONGO_INITDB_ROOT_USERNAME=admin
-        - MONGO_INITDB_ROOT_PASSWORD=${CONNECTION_MONGODB_ADMIN_PASSWORD}
-        - MONGO_INITDB_DATABASE=admin
-        - CONNECTION_DATABASE
-        - CONNECTION_DB_USER
-        - CONNECTION_DB_PASS
-        - CONNECTION_DUMP_USER
-        - CONNECTION_DUMP_USER_PWD
-      deploy:
-        resources:
-            limits:
-              cpus: ${DB_CPU_LIMIT}
-              memory: ${DB_MEMORY_LIMIT}
+    image: mongo:5.0.13
+    restart: always
+    ports:
+      - 38017:27017
+    volumes:
+      - ./connectionMongoData:/data/db
+      - ./Connection_DB_initial_data/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=admin
+      - MONGO_INITDB_ROOT_PASSWORD=${CONNECTION_MONGODB_ADMIN_PASSWORD}
+      - MONGO_INITDB_DATABASE=admin
+      - CONNECTION_DATABASE
+      - CONNECTION_DB_USER
+      - CONNECTION_DB_PASS
+      - CONNECTION_DUMP_USER
+      - CONNECTION_DUMP_USER_PWD
+    deploy:
+      resources:
+        limits:
+          cpus: ${DB_CPU_LIMIT}
+          memory: ${DB_MEMORY_LIMIT}
 
   datalake_connection_mysql:
     image: mysql:8.0
@@ -64,12 +64,11 @@ services:
       - ./Connection_DB_initial_data/init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
       - ./datalake_connection_mysql_data:/var/lib/mysql
     deploy:
-        resources:
-            limits:
-              cpus: ${DB_CPU_LIMIT}
-              memory: ${DB_MEMORY_LIMIT}
+      resources:
+        limits:
+          cpus: ${DB_CPU_LIMIT}
+          memory: ${DB_MEMORY_LIMIT}
 
-  
   etcd:
     container_name: milvus-etcd
     image: quay.io/coreos/etcd:v3.5.5
@@ -137,7 +136,7 @@ services:
       - standalone
     extra_hosts:
       - "host.docker.internal:host-gateway"
-  
+
   datalake_node_backend:
     image: layernextai/datalake_node_backend:3.3.0
     restart: always
@@ -149,10 +148,10 @@ services:
     extra_hosts:
       - "host.docker.internal:host-gateway"
     deploy:
-        resources:
-            limits:
-              cpus: ${NODE_CPU_LIMIT}
-              memory: ${NODE_MEMORY_LIMIT}
+      resources:
+        limits:
+          cpus: ${NODE_CPU_LIMIT}
+          memory: ${NODE_MEMORY_LIMIT}
     volumes:
       - ./datalake-nodejs/logs:/usr/src/app/datalake-nodejs/logs
       - ./datalake-nodejs/storage:/usr/src/app/datalake-nodejs/storage
@@ -160,7 +159,7 @@ services:
       - ./datalake-nodejs/config:/usr/src/app/datalake-nodejs/config
     env_file:
       - ./.env
-  
+
   datalake_flask_backend:
     image: layernextai/datalake_flask_backend:3.4.0
     restart: always
@@ -176,15 +175,15 @@ services:
     extra_hosts:
       - "host.docker.internal:host-gateway"
     deploy:
-        resources:
-            limits:
-              cpus: ${FLASK_CPU_LIMIT}
-              memory: ${FLASK_MEMORY_LIMIT}
+      resources:
+        limits:
+          cpus: ${FLASK_CPU_LIMIT}
+          memory: ${FLASK_MEMORY_LIMIT}
     env_file:
       - ./.env
 
   datalake_frontend:
-    image: layernextai/datalake_frontend:3.4.0
+    image: layernextai/datalake_frontend:3.5.0
     restart: always
     ports:
       - "8095:8095"
