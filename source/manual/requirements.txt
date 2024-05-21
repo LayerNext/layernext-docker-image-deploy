@@ -1,3 +1,4 @@
 sendgrid
 pymongo
 python-dotenv
+mysql-connector-python
