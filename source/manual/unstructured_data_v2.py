@@ -226,6 +226,8 @@ def update_unstructured_data_to_metalake():
                     key_info = {}
                     data = []
                     for key, value in unstructured_data.items():
+                        if not value:
+                            continue
                         if key != "_id" and key != "unstructuredData":
                             key_info[key] = value
                         if key == "unstructuredData":
@@ -233,6 +235,9 @@ def update_unstructured_data_to_metalake():
                                 data = value
                             else:
                                 data.append(value)
+
+                    if len(data) == 0:
+                        continue
 
                     bulkwrite_operation = UpdateOne(
                         {"objectKey": object_key},
