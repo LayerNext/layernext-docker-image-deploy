@@ -138,7 +138,7 @@ services:
       - "host.docker.internal:host-gateway"
 
   datalake_node_backend:
-    image: layernextai/datalake_node_backend:3.5.1
+    image: layernextai/datalake_node_backend:3.5.2
     restart: always
     ports:
       - "3000:3000"
