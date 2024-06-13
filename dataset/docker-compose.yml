@@ -21,7 +21,7 @@ services:
         - TEAM_ID
 
   dataset_node_backend:
-    image: layernextai/dataset_node_backend:2.3.0
+    image: layernextai/dataset_node_backend:2.3.1
     restart: always
     ports:
       - "4000:4000"
