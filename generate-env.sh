@@ -172,12 +172,20 @@ OPENAI_API_KEY=sk-proj-O9R3ufvQNujKsyiKjDNBT3BlbkFJWyx7YvrEjl2gudUymgAm
 AIRBYTE_URL=http://host.docker.internal:8000
 AIRBYTE_USER_NAME=zoomi-airbyte
 AIRBYTE_PASSWORD=z00Mi$]PY4Ju]
-DATALAKE_KEY=key_m9ne7iz9qldsqodneo5cv0bxvvvqlxzs
-DATALAKE_SECRET=u8nrljbaj3xwdylulnua
+DATALAKE_KEY=$DATALAKE_KEY
+DATALAKE_SECRET=$DATALAKE_SECRET
 TEXT_SIMILARITY_THRESHOLD=0.75
 PYTHON_BASE_URL=http://host.docker.internal:3100
 API_URL=https://api.qa-llm.layernext.ai
 
+# Vecttor Database
+VECTOR_DB_CONNECTION=enable
+VECTOR_DB_HOST=host.docker.internal
+VECTOR_DB_PORT=19530
+VECTOR_DB_USER=root
+VECTOR_DB_PASS=Milvus
+VECTOR_DB_NAME=LayerNext
+SIMILARITY_SCORE_THRESHOLD=0.65
 
 EOL
 
