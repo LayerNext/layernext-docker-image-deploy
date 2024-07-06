@@ -167,6 +167,18 @@ MYSQL_DATABASE=connectiondb
 MYSQL_USER=connection_user
 MYSQL_PASSWORD=$(openssl rand -hex 10)
 
+#NEW KEYS ADDED HERE
+OPENAI_API_KEY=sk-proj-O9R3ufvQNujKsyiKjDNBT3BlbkFJWyx7YvrEjl2gudUymgAm
+AIRBYTE_URL=http://host.docker.internal:8000
+AIRBYTE_USER_NAME=zoomi-airbyte
+AIRBYTE_PASSWORD=z00Mi$]PY4Ju]
+DATALAKE_KEY=key_m9ne7iz9qldsqodneo5cv0bxvvvqlxzs
+DATALAKE_SECRET=u8nrljbaj3xwdylulnua
+TEXT_SIMILARITY_THRESHOLD=0.75
+PYTHON_BASE_URL=http://host.docker.internal:3100
+API_URL=https://api.qa-llm.layernext.ai
+
+
 EOL
 
 
@@ -314,7 +326,7 @@ DB_MEMORY_LIMIT=3GB
 JWT_SECRET = $JWT_SECRET
 
 #LLM FAST-API
-# OPENAI_API_KEY=
+OPENAI_API_KEY=sk-proj-O9R3ufvQNujKsyiKjDNBT3BlbkFJWyx7YvrEjl2gudUymgAm
 # LLM_TYPE=openai
 # #MODEL=gpt-4-1106-preview
 # MODEL=gpt-4-0125-preview
