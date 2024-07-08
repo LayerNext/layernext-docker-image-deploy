@@ -62,7 +62,7 @@ services:
       - "3406:3306"
     volumes:
       - ./Connection_DB_initial_data/init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
-      - ./datalake_connection_mysql_data:/var/lib/minesql
+      - ./datalake_connection_mysql_data:/var/lib/mysql
     deploy:
       resources:
         limits:
