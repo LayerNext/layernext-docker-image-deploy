@@ -381,14 +381,9 @@ FRONTEND_URL=https://chat.$SETUP_CUSTOMER.layernext.ai
 METALAKE_URL=https://datalake.$SETUP_CUSTOMER.layernext.ai
 
 #api key secrets
-URL=https://api.$SETUP_CUSTOMER.layernext.ai
 API_KEY=$CHAT_KEY
 SECRET_KEY=$CHAT_SECRET
 EOL
-
-
-#############################################################################################
-
 
 # generate ssl creator nginx env
 ssl_nginx_env="./accounts/nginxData/.env"
