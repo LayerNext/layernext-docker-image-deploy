@@ -10,7 +10,7 @@ DATALAKE_KEY=key_$(openssl rand -base64 60 | tr -dc 'a-z0-9' | head -c 32)
 DATALAKE_SECRET=$(openssl rand -base64 45 | tr -dc 'a-z0-9' | head -c 20)
 CHAT_KEY=key_$(openssl rand -base64 60 | tr -dc 'a-z0-9' | head -c 32)
 CHAT_SECRET=$(openssl rand -base64 45 | tr -dc 'a-z0-9' | head -c 20)
-
+# SUPPORT_EMAIL="layernext"
 # generate accounts env
 accounts_env="./accounts/.env"
 if [ -f $accounts_env ]; then
@@ -44,7 +44,7 @@ TEAM_ID=6374c3decb468b7a7a68a116
 
 JWT_SECRET=$JWT_SECRET
 ADMIN_EMAIL=$ADMIN_EMAIL
-ADMIN_PASSWORD=$ADMIN_PASSWORD
+ADMIN_PASSWORD=$ADMIN_PASSWORDs
 
 #apps
 DATALAKE=2E7GG9DZB7J8G45
@@ -178,7 +178,7 @@ MYSQL_USER=connection_user
 MYSQL_PASSWORD=$(openssl rand -hex 10)
 
 #NEW KEYS ADDED HERE
-OPENAI_API_KEY=sk-proj-O9R3ufvQNujKsyiKjDNBT3BlbkFJWyx7YvrEjl2gudUymgAm
+OPENAI_API_KEY=sk-proj-AIQEvhIPTbzv0CKzF0FaT3BlbkFJHrVCrVfY8Oxo72W8zi3r
 AIRBYTE_URL=http://host.docker.internal:8000
 AIRBYTE_USER_NAME=zoomi-airbyte
 AIRBYTE_PASSWORD=z00Mi$]PY4Ju]
