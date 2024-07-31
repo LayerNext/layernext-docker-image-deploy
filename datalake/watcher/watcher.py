@@ -5,10 +5,9 @@ from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
 import time
 from collections import deque
+import sys
 
 # Configuration
-API_BASE_URL = "https://datalake.qa-llm.layernext.ai"
-BEGINNING_PATH = "/usr/src/app/buckets"
 LOG_FILE = "monitor_output.log"
 IGNORE_LOG_FILE = "ignore_events.log"
 QUEUE_DELAY_SECONDS = 5
@@ -40,12 +39,13 @@ def get_path_to_remove(directory_to_watch):
     return path_to_remove
 
 # Function to notify API about file system event
-def notify_api(directory, event):
+def notify_api(directory, event, api_base_url):
     endpoint = "api/storageProvider/deleted" if event.startswith("deleted") else "api/storageProvider/folderUpdate"
-    new_path = directory.replace(PATH_TO_REMOVE, "")
+    path_to_remove = get_path_to_remove(directory)
+    new_path = directory.replace(path_to_remove, "")
     path = os.path.join(BEGINNING_PATH, new_path)
 
-    api_url = f"{API_BASE_URL}/{endpoint}"
+    api_url = f"{api_base_url}/{endpoint}"
     data = json.dumps({"filePath": path})
 
     response = requests.post(api_url, headers={"Content-Type": "application/json"}, data=data)
@@ -53,11 +53,11 @@ def notify_api(directory, event):
         log_file.write(f"Event -> {event} .... API_URL -> {api_url} .... Path -> {path} .... Response -> {response}\n")
 
 # Function to process events from the queue
-def process_queue():
+def process_queue(api_base_url):
     global event_queue
     while event_queue:
         directory, event = event_queue.popleft()
-        notify_api(directory, event)
+        notify_api(directory, event, api_base_url)
         seen_events.discard((directory, event))
 
 # Function to handle file system events
@@ -88,10 +88,10 @@ def enqueue_event(directory, event):
         time.sleep(QUEUE_DELAY_SECONDS)
         process_queue()
 
-def main(directory_to_watch):
-    global PATH_TO_REMOVE
-    PATH_TO_REMOVE = get_path_to_remove(directory_to_watch)
-
+def main(directory_to_watch, api_base_url):
+    global BEGINNING_PATH
+    BEGINNING_PATH = "/usr/src/app/buckets"
+    
     event_handler = FileEventHandler()
     observer = Observer()
     observer.schedule(event_handler, path=directory_to_watch, recursive=True)
@@ -102,18 +102,21 @@ def main(directory_to_watch):
             time.sleep(1)
             # Process any remaining events in the queue
             if event_queue:
-                process_queue()
+                process_queue(api_base_url)
     except KeyboardInterrupt:
         observer.stop()
     observer.join()
 
 if __name__ == "__main__":
-    if len(os.sys.argv) != 2:
+    if len(sys.argv) != 3:
+        print("Usage: python watcher.py <directory_to_watch> <api_base_url>")
         exit(1)
     
-    directory_to_watch = os.sys.argv[1]
+    directory_to_watch = sys.argv[1]
+    api_base_url = sys.argv[2]
+    
     if not os.path.isdir(directory_to_watch):
         print(f"The directory {directory_to_watch} does not exist.")
         exit(1)
 
-    main(directory_to_watch)
+    main(directory_to_watch, api_base_url)
