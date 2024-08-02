@@ -63,7 +63,9 @@ def process_queue(api_base_url):
 # Function to handle file system events
 class FileEventHandler(FileSystemEventHandler):
     def on_created(self, event):
-        if not event.is_directory:
+        if event.is_directory:
+            enqueue_event(event.src_path, "created")
+        else:
             enqueue_event(os.path.dirname(event.src_path), "created")
 
     def on_deleted(self, event):
@@ -71,11 +73,15 @@ class FileEventHandler(FileSystemEventHandler):
             enqueue_event(os.path.dirname(event.src_path), "deleted")
 
     def on_modified(self, event):
-        if not event.is_directory:
+        if event.is_directory:
+            enqueue_event(event.src_path, "modified")
+        else:
             enqueue_event(os.path.dirname(event.src_path), "modified")
 
     def on_moved(self, event):
-        if not event.is_directory:
+        if event.is_directory:
+            enqueue_event(event.src_path, "moved")
+        else:
             enqueue_event(os.path.dirname(event.src_path), "moved")
 
 # Function to enqueue an event
@@ -86,7 +92,7 @@ def enqueue_event(directory, event):
         seen_events.add(key)
         # Check if no new events occurred during the brief period and process the queue
         time.sleep(QUEUE_DELAY_SECONDS)
-        process_queue()
+        process_queue(api_base_url=api_base_url)
 
 def main(directory_to_watch, api_base_url):
     global BEGINNING_PATH
