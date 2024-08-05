@@ -30,12 +30,25 @@ def is_temp_file(path):
     return ext in TEMP_FILE_EXTENSIONS or os.path.basename(path).startswith('~$')
 
 def get_path_to_remove(directory_to_watch):
-    """Calculate the PATH_TO_REMOVE to be the parent directory of the last segment."""
+    """
+    Calculate the PATH_TO_REMOVE to be the parent directory of the last segment.
+    
+    Args:
+    - directory_to_watch (str): The full directory path.
+    
+    Returns:
+    - str: The calculated PATH_TO_REMOVE.
+    """
+    # Split the path into segments
     path_segments = directory_to_watch.rstrip('/').split('/')
+    
+    # Remove the last segment
     if len(path_segments) > 1:
         path_to_remove = '/'.join(path_segments[:-1]) + '/'
     else:
+        # If the path is just one segment, use an empty path
         path_to_remove = '/'
+    
     return path_to_remove
 
 def notify_api(directory, api_base_url,event_type):
@@ -45,7 +58,7 @@ def notify_api(directory, api_base_url,event_type):
     else :
         endpoint = "api/storageProvider/folderUpdate"
 
-    path_to_remove = "/home/ubuntu/"
+    path_to_remove = get_path_to_remove(directory_to_watch)
     new_path = directory.replace(path_to_remove, "")
     path = os.path.join(BEGINNING_PATH, new_path)
 
@@ -53,6 +66,7 @@ def notify_api(directory, api_base_url,event_type):
     data = json.dumps({"filePath": path})
 
     response = requests.post(api_url, headers={"Content-Type": "application/json"}, data=data)
+    # response =200
 
     with open(LOG_FILE, "a") as log_file:
         timestamp = datetime.now()
@@ -102,9 +116,9 @@ class FileEventHandler(FileSystemEventHandler):
         else:
             # Check if any parent directory is already in the event queue
             parent_path = path
-            while parent_path != '/home/ubuntu/layernext-test-local':
+            while parent_path != '/home/ubuntu/layernext-qa-local':
                 parent_path = os.path.dirname(parent_path)
-                if parent_path in event_queue:
+                if event_queue[parent_path]['events'] != []:
                     # Parent directory is already in the queue; skip logging this event
                     return
             
