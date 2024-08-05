@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# effectively reads the non-commented lines from the .env file, interprets them as variable assignments,
+# and exports them into the current shell environment
 export $(grep -v '^#' .env | xargs -d '\n')
 JWT_SECRET=$(openssl rand -hex 32)
 
@@ -8,7 +10,7 @@ DATALAKE_KEY=key_$(openssl rand -base64 60 | tr -dc 'a-z0-9' | head -c 32)
 DATALAKE_SECRET=$(openssl rand -base64 45 | tr -dc 'a-z0-9' | head -c 20)
 CHAT_KEY=key_$(openssl rand -base64 60 | tr -dc 'a-z0-9' | head -c 32)
 CHAT_SECRET=$(openssl rand -base64 45 | tr -dc 'a-z0-9' | head -c 20)
-
+# SUPPORT_EMAIL="layernext"
 # generate accounts env
 accounts_env="./accounts/.env"
 if [ -f $accounts_env ]; then
@@ -50,8 +52,8 @@ STUDIO=ZQ9YR6HDFGFRJKQ
 SSO=1RMBHCWM8QIJ6QH
 DATASET=8F7TT5VB77K0GGH
 
-BASE_URL=https://accounts.$SETUP_CUSTOMER.layernext.ai
-FRONT_END_BASE_URL=https://accounts.$SETUP_CUSTOMER.layernext.ai
+BASE_URL=https://accounts.layernext.$SETUP_CUSTOMER
+FRONT_END_BASE_URL=https://accounts.layernext.$SETUP_CUSTOMER
 ANNO_INTERNAL_SERVER=http://host.docker.internal:8080
 
 ENVIRONMENT=enterprise
@@ -190,7 +192,7 @@ DATALAKE_SECRET=$DATALAKE_SECRET
 TEXT_SIMILARITY_THRESHOLD=0.75
 
 PYTHON_BASE_URL=http://host.docker.internal:3100
-API_URL=https://api.$SETUP_CUSTOMER.layernext.ai
+API_URL=https://api.layernext.$SETUP_CUSTOMER
 
 # Vecttor Database
 VECTOR_DB_CONNECTION=enable
@@ -251,7 +253,7 @@ MODEL_INSIGHT=gpt-4-0125-preview
 
 API_KEY=key_z3fpungyhn15jqpz6ar267g1yp5fyc90
 SECRET_KEY=7p2pnxqbi6441gdyfec5
-URL=https://api.$SETUP_CUSTOMER.layernext.ai
+URL=https://api.layernext.$SETUP_CUSTOMER
 
 APP_PORT=5082
 DEBUG=False
@@ -268,8 +270,8 @@ FAST_MEMORY_LIMIT=2GB
 SUPPORT_EMAIL=$SUPPORT_EMAIL
 SENDGRID_API_KEY=$SENDGRID_API_KEY
 
-FRONTEND_URL=https://chat.$SETUP_CUSTOMER.layernext.ai
-METALAKE_URL=https://datalake.$SETUP_CUSTOMER.layernext.ai
+FRONTEND_URL=https://chat.layernext.$SETUP_CUSTOMER
+METALAKE_URL=https://datalake.layernext.$SETUP_CUSTOMER
 
 #api key secrets
 API_KEY=$CHAT_KEY
