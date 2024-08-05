@@ -4,44 +4,48 @@ import requests
 from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
 import time
-from collections import deque
+from collections import defaultdict
 import sys
+from datetime import datetime
+import threading
 
 # Configuration
 LOG_FILE = "monitor_output.log"
 IGNORE_LOG_FILE = "ignore_events.log"
 QUEUE_DELAY_SECONDS = 5
+INACTIVITY_TIMEOUT = 30  # Time in seconds to wait before resuming processing after inactivity
+DEBOUNCE_TIME = 10  # Time in seconds to wait before sending API call
 
-# Initialize event queue and seen events tracker
-event_queue = deque()  
-seen_events = set()  
+# Initialize event queue and flags
+event_queue = defaultdict(lambda: {'events': [], 'last_event_time': None})
+pause_event = threading.Event()
+inactivity_timer = threading.Event()
+
+# List of patterns or extensions for temporary files to ignore
+TEMP_FILE_EXTENSIONS = ('.tmp', '.swp', '.bak', '~$', '.temp')
+
+def is_temp_file(path):
+    """Check if the file is a temporary file based on its extension."""
+    _, ext = os.path.splitext(path)
+    return ext in TEMP_FILE_EXTENSIONS or os.path.basename(path).startswith('~$')
 
 def get_path_to_remove(directory_to_watch):
-    """
-    Calculate the PATH_TO_REMOVE to be the parent directory of the last segment.
-    
-    Args:
-    - directory_to_watch (str): The full directory path.
-    
-    Returns:
-    - str: The calculated PATH_TO_REMOVE.
-    """
-    # Split the path into segments
+    """Calculate the PATH_TO_REMOVE to be the parent directory of the last segment."""
     path_segments = directory_to_watch.rstrip('/').split('/')
-    
-    # Remove the last segment
     if len(path_segments) > 1:
         path_to_remove = '/'.join(path_segments[:-1]) + '/'
     else:
-        # If the path is just one segment, use an empty path
         path_to_remove = '/'
-    
     return path_to_remove
 
-# Function to notify API about file system event
-def notify_api(directory, event, api_base_url):
-    endpoint = "api/storageProvider/deleted" if event.startswith("deleted") else "api/storageProvider/folderUpdate"
-    path_to_remove = get_path_to_remove(directory)
+def notify_api(directory, api_base_url,event_type):
+    """Notify API about file system event."""
+    if event_type == "deleted":
+        endpoint = "api/storageProvider/deleted"
+    else :
+        endpoint = "api/storageProvider/folderUpdate"
+
+    path_to_remove = "/home/ubuntu/"
     new_path = directory.replace(path_to_remove, "")
     path = os.path.join(BEGINNING_PATH, new_path)
 
@@ -49,69 +53,118 @@ def notify_api(directory, event, api_base_url):
     data = json.dumps({"filePath": path})
 
     response = requests.post(api_url, headers={"Content-Type": "application/json"}, data=data)
+
     with open(LOG_FILE, "a") as log_file:
-        log_file.write(f"Event -> {event} .... API_URL -> {api_url} .... Path -> {path} .... Response -> {response}\n")
+        timestamp = datetime.now()
+        log_file.write(f"{timestamp}...Event -> aggregated .... API_URL -> {api_url} .... Path -> {path} .... Response -> {response}\n")
 
-# Function to process events from the queue
-def process_queue(api_base_url):
-    global event_queue
-    while event_queue:
-        directory, event = event_queue.popleft()
-        notify_api(directory, event, api_base_url)
-        seen_events.discard((directory, event))
 
-# Function to handle file system events
 class FileEventHandler(FileSystemEventHandler):
     def on_created(self, event):
-        if event.is_directory:
-            enqueue_event(event.src_path, "created")
-        else:
-            enqueue_event(os.path.dirname(event.src_path), "created")
+        self.handle_event(event, "created")
 
     def on_deleted(self, event):
-        if not event.is_directory:
-            enqueue_event(os.path.dirname(event.src_path), "deleted")
+        self.handle_event(event, "deleted")
 
     def on_modified(self, event):
-        if event.is_directory:
-            enqueue_event(event.src_path, "modified")
-        else:
-            enqueue_event(os.path.dirname(event.src_path), "modified")
+        self.handle_event(event, "modified")
 
     def on_moved(self, event):
-        if event.is_directory:
-            enqueue_event(event.src_path, "moved")
-        else:
-            enqueue_event(os.path.dirname(event.src_path), "moved")
+        self.handle_event(event, "moved")
 
-# Function to enqueue an event
-def enqueue_event(directory, event):
-    key = (directory, event)
-    if key not in seen_events:
-        event_queue.append(key)
-        seen_events.add(key)
-        # Check if no new events occurred during the brief period and process the queue
+    def handle_event(self, event, event_type):
+        if event.is_directory:
+            if event_type == "moved":
+                self.log_event(event.dest_path, event_type)
+            elif event_type == "created":
+                self.log_event(event.src_path, event_type)
+        elif not is_temp_file(event.src_path):
+            if event_type == "moved":
+                self.log_event(event.dest_path, event_type)
+            elif event_type=="deleted":
+                self.log_event(event.src_path,event_type)
+            elif event_type=="created":
+                self.log_event(os.path.dirname(event.src_path),event_type)
+
+    def log_event(self, path, event_type):
+        """Log the event and add it to the queue."""
+        current_time = time.time()
+        with open(LOG_FILE, "a") as log_file:
+            timestamp = datetime.now()
+            log_file.write(f"{timestamp}...Event -> {event_type} .... Path -> {path} ....\n")
+        
+        # Update event queue
+        if event_type == "deleted":
+            event_queue[path]['events'].append(event_type)
+            event_queue[path]['full_path'] = path
+            event_queue[path]['last_event_time'] = current_time
+
+        else:
+            # Check if any parent directory is already in the event queue
+            parent_path = path
+            while parent_path != '/home/ubuntu/layernext-test-local':
+                parent_path = os.path.dirname(parent_path)
+                if parent_path in event_queue:
+                    # Parent directory is already in the queue; skip logging this event
+                    return
+            
+            event_queue[path]['events'].append(event_type)
+            event_queue[path]['last_event_time'] = current_time
+        
+        pause_event.set()  # Set the flag to true when an event occurs
+        inactivity_timer.set()  # Reset inactivity timer
+
+def process_queue(api_base_url):
+    """Process events from the queue."""
+    while True:
+        pause_event.wait()  # Wait until flag is set
+        current_time = time.time()
+        for directory, details in event_queue.items():
+            if details['last_event_time'] and (current_time - details['last_event_time']) >= DEBOUNCE_TIME:
+                notify_api(directory, api_base_url,event_queue[directory]['events'][0])
+                # Clear events after processing
+                event_queue[directory]['events'] = []
+                event_queue[directory]['last_event_time'] = None
+        inactivity_timer.set()  # Reset inactivity timer
+
+        # Wait before processing the next batch of events
         time.sleep(QUEUE_DELAY_SECONDS)
-        process_queue(api_base_url=api_base_url)
+        if not event_queue:
+            pause_event.clear()  # Clear the flag if no events are present
+
+def monitor_inactivity():
+    """Monitor inactivity and reset the pause flag after a timeout."""
+    while True:
+        if not inactivity_timer.wait(INACTIVITY_TIMEOUT):
+            if not event_queue:
+                pause_event.clear()  # Clear the flag to pause processing
+        else:
+            inactivity_timer.clear()  # Reset inactivity timer if an event occurs
 
 def main(directory_to_watch, api_base_url):
     global BEGINNING_PATH
     BEGINNING_PATH = "/usr/src/app/buckets"
-    
+
+    # Start the observer
     event_handler = FileEventHandler()
     observer = Observer()
     observer.schedule(event_handler, path=directory_to_watch, recursive=True)
     observer.start()
 
+    queue_thread = threading.Thread(target=process_queue, args=(api_base_url,))
+    inactivity_thread = threading.Thread(target=monitor_inactivity)
+
+    queue_thread.start()
+    inactivity_thread.start()
+
     try:
         while True:
-            time.sleep(1)
-            # Process any remaining events in the queue
-            if event_queue:
-                process_queue(api_base_url)
+            time.sleep(1)  
     except KeyboardInterrupt:
         observer.stop()
     observer.join()
+    queue_thread.join()
+    inactivity_thread.join()
 
 if __name__ == "__main__":
     if len(sys.argv) != 3:
