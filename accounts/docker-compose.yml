@@ -8,8 +8,6 @@ services:
     volumes:
       - ./mongoData:/data/db
       - ./DB_initial_data/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js
-    networks:
-      - layernext_network
     environment:
       - MONGO_INITDB_ROOT_USERNAME=admin
       - MONGO_INITDB_ROOT_PASSWORD=${MONGODB_ADMIN_PASSWORD}
@@ -41,8 +39,8 @@ services:
       - "8888:8888"
     depends_on:
       - sso_mongodb
-    networks:
-      - layernext_network
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     volumes:
       - ./sso-layernext-backend/logs:/usr/src/app/logs
       - ./sso-layernext-backend/storage:/usr/src/app/storage
@@ -54,8 +52,6 @@ services:
     restart: always
     ports:
       - "8097:8097"
-    networks:
-      - layernext_network
     environment:
       - TZ:utc
       - LAYERNEXT_SUB_DOMAIN=${SETUP_CUSTOMER}
@@ -68,8 +64,8 @@ services:
       - ../dataset/layernext-sync-tool:/home/layernext-sync-tool
       - ./nginxData/certbot/conf:/etc/letsencrypt
       - ./nginxData/certbot/www:/var/www/certbot
-    networks:
-      - layernext_network
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     ports:
       - "81:80"
     environment:
@@ -86,7 +82,3 @@ services:
       - CHAT_FRONTEND_PORT=8099
       - CHAT_BACKEND_PORT=5082
       - SETUP_CUSTOMER
-
-networks:
-  layernext_network:
-    external: true
