@@ -8,20 +8,21 @@ from collections import defaultdict
 import sys
 from datetime import datetime
 import threading
+from dotenv import load_dotenv
+load_dotenv()
 
 # Configuration
 LOG_FILE = "monitor_output.log"
 IGNORE_LOG_FILE = "ignore_events.log"
 QUEUE_DELAY_SECONDS = 5
-INACTIVITY_TIMEOUT = 30  # Time in seconds to wait before resuming processing after inactivity
-DEBOUNCE_TIME = 10  # Time in seconds to wait before sending API call
+INACTIVITY_TIMEOUT = 30  # Time to wait before resuming processing after inactivity
+DEBOUNCE_TIME = 10  # Time to wait before sending API call
 
 # Initialize event queue and flags
 event_queue = defaultdict(lambda: {'events': [], 'last_event_time': None})
 pause_event = threading.Event()
 inactivity_timer = threading.Event()
 
-# List of patterns or extensions for temporary files to ignore
 TEMP_FILE_EXTENSIONS = ('.tmp', '.swp', '.bak', '~$', '.temp')
 
 def is_temp_file(path):
@@ -39,14 +40,11 @@ def get_path_to_remove(directory_to_watch):
     Returns:
     - str: The calculated PATH_TO_REMOVE.
     """
-    # Split the path into segments
     path_segments = directory_to_watch.rstrip('/').split('/')
     
-    # Remove the last segment
     if len(path_segments) > 1:
         path_to_remove = '/'.join(path_segments[:-1]) + '/'
     else:
-        # If the path is just one segment, use an empty path
         path_to_remove = '/'
     
     return path_to_remove
@@ -114,9 +112,11 @@ class FileEventHandler(FileSystemEventHandler):
             event_queue[path]['last_event_time'] = current_time
 
         else:
+            path_to_check = directory_to_watch
+            path_to_check = path_to_check.rstrip('/')
             # Check if any parent directory is already in the event queue
             parent_path = path
-            while parent_path != '/home/ubuntu/layernext-qa-local':
+            while parent_path != path_to_check:
                 parent_path = os.path.dirname(parent_path)
                 if event_queue[parent_path]['events'] != []:
                     # Parent directory is already in the queue; skip logging this event
@@ -181,12 +181,9 @@ def main(directory_to_watch, api_base_url):
     inactivity_thread.join()
 
 if __name__ == "__main__":
-    if len(sys.argv) != 3:
-        print("Usage: python watcher.py <directory_to_watch> <api_base_url>")
-        exit(1)
     
-    directory_to_watch = sys.argv[1]
-    api_base_url = sys.argv[2]
+    directory_to_watch = os.getenv("LOCAL_STORAGE_PATH")
+    api_base_url = os.getenv("DATALAKE_URL")
     
     if not os.path.isdir(directory_to_watch):
         print(f"The directory {directory_to_watch} does not exist.")
