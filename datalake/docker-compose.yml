@@ -129,14 +129,6 @@ services:
       - "etcd"
       - "minio"
 
-  python-service:
-    build: ./python-service
-    restart: always
-    depends_on:
-      - standalone
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
-
   datalake_node_backend:
     image: layernextai/datalake_node_backend:3.7.0
     restart: always
@@ -193,6 +185,3 @@ services:
       - TZ:utc
       - LAYERNEXT_SUB_DOMAIN=${SETUP_CUSTOMER}
 
-networks:
-  default:
-    name: milvus
