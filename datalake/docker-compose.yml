@@ -141,14 +141,6 @@ services:
       - "etcd"
       - "minio"
 
-  python-service:
-    build: ./python-service
-    restart: always
-    depends_on:
-      - standalone
-    networks:
-      - layernext_network
-
   datalake_node_backend:
     image: layernextai/datalake_node_backend:3.7.0
     restart: always
