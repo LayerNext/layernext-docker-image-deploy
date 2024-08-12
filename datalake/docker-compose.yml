@@ -174,7 +174,7 @@ services:
       - ./.env
 
   datalake_flask_backend:
-    image: layernextai/datalake_flask_backend:3.7.0
+    image: layernextai/datalake_flask_backend:3.7.0-mondetta
     restart: always
     ports:
       - "3100:3100"
