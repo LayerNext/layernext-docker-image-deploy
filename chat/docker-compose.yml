@@ -39,7 +39,7 @@ services:
       - LAYERNEXT_SUB_DOMAIN=${SETUP_CUSTOMER}
 
   llm_fast_api_backend:
-    image: layernextai/llm_fast_api_backend:3.7.0
+    image: layernextai/llm_fast_api_backend:3.7.0-mondetta
     restart: always
     networks:
       - layernext_network
