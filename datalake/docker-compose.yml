@@ -110,7 +110,6 @@ services:
     depends_on:
       - datalake_node_backend
       - datalake_mongodb
-      - standalone
     networks:
       - layernext_network
     deploy:
