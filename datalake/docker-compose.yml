@@ -82,7 +82,6 @@ services:
       - "3000:3000"
     depends_on:
       - datalake_mongodb
-      - standalone
     networks:
       - layernext_network
     deploy:
