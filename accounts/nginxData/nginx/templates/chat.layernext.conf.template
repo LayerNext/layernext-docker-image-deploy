@@ -6,13 +6,13 @@ server{
    server_name chat.${SETUP_CUSTOMER}.layernext.ai;
 
        location / {
-		proxy_set_header        Host $host;
-		proxy_set_header        X-Real-IP $remote_addr;
-	 	proxy_set_header        X-Forwarded-For $proxy_add_x_forwarded_for;
-		proxy_set_header        X-Forwarded-Proto $scheme;
-		proxy_pass          http://host.docker.internal:${CHAT_FRONTEND_PORT};
-	        proxy_read_timeout  90;
-                proxy_set_header 'Access-Control-Allow-Origin' '*';
+			proxy_set_header        Host $host;
+			proxy_set_header        X-Real-IP $remote_addr;
+			proxy_set_header        X-Forwarded-For $proxy_add_x_forwarded_for;
+			proxy_set_header        X-Forwarded-Proto $scheme;
+			proxy_pass          http://chat_frontend:${CHAT_FRONTEND_PORT};
+			proxy_read_timeout  90;
+			proxy_set_header 'Access-Control-Allow-Origin' '*';
         }
 
         location /api {
@@ -20,7 +20,7 @@ server{
 			proxy_set_header        X-Real-IP $remote_addr;
 			proxy_set_header        X-Forwarded-For $proxy_add_x_forwarded_for;
 			proxy_set_header        X-Forwarded-Proto $scheme;
-			proxy_pass          http://host.docker.internal:${CHAT_BACKEND_PORT};
+			proxy_pass          http://llm_fast_api_backend:${CHAT_BACKEND_PORT};
 	        proxy_read_timeout  900;
             proxy_set_header 'Access-Control-Allow-Origin' '*';
 			proxy_buffering off;

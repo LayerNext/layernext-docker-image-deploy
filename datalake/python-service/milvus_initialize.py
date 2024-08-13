@@ -3,12 +3,16 @@ import numpy as np
 from pymilvus import (
     connections,
     utility,
-    FieldSchema, CollectionSchema, DataType,
+    FieldSchema,
+    CollectionSchema,
+    DataType,
     Collection,
-    db
+    db,
 )
 
-connections.connect("default", host="host.docker.internal", port="19530", user="root", password="Milvus")
+connections.connect(
+    "default", host="standalone", port="19530", user="root", password="Milvus"
+)
 
 db_list = db.list_database()
 
@@ -24,14 +28,21 @@ print(f"Does collection {image_collection} exist in Milvus: {has}")
 if has == False:
 
     fields = [
-        FieldSchema(name="uniqueName", dtype=DataType.VARCHAR, is_primary=True, auto_id=False, max_length=256),
-        FieldSchema(name="embeddings", dtype=DataType.FLOAT_VECTOR, dim=2048)
+        FieldSchema(
+            name="uniqueName",
+            dtype=DataType.VARCHAR,
+            is_primary=True,
+            auto_id=False,
+            max_length=256,
+        ),
+        FieldSchema(name="embeddings", dtype=DataType.FLOAT_VECTOR, dim=2048),
     ]
 
     schema = CollectionSchema(fields, "LayerNext embeddings", enable_dynamic_field=True)
 
-    LayerNext_embeddings_collection = Collection(image_collection, schema, consistency_level="Strong")
-
+    LayerNext_embeddings_collection = Collection(
+        image_collection, schema, consistency_level="Strong"
+    )
 
     index = {
         "index_type": "IVF_FLAT",
@@ -44,8 +55,10 @@ if has == False:
     has_index = LayerNext_embeddings_collection.has_index(index_name="vec_index")
 
     if has_index == False or has_index == None:
-        LayerNext_embeddings_collection.create_index("embeddings", index, index_name="vec_index")
-    
+        LayerNext_embeddings_collection.create_index(
+            "embeddings", index, index_name="vec_index"
+        )
+
     try:
         LayerNext_embeddings_collection.load()
     except Exception as e:
@@ -60,7 +73,9 @@ else:
     }
     has_index = LayerNext_embeddings_collection.has_index(index_name="vec_index")
     if has_index == False or has_index == None:
-        LayerNext_embeddings_collection.create_index("embeddings", index, index_name="vec_index")
+        LayerNext_embeddings_collection.create_index(
+            "embeddings", index, index_name="vec_index"
+        )
     try:
         LayerNext_embeddings_collection.load()
     except Exception as e:
@@ -73,16 +88,25 @@ has = utility.has_collection(text_collection)
 print(f"Does collection {text_collection} exist in Milvus: {has}")
 if has == False:
     fields = [
-        FieldSchema(name="id", dtype=DataType.VARCHAR, is_primary=True, auto_id=False, max_length=256),
+        FieldSchema(
+            name="id",
+            dtype=DataType.VARCHAR,
+            is_primary=True,
+            auto_id=False,
+            max_length=256,
+        ),
         FieldSchema(name="uniqueName", dtype=DataType.VARCHAR, max_length=256),
         FieldSchema(name="metadata", dtype=DataType.JSON),
         FieldSchema(name="embeddings", dtype=DataType.FLOAT_VECTOR, dim=2048),
     ]
 
-    schema_text = CollectionSchema(fields, "LayerNext Text Embeddings", enable_dynamic_field=True)
+    schema_text = CollectionSchema(
+        fields, "LayerNext Text Embeddings", enable_dynamic_field=True
+    )
 
-    LayerNext_Text_embeddings_collection = Collection(text_collection, schema_text, consistency_level="Strong")
-
+    LayerNext_Text_embeddings_collection = Collection(
+        text_collection, schema_text, consistency_level="Strong"
+    )
 
     index = {
         "index_type": "IVF_FLAT",
@@ -94,11 +118,13 @@ if has == False:
     has_index = LayerNext_Text_embeddings_collection.has_index(index_name="vec_index")
 
     if has_index == False or has_index == None:
-        LayerNext_Text_embeddings_collection.create_index("embeddings", index, index_name="vec_index")
+        LayerNext_Text_embeddings_collection.create_index(
+            "embeddings", index, index_name="vec_index"
+        )
     try:
         LayerNext_Text_embeddings_collection.load()
     except Exception as e:
-        print(e)    
+        print(e)
 else:
     index = {
         "index_type": "IVF_FLAT",
@@ -113,10 +139,12 @@ else:
     }
     has_index = LayerNext_Text_embeddings_collection.has_index(index_name="vec_index")
     if has_index == False or has_index == None:
-        LayerNext_Text_embeddings_collection.create_index("embeddings", index, index_name="vec_index")
+        LayerNext_Text_embeddings_collection.create_index(
+            "embeddings", index, index_name="vec_index"
+        )
     try:
         LayerNext_Text_embeddings_collection.load()
     except Exception as e:
         print(e)
-    
+
 time.sleep(20000)
