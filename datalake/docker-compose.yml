@@ -150,7 +150,7 @@ services:
       - layernext_network
 
   datalake_node_backend:
-    image: layernextai/datalake_node_backend:3.7.0
+    image: layernextai/datalake_node_backend:3.8.0
     restart: always
     ports:
       - "3000:3000"
@@ -174,7 +174,7 @@ services:
       - ./.env
 
   datalake_flask_backend:
-    image: layernextai/datalake_flask_backend:3.7.0
+    image: layernextai/datalake_flask_backend:3.8.0
     restart: always
     ports:
       - "3100:3100"
