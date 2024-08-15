@@ -20,8 +20,6 @@ services:
       - AWS_BUCKET_NAME
       - SETUP_CUSTOMER
       - TEAM_ID
-    networks:
-      - layernext_network
     deploy:
       resources:
         limits:
@@ -31,8 +29,6 @@ services:
   datalake_connection_mongodb:
     image: mongo:5.0.13
     restart: always
-    networks:
-      - layernext_network
     ports:
       - 38017:27017
     volumes:
@@ -62,8 +58,6 @@ services:
       MYSQL_DATABASE: ${MYSQL_DATABASE}
       MYSQL_USER: ${MYSQL_USER}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
-    networks:
-      - layernext_network
     ports:
       - "3406:3306"
     volumes:
@@ -123,8 +117,6 @@ services:
   datalake_frontend:
     image: layernextai/datalake_frontend:3.7.0
     restart: always
-    networks:
-      - layernext_network
     ports:
       - "8095:8095"
     environment:
@@ -132,6 +124,5 @@ services:
       - LAYERNEXT_SUB_DOMAIN=${SETUP_CUSTOMER}
 
 networks:
-  layernext_network:
-    external: true
-
+  default:
+    name: milvus
