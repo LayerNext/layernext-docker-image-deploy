@@ -17,8 +17,8 @@ if [ -f $accounts_env ]; then
 fi
 cat > $accounts_env <<EOL
 #DB
-DB_HOST=host.docker.internal
-DB_PORT=17017
+DB_HOST=sso_mongodb
+DB_PORT=27017
 DB_USER=sso_user
 DB_PASS=$(openssl rand -hex 10)
 DATABASE=authDB
@@ -87,8 +87,8 @@ if [ -f $datalake_env ]; then
 fi
 cat > $datalake_env <<EOL
 #DB
-DB_HOST=host.docker.internal
-DB_PORT=37017
+DB_HOST=datalake_mongodb
+DB_PORT=27017
 DB_USER=datalake_user
 DB_PASS=$(openssl rand -hex 10)
 DATABASE=datalakeDB
@@ -128,7 +128,7 @@ TEAM_ID=6374c3decb468b7a7a68a116
 JWT_SECRET=$JWT_SECRET
 
 # Auth
-SSO_INTERNAL_SERVER=http://host.docker.internal:8888
+SSO_INTERNAL_SERVER=http://sso_node_backend:8888
 
 # studio
 ANNO_INTERNAL_SERVER=http://host.docker.internal:8080
@@ -161,7 +161,7 @@ ALL_BUCKETS=$ALL_BUCKETS
 SUBSEQUENT_CRAWL=$SUBSEQUENT_CRAWL
 
 #CONNECTION DB
-CONNECTION_DB_HOST=host.docker.internal
+CONNECTION_DB_HOST=datalake_connection_mongodb
 CONNECTION_DB_HOST_AIRBYTE=localhost
 CONNECTION_DB_PORT=38017
 CONNECTION_DB_USER=connection_user
@@ -171,7 +171,7 @@ CONNECTION_DUMP_USER=connection_dumprestoreuser
 CONNECTION_DUMP_USER_PWD=$(openssl rand -hex 10)
 CONNECTION_MONGODB_ADMIN_PASSWORD=$(openssl rand -hex 16)
 CONNECTION_MYSQL_DB_HOST_AIRBYTE=localhost
-CONNECTION_MYSQL_DB_HOST=host.docker.internal
+CONNECTION_MYSQL_DB_HOST=datalake_connection_mysql
 CONNECTION_MYSQL_DB_PORT=3406
 MYSQL_ROOT_PASSWORD=$(openssl rand -hex 16)
 MYSQL_DATABASE=connectiondb
@@ -179,7 +179,11 @@ MYSQL_USER=connection_user
 MYSQL_PASSWORD=$(openssl rand -hex 10)
 
 #NEW KEYS ADDED HERE
-OPENAI_API_KEY=$OPENAI_API_KEY
+LLM_API_PROVIDER=openai
+LLM_API_KEY=$OPENAI_API_KEY
+MODEL_ELEM_SEARCH=gpt-4o
+MODEL_DATA_EXTRACTION=gpt-4o
+
 AIRBYTE_URL=http://host.docker.internal:8000
 AIRBYTE_USER_NAME=zoomi-airbyte
 AIRBYTE_PASSWORD=z00Mi$]PY4Ju]
@@ -189,7 +193,7 @@ DATALAKE_SECRET=$DATALAKE_SECRET
 
 TEXT_SIMILARITY_THRESHOLD=0.75
 
-PYTHON_BASE_URL=http://host.docker.internal:3100
+PYTHON_BASE_URL=http://datalake_flask_backend:3100
 API_URL=https://api.$SETUP_CUSTOMER.layernext.ai
 
 # Vecttor Database
@@ -218,8 +222,8 @@ if [ -f $source_env ]; then
 fi
 cat > $source_env <<EOL
 #DB
-DB_HOST=host.docker.internal
-DB_PORT=61017
+DB_HOST=chat_mongodb
+DB_PORT=27017
 DB_USER=chat_user
 DB_PASS=$(openssl rand -hex 10)
 DATABASE=chatDB
@@ -242,12 +246,9 @@ DB_MEMORY_LIMIT=3GB
 JWT_SECRET = $JWT_SECRET
 
 #LLM FAST-API
-OPENAI_API_KEY=sk-proj-O9R3ufvQNujKsyiKjDNBT3BlbkFJWyx7YvrEjl2gudUymgAm
+#OPENAI_API_KEY=sk-proj-O9R3ufvQNujKsyiKjDNBT3BlbkFJWyx7YvrEjl2gudUymgAm
 LLM_TYPE=openai
-# #MODEL=gpt-4-1106-preview
-# MODEL=gpt-4-0125-preview
 
-######## NEWLY ADDED LLM KEYS ########
 LLM_API_KEY=$OPENAI_API_KEY
 LLM_API_PROVIDER=openai
 MODEL=gpt-4-0125-preview
@@ -255,7 +256,7 @@ MODEL_INSIGHT=gpt-4-0125-preview
 
 API_KEY=key_z3fpungyhn15jqpz6ar267g1yp5fyc90
 SECRET_KEY=7p2pnxqbi6441gdyfec5
-URL=https://api.$SETUP_CUSTOMER.layernext.ai
+URL=http://datalake_node_backend:3000
 
 APP_PORT=5082
 DEBUG=False
@@ -291,4 +292,4 @@ SETUP_CUSTOMER=$SETUP_CUSTOMER
 
 EOL
 
-pipx install python-dotenv
+pip install python-dotenv
