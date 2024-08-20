@@ -205,7 +205,7 @@ VECTOR_DB_PASS=Milvus
 VECTOR_DB_NAME=LayerNext
 SIMILARITY_SCORE_THRESHOLD=0.65
 
-if [ -z "$LOCAL_STORAGE_PATH" ]; then
+if[-z"$LOCAL_STORAGE_PATH"]; then
     LOCAL_STORAGE_PATH="/home/ubuntu/layernext-docker-deploy"
     DEFAULT_BUCKET_NAME_FOR_LOCAL_STORAGE="default_bucket"
 else
@@ -292,4 +292,4 @@ SETUP_CUSTOMER=$SETUP_CUSTOMER
 
 EOL
 
-pip install python-dotenv
+pipx install python-dotenv
