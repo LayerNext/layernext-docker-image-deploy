@@ -9,7 +9,8 @@ services:
       - ./mongoData:/data/db
       - ./DB_initial_data/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js
     networks:
-      - layernext_network
+      layernext_network:
+        ipv4_address: 172.23.10.2
     environment:
       - MONGO_INITDB_ROOT_USERNAME=admin
       - MONGO_INITDB_ROOT_PASSWORD=${MONGODB_ADMIN_PASSWORD}
@@ -42,7 +43,8 @@ services:
     depends_on:
       - sso_mongodb
     networks:
-      - layernext_network
+      layernext_network:
+        ipv4_address: 172.23.10.3
     volumes:
       - ./sso-layernext-backend/logs:/usr/src/app/logs
       - ./sso-layernext-backend/storage:/usr/src/app/storage
@@ -55,7 +57,8 @@ services:
     ports:
       - "8097:8097"
     networks:
-      - layernext_network
+      layernext_network:
+        ipv4_address: 172.23.10.4
     environment:
       - TZ:utc
       - LAYERNEXT_SUB_DOMAIN=${SETUP_CUSTOMER}
@@ -69,7 +72,8 @@ services:
       - ./nginxData/certbot/conf:/etc/letsencrypt
       - ./nginxData/certbot/www:/var/www/certbot
     networks:
-      - layernext_network
+      layernext_network:
+        ipv4_address: 172.23.10.5
     ports:
       - "81:80"
     environment:
@@ -90,3 +94,6 @@ services:
 networks:
   layernext_network:
     external: true
+    ipam:
+      config:
+        - subnet: 172.23.0.0/16
