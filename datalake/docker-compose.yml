@@ -21,8 +21,7 @@ services:
       - SETUP_CUSTOMER
       - TEAM_ID
     networks:
-      layernext_network:
-        ipv4_address: 172.23.20.2
+      - layernext_network
     deploy:
       resources:
         limits:
@@ -33,8 +32,7 @@ services:
     image: mongo:5.0.13
     restart: always
     networks:
-      layernext_network:
-        ipv4_address: 172.23.20.3
+      - layernext_network
     ports:
       - 38017:27017
     volumes:
@@ -65,8 +63,7 @@ services:
       MYSQL_USER: ${MYSQL_USER}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
     networks:
-      layernext_network:
-        ipv4_address: 172.23.20.4
+      - layernext_network
     ports:
       - "3406:3306"
     volumes:
@@ -86,8 +83,7 @@ services:
     depends_on:
       - datalake_mongodb
     networks:
-      layernext_network:
-        ipv4_address: 172.23.20.5
+      - layernext_network
     deploy:
       resources:
         limits:
@@ -115,8 +111,7 @@ services:
       - datalake_node_backend
       - datalake_mongodb
     networks:
-      layernext_network:
-        ipv4_address: 172.23.20.6
+      - layernext_network
     deploy:
       resources:
         limits:
@@ -129,8 +124,7 @@ services:
     image: layernextai/datalake_frontend:3.7.0
     restart: always
     networks:
-      layernext_network:
-        ipv4_address: 172.23.20.7
+      - layernext_network
     ports:
       - "8095:8095"
     environment:
@@ -140,6 +134,4 @@ services:
 networks:
   layernext_network:
     external: true
-    ipam:
-      config:
-        - subnet: 172.23.0.0/16
+

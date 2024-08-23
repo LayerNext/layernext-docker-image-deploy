@@ -9,8 +9,7 @@ services:
       - ./mongoData:/data/db
       - ./DB_initial_data/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js
     networks:
-      layernext_network:
-        ipv4_address: 172.23.30.2
+      - layernext_network
     environment:
       - MONGO_INITDB_ROOT_USERNAME=admin
       - MONGO_INITDB_ROOT_PASSWORD=${MONGODB_ADMIN_PASSWORD}
@@ -32,8 +31,7 @@ services:
     image: layernextai/chat_frontend:3.7.0
     restart: always
     networks:
-      layernext_network:
-        ipv4_address: 172.23.30.3
+      - layernext_network
     ports:
       - "8099:8099"
     environment:
@@ -44,8 +42,7 @@ services:
     image: layernextai/llm_fast_api_backend:3.8.1
     restart: always
     networks:
-      layernext_network:
-        ipv4_address: 172.23.30.4
+      - layernext_network
     ports:
       - "5082:5082"
     volumes:
@@ -69,6 +66,3 @@ services:
 networks:
   layernext_network:
     external: true
-    ipam:
-      config:
-        - subnet: 172.23.0.0/16
