@@ -106,7 +106,7 @@ services:
     volumes:
       - ./datalake-flask/logs:/app/logs
       - ./datalake-nodejs/config:/app/config
-      - ${LOCAL_STORAGE_PATH}:/usr/src/app/buckets/${DEFAULT_BUCKET_NAME_FOR_LOCAL_STORAGE}
+      - ${LOCAL_STORAGE_PATH}:/usr/src/app/buckets/${DEFAULT_BUCKET_NAME}
     depends_on:
       - datalake_node_backend
       - datalake_mongodb
