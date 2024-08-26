@@ -94,7 +94,7 @@ services:
       - ./datalake-nodejs/storage:/usr/src/app/datalake-nodejs/storage
       - ./datalake-python-processor/logs:/usr/src/app/datalake-python-processor/logs
       - ./datalake-nodejs/config:/usr/src/app/datalake-nodejs/config
-      - ${LOCAL_STORAGE_PATH}:/usr/src/app/buckets/${DEFAULT_BUCKET_NAME_FOR_LOCAL_STORAGE}
+      - ${LOCAL_STORAGE_PATH}:/usr/src/app/buckets/${DEFAULT_BUCKET_NAME}
     env_file:
       - ./.env
 
