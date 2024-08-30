@@ -47,6 +47,7 @@ services:
       - "5082:5082"
     volumes:
       - ./LLM-integration/logs:/app/logs
+      - ../datalake/datalake-flask/logs:/app/logs/metalake_logs
       - ./LLM-integration/images:/app/images
       - ./LLM-integration/media:/app/media
       - ./LLM-integration/files:/app/files
