@@ -291,7 +291,7 @@ EOL
 # generate monitoring env
 monitoring_env="./monitoring/.env"
 if [ -f $monitoring_env ]; then
-  echo "Existing env file found for accounts. replacing..."
+  echo "Existing env file found for monitoring. replacing..."
   echo "Warning: If the system was already built, the system may become non functional due to regeneration of db passwords"
 fi
 cat > $monitoring_env <<EOL
