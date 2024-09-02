@@ -8,7 +8,7 @@ global:
 receivers:
   - name: mail
     email_configs:
-    - to: "tharinduimalka@zoomi.ca"
+    - to: "${SUPPORT_EMAIL}"
       headers:
         subject: "Alert on Dev Server ({{ .Status }}): {{ .CommonLabels.severity }} {{ .CommonAnnotations.message }} ({{ .CommonLabels.alertname }})"
       html: |

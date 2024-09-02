@@ -68,6 +68,7 @@ services:
       - SMTP_FROM=${SMTP_FROM}
       - SMTP_AUTH_USERNAME=${SMTP_AUTH_USERNAME}
       - SMTP_AUTH_PASSWORD=${SMTP_AUTH_PASSWORD}
+      - SUPPORT_EMAIL=${SUPPORT_EMAIL}
     ports:
       - "9103:9093"
     volumes:
