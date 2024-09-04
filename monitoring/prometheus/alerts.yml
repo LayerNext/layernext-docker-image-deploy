@@ -1,0 +1,124 @@
+groups:
+  # - name: test-alerts
+  #   interval: 100m
+  #   rules:
+  #     - alert: TestAlert
+  #       expr: vector(1)  # Simple expression that always evaluates to 1
+  #       for: 24h
+  #       labels:
+  #         severity: "low"
+  #       annotations:
+  #         summary: "This is a test alert"
+  #         description: "This alert is used to test alert sending every minute."
+
+  - name: docker-alerts
+    interval: 1m
+    rules:
+      # Memory Usage Alert
+      - alert: HighMemoryUsage
+        expr: (container_memory_usage_bytes{image!=""} / container_spec_memory_limit_bytes{image!=""} ) * 100 > 90 and container_spec_memory_limit_bytes{image!=""} > 0
+        for: 5m
+        labels:
+          severity: "critical"
+        annotations:
+          summary: "High memory usage for container"
+          description: "Container {{ $labels.name }} is using more than 90% of its memory limit."
+
+      # CPU Usage Alert
+      - alert: HighCpuUsage
+        expr: rate(container_cpu_usage_seconds_total{image!=""}[5m]) > 0.7
+        for: 5m
+        labels:
+          severity: "high"
+        annotations:
+          summary: "High CPU usage for container"
+          description: "Container {{ $labels.name }} is using more than 70% of CPU in the last 5 minutes."
+
+      # Disk Usage Alerts with tiered thresholds
+      - alert: DiskUsageWarning
+        expr: (container_fs_usage_bytes{image!=""} / container_fs_limit_bytes{image!=""}) > 0.60
+        for: 5m
+        labels:
+          severity: "warning"
+        annotations:
+          summary: "Disk usage warning for container"
+          description: "Container {{ $labels.name }} is using more than 60% of its disk limit."
+
+      - alert: DiskUsageCritical
+        expr: (container_fs_usage_bytes{image!=""} / container_fs_limit_bytes{image!=""}) > 0.70
+        for: 5m
+        labels:
+          severity: "critical"
+        annotations:
+          summary: "Disk usage critical for container"
+          description: "Container {{ $labels.name }} is using more than 70% of its disk limit."
+
+      - alert: DiskUsageUrgent
+        expr: (container_fs_usage_bytes{image!=""} / container_fs_limit_bytes{image!=""}) > 0.85
+        for: 5m
+        labels:
+          severity: "urgent"
+        annotations:
+          summary: "Disk usage urgent for container"
+          description: "Container {{ $labels.name }} is using more than 85% of its disk limit."
+
+      - alert: ContainerRestartsUrgent
+        expr: rate(container_restart_total[5m]) > 0.1
+        for: 5m
+        labels:
+          severity: "urgent"
+        annotations:
+          summary: "Container restarts urgent"
+          description: "Container {{ $labels.name }} is restarting more than 0.1 times per second over the last 5 minutes."
+
+
+  - name: server-alerts
+    interval: 1m
+    rules:
+      # Disk Space Alerts with tiered thresholds
+      - alert: LowDiskSpaceWarning
+        expr: sum((node_filesystem_size_bytes - node_filesystem_avail_bytes) / node_filesystem_size_bytes) by (device) / count(node_filesystem_size_bytes) by (device) > 0.60
+        for: 1m
+        labels:
+          severity: "warning"
+        annotations:
+          summary: "Low disk space warning"
+          description: "Server is using more than 60% of the disk storage."
+
+      - alert: LowDiskSpaceCritical
+        expr: sum((node_filesystem_size_bytes - node_filesystem_avail_bytes) / node_filesystem_size_bytes) by (device) / count(node_filesystem_size_bytes) by (device) > 0.70
+        for: 1m
+        labels:
+          severity: "critical"
+        annotations:
+          summary: "Low disk space critical"
+          description: "Server is using more than 70% of the disk storage."
+
+      - alert: LowDiskSpaceUrgent
+        expr: sum((node_filesystem_size_bytes - node_filesystem_avail_bytes) / node_filesystem_size_bytes) by (device) / count(node_filesystem_size_bytes) by (device) > 0.85
+        for: 1m
+        labels:
+          severity: "urgent"
+        annotations:
+          summary: "Low disk space urgent"
+          description: "Server is using more than 85% of the disk storage."
+
+      # CPU Usage Alert
+      - alert: HighCpuUsageServer
+        expr: 100 - (avg(irate(node_cpu_seconds_total{mode="idle"}[5m])) by (instance) * 100) > 90
+        for: 5m
+        labels:
+          severity: "high"
+        annotations:
+          summary: "High CPU usage"
+          description: "Server is using more than 90% of its CPU capacity."
+
+      # Memory Usage Alert
+      - alert: HighMemoryUsageServer
+        expr: 100 - (avg(node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes) * 100) > 80
+        for: 5m
+        labels:
+          severity: "high"
+        annotations:
+          summary: "High memory usage"
+          description: "Server is using more than 80% of its memory."
