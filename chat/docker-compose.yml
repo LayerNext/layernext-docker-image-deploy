@@ -28,7 +28,7 @@ services:
           memory: ${DB_MEMORY_LIMIT}
 
   chat_frontend:
-    image: layernextai/chat_frontend:3.7.0
+    image: layernextai/chat_frontend:3.7.1
     restart: always
     networks:
       - layernext_network
@@ -39,7 +39,7 @@ services:
       - LAYERNEXT_SUB_DOMAIN=${SETUP_CUSTOMER}
 
   llm_fast_api_backend:
-    image: layernextai/llm_fast_api_backend:3.8.2
+    image: layernextai/llm_fast_api_backend:3.9.0
     restart: always
     networks:
       - layernext_network
@@ -47,6 +47,7 @@ services:
       - "5082:5082"
     volumes:
       - ./LLM-integration/logs:/app/logs
+      - ../datalake/datalake-flask/logs:/app/logs/metalake_logs
       - ./LLM-integration/images:/app/images
       - ./LLM-integration/media:/app/media
       - ./LLM-integration/files:/app/files

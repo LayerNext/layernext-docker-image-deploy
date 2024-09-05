@@ -289,4 +289,22 @@ SETUP_CUSTOMER=$SETUP_CUSTOMER
 
 EOL
 
-pip install python-dotenv
+
+# generate monitoring env
+monitoring_env="./monitoring/.env"
+if [ -f $monitoring_env ]; then
+  echo "Existing env file found for monitoring. replacing..."
+  echo "Warning: If the system was already built, the system may become non functional due to regeneration of db passwords"
+fi
+cat > $monitoring_env <<EOL
+GRAFANA_USERNAME=$GRAFANA_USERNAME
+GRAFANA_PASSWORD=$GRAFANA_PASSWORD
+SMTP_SMARTHOST=$SMTP_SMARTHOST
+SMTP_FROM=$SMTP_FROM
+SMTP_AUTH_USERNAME=$SMTP_AUTH_USERNAME
+SMTP_AUTH_PASSWORD=$SMTP_AUTH_PASSWORD
+SUPPORT_EMAIL=$SUPPORT_EMAIL
+EOL
+
+
+pipx install python-dotenv
