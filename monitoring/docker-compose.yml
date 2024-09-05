@@ -72,7 +72,7 @@ services:
     ports:
       - "9103:9093"
     volumes:
-      - ./alertmanager-entrypoint.sh:/usr/local/bin/alertmanager-entrypoint.sh
+      - ./alertmanager/alertmanager-entrypoint.sh:/usr/local/bin/alertmanager-entrypoint.sh
       - "./alertmanager:/config"
       - ./alertmanager/alertmanager.yml.template:/etc/alertmanager/alertmanager.yml.template
       - alertmanager_data:/data
