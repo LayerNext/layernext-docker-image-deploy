@@ -74,10 +74,10 @@ services:
     volumes:
       - ./alertmanager-entrypoint.sh:/usr/local/bin/alertmanager-entrypoint.sh
       - "./alertmanager:/config"
-      - ./alertmanager/alertmanager.yml:/etc/alertmanager/alertmanager.yml
+      - ./alertmanager/alertmanager.yml.template:/etc/alertmanager/alertmanager.yml.template
       - alertmanager_data:/data
     restart: always
-    entrypoint: [ "/bin/sh", "/usr/local/bin/alertmanager-entrypoint.sh" ]
+    entrypoint: [ "/usr/local/bin/alertmanager-entrypoint.sh" ]
     depends_on:
       - grafana
     networks:
