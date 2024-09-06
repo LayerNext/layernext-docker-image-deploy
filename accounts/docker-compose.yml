@@ -33,6 +33,7 @@ services:
       - DATALAKE_SECRET
       - CHAT_KEY
       - CHAT_SECRET
+      - DOMAIN_URL
 
   sso_node_backend:
     image: layernextai/sso_node_backend:3.1.2
@@ -58,7 +59,7 @@ services:
       - layernext_network
     environment:
       - TZ:utc
-      - LAYERNEXT_SUB_DOMAIN=${SETUP_CUSTOMER}
+      - LAYERNEXT_SUB_DOMAIN=${DOMAIN_URL}
 
   layernext_nginx:
     image: nginx
@@ -85,7 +86,7 @@ services:
       - ANALYTICS_BACKEND_PORT=5081
       - CHAT_FRONTEND_PORT=8099
       - CHAT_BACKEND_PORT=5082
-      - SETUP_CUSTOMER
+      - DOMAIN_URL
 
 networks:
   layernext_network:

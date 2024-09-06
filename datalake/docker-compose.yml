@@ -129,9 +129,8 @@ services:
       - "8095:8095"
     environment:
       - TZ:utc
-      - LAYERNEXT_SUB_DOMAIN=${SETUP_CUSTOMER}
+      - LAYERNEXT_SUB_DOMAIN=${DOMAIN_URL}
 
 networks:
   layernext_network:
     external: true
-

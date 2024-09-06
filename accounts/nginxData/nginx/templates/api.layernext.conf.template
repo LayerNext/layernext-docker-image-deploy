@@ -18,14 +18,14 @@
 ##
 
 
-# Virtual Host configuration for api.${SETUP_CUSTOMER}.layernext.ai
+# Virtual Host configuration for api.${DOMAIN_URL}
 
 
 server {
 
 	    client_max_body_size 100M;
 
-	    server_name api.${SETUP_CUSTOMER}.layernext.ai;
+	    server_name api.${DOMAIN_URL};
 		resolver 127.0.0.11 valid=10s;
    		resolver_timeout 5s;
 
