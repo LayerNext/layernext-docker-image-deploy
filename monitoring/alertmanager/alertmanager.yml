@@ -1,8 +1,8 @@
 global:
   # Sendgrid SMTP properties.
-  smtp_smarthost: '${SMTP_SMARTHOST}'
+  smtp_smarthost: 'smtp.sendgrid.net:587'
   smtp_from: '${SMTP_FROM}'
-  smtp_auth_username: '${SMTP_AUTH_USERNAME}'
+  smtp_auth_username: 'apikey'
   smtp_auth_password: '${SMTP_AUTH_PASSWORD}'
 
 receivers:
