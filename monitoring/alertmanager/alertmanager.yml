@@ -1,8 +1,8 @@
 global:
   # Sendgrid SMTP properties.
-  smtp_smarthost: '${SMTP_SMARTHOST}'
+  smtp_smarthost: 'smtp.sendgrid.net:587'
   smtp_from: '${SMTP_FROM}'
-  smtp_auth_username: '${SMTP_AUTH_USERNAME}'
+  smtp_auth_username: 'apikey'
   smtp_auth_password: '${SMTP_AUTH_PASSWORD}'
 
 receivers:
@@ -10,7 +10,7 @@ receivers:
     email_configs:
     - to: "${SUPPORT_EMAIL}"
       headers:
-        subject: "Alert on Dev Server ({{ .Status }}): {{ .CommonLabels.severity }} {{ .CommonAnnotations.message }} ({{ .CommonLabels.alertname }})"
+        subject: "Alert on ${SETUP_CUSTOMER} ({{ .Status }}): {{ .CommonLabels.severity }} {{ .CommonAnnotations.message }} ({{ .CommonLabels.alertname }})"
       html: |
             <html lang="en">
             <head>

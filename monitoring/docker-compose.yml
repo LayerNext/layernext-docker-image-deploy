@@ -69,12 +69,13 @@ services:
       - SMTP_AUTH_USERNAME=${SMTP_AUTH_USERNAME}
       - SMTP_AUTH_PASSWORD=${SMTP_AUTH_PASSWORD}
       - SUPPORT_EMAIL=${SUPPORT_EMAIL}
+      - SETUP_CUSTOMER=${SETUP_CUSTOMER}
     ports:
       - "9103:9093"
     volumes:
       - ./alertmanager/alertmanager-entrypoint.sh:/usr/local/bin/alertmanager-entrypoint.sh
       - "./alertmanager:/config"
-      - ./alertmanager/alertmanager.yml:/etc/alertmanager/alertmanager.yml
+      - ./alertmanager/alertmanager.yml:/etc/alertmanager/alertmanager.yml.tmp
       - alertmanager_data:/data
     restart: always
     entrypoint: [ "/usr/local/bin/alertmanager-entrypoint.sh" ]

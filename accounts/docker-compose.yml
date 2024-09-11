@@ -66,9 +66,6 @@ services:
     restart: always
     volumes:
       - ./nginxData/nginx/templates:/etc/nginx/templates
-      - ../dataset/layernext-sync-tool:/home/layernext-sync-tool
-      - ./nginxData/certbot/conf:/etc/letsencrypt
-      - ./nginxData/certbot/www:/var/www/certbot
     networks:
       - layernext_network
     ports:
