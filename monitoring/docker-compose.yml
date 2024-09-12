@@ -75,7 +75,7 @@ services:
     volumes:
       - ./alertmanager/alertmanager-entrypoint.sh:/usr/local/bin/alertmanager-entrypoint.sh
       - "./alertmanager:/config"
-      - ./alertmanager/alertmanager.yml:/etc/alertmanager/alertmanager.yml
+      - ./alertmanager/alertmanager.yml:/etc/alertmanager/alertmanager.yml.tmp
       - alertmanager_data:/data
     restart: always
     entrypoint: [ "/usr/local/bin/alertmanager-entrypoint.sh" ]
