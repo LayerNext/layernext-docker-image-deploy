@@ -39,7 +39,7 @@ services:
       - LAYERNEXT_SUB_DOMAIN=${DOMAIN_URL}
 
   llm_fast_api_backend:
-    image: layernextai/llm_fast_api_backend:3.10.0
+    image: layernextai/llm_fast_api_backend:3.11.0
     restart: always
     networks:
       - layernext_network
