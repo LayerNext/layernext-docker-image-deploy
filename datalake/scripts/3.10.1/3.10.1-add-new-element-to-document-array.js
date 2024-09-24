@@ -6,26 +6,28 @@ let document_sections = [
     "notice",
     "schedule",
     "transcript"
-  ];
-  
-  db.getCollection('SystemData').updateOne(
-    {
-      "dataDictionaryMapping": { $exists: true } 
-    },
-    {
-      $addToSet: {
-        "dataDictionaryMapping.mappingsList.$[element].sections": {
-          $each: document_sections
-        }
+];
+
+db.getCollection('SystemData').updateOne(
+  {
+    "dataDictionaryMapping": { $exists: true } 
+  },
+  {
+    $addToSet: {
+      "dataDictionaryMapping.mappingsList.$[element].sections": {
+        $each: document_sections
       }
     },
-    {
-      arrayFilters: [
-        {
-          "element.source": "documents",
-          "element.type": "documents"
-        }
-      ]
+    $set: {
+      "dataDictionaryMapping.modifiedDate": new Date()
     }
-  );
-  
+  },
+  {
+    arrayFilters: [
+      {
+        "element.source": "documents",
+        "element.type": "documents"
+      }
+    ]
+  }
+);
