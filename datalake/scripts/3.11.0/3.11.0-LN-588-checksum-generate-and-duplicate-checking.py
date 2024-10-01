@@ -9,17 +9,11 @@ import pathlib
 from azure.storage.blob import BlobServiceClient, generate_blob_sas, BlobSasPermissions
 import datetime
 # from storage_bucket import StorageBucket
-
 import shutil
 import jwt
-
 from google.cloud import storage
-
 import boto3
 from botocore.exceptions import ClientError
-
-
-
 from typing import List, Optional
 import pymongo
 import json
@@ -28,8 +22,6 @@ from pymongo.errors import AutoReconnect, ConnectionFailure
 from pymongo.command_cursor import CommandCursor
 import bson
 from bson.int64 import Int64
-import configparser
-
 import zlib
 import traceback
 import uuid
@@ -38,6 +30,16 @@ from concurrent.futures import ThreadPoolExecutor
 
 from dotenv import load_dotenv
 load_dotenv()  # take environment variables from .env.
+
+# =======================================requirements.txt=============================================
+# python-dotenv
+# concurrent_log_handler
+# pymongo
+# azure-storage-blob
+# google-cloud-storage
+# pyjwt
+# boto3
+# ======================================================================================================
 
 # ================================constants.py======================================================
 # System Label Type
