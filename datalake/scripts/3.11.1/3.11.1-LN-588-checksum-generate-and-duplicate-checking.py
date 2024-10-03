@@ -9,11 +9,17 @@ import pathlib
 from azure.storage.blob import BlobServiceClient, generate_blob_sas, BlobSasPermissions
 import datetime
 # from storage_bucket import StorageBucket
+
 import shutil
 import jwt
+
 from google.cloud import storage
+
 import boto3
 from botocore.exceptions import ClientError
+
+
+
 from typing import List, Optional
 import pymongo
 import json
@@ -22,6 +28,8 @@ from pymongo.errors import AutoReconnect, ConnectionFailure
 from pymongo.command_cursor import CommandCursor
 import bson
 from bson.int64 import Int64
+import configparser
+
 import zlib
 import traceback
 import uuid
@@ -30,16 +38,6 @@ from concurrent.futures import ThreadPoolExecutor
 
 from dotenv import load_dotenv
 load_dotenv()  # take environment variables from .env.
-
-# =======================================requirements.txt=============================================
-# python-dotenv
-# concurrent_log_handler
-# pymongo
-# azure-storage-blob
-# google-cloud-storage
-# pyjwt
-# boto3
-# ======================================================================================================
 
 # ================================constants.py======================================================
 # System Label Type
@@ -659,7 +657,7 @@ mongo_manager = MongoDBmanager("MetaData")
 cloud_storage_manager = CloudStorageManager()
 
 # Logger setup (optional, if logging is useful)
-logger = get_debug_logger('media_process', './logs/media_process.log')
+logger = get_debug_logger('media_process', '../logs/media_process.log')
 
 # Setup temporary directory for downloads (based on your team's approach)
 random_id = uuid.uuid4()
@@ -745,6 +743,7 @@ def create_media_process_list(documents, existing_files):
 
             if unique_key[1] != "N/A":  # Checksum exists
                 if unique_key in batch_unique_keys:
+                    logger.info(f"Duplicate Document Found in batch ")
                     doc["isDuplicate"] = True
                 else:
                     batch_unique_keys[unique_key] = doc
@@ -782,6 +781,7 @@ def fetch_pending_metadata_and_process():
 
             # Fetch metadata similar to your team's code
             metaDataFilter = {
+                "objectStatus":ObjectStatus.ACTIVE.value,
                 "checksum": {"$exists": False},  # Fetch documents without checksum
                 "objectType": {"$in": [1, 2, 6]}  # Assuming 1=IMAGE, 2=VIDEO, 6=OTHER
             }
@@ -841,7 +841,13 @@ def fetch_pending_metadata_and_process():
                 file_checksums = [doc["checksum"] for doc in processed_docs if doc and doc["checksum"] != "N/A"]
                 if file_checksums:
                     logger.info(f"Querying MetaLake for existing files with checksums: {file_checksums}")
-                    existing_files = list(mongo_manager.get_documents({"checksum": {"$in": file_checksums}}))
+                    query_filter = {
+                        "$and": [
+                            {"checksum": {"$in": file_checksums}},
+                            {"objectStatus": ObjectStatus.ACTIVE.value}
+                        ]
+                    }
+                    existing_files = list(mongo_manager.get_documents(query_filter))
                 else:
                     existing_files = []
                     logger.info("No valid checksums found to query MetaLake.")
