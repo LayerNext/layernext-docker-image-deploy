@@ -1,0 +1,7 @@
+python-dotenv
+concurrent_log_handler
+pymongo
+azure-storage-blob
+google-cloud-storage
+pyjwt
+boto3
