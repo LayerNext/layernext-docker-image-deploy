@@ -95,7 +95,7 @@ services:
       - ./datalake-python-processor/logs:/usr/src/app/datalake-python-processor/logs
       - ./datalake-nodejs/config:/usr/src/app/datalake-nodejs/config
       - ${LOCAL_STORAGE_PATH}:/usr/src/app/buckets/${DEFAULT_BUCKET_NAME}
-      - /home/ubuntu/.keys:/app/keys/
+      - ./datalake-nodejs/config:/app/config/
     env_file:
       - ./.env
 
@@ -108,7 +108,7 @@ services:
       - ./datalake-flask/logs:/app/logs
       - ./datalake-nodejs/config:/app/config
       - ${LOCAL_STORAGE_PATH}:/usr/src/app/buckets/${DEFAULT_BUCKET_NAME}
-      - /home/ubuntu/.keys:/app/keys/
+      - ./datalake-nodejs/config:/app/config/
     depends_on:
       - datalake_node_backend
       - datalake_mongodb
