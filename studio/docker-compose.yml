@@ -21,7 +21,7 @@ services:
         - TEAM_ID
         
   studio_python_app:
-    image: layernextai/studio_python_app:2.3.0
+    image: layernextai/studio_python_app:2.3.2
     restart: always
     ports:
       - "8081:8081"
