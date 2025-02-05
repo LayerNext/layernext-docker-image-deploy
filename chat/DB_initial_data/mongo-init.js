@@ -56,6 +56,27 @@ db.Messages.createIndex({
 
 // db.Agents.createIndex({"agentName": 1})
 
+db.Conversations.createIndex({
+  status: 1,
+  type: 1,
+  userId: 1,
+  updatedAt: -1,
+  _id: -1
+});
+db.Messages.createIndex({
+  conversationId: 1,
+  senderType: 1,
+  is_front_end_data: 1
+});
+db.Conversations.createIndex({ isInternal: 1 });
+
+db.Messages.createIndex({ conversationId: 1, userId: 1, createdAt: 1 })
+
+db.InsightReport.createIndex({ insight_id: 1, user_id: 1 })
+
+db.Hypothesis.createIndex({ '_id': 1, 'user_id': 1 })
+
+db.Hypothesis.createIndex({ 'insight_id': 1, 'user_id': 1, '_id': 1 })
 
 
 
