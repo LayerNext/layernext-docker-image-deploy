@@ -22,19 +22,19 @@ db.createUser({
 
 
 // create indexes
-db.Conversations.createIndex({
-  "status": 1,
-  "type": 1,
-  "userId": 1,
-  "updatedAt": -1,
-  "_id": -1
-})
+// db.Conversations.createIndex({
+//   "status": 1,
+//   "type": 1,
+//   "userId": 1,
+//   "updatedAt": -1,
+//   "_id": -1
+// })
 
-db.Messages.createIndex({
-  "conversationId": 1,
-  "userId": 1,
-  "createdAt": 1
-})
+// db.Messages.createIndex({
+//   "conversationId": 1,
+//   "userId": 1,
+//   "createdAt": 1
+// })
 
 // db.Agents.createIndex({
 //   "userId": 1,
