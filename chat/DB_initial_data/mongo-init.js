@@ -78,6 +78,14 @@ db.Hypothesis.createIndex({ '_id': 1, 'user_id': 1 })
 
 db.Hypothesis.createIndex({ 'insight_id': 1, 'user_id': 1, '_id': 1 })
 
+db.Conversations.createIndex({ userId: 1, isFavourite: 1 });
+
+db.Conversations.createIndex({ isInternal: 1 }, { partialFilterExpression: { isInternal: false } });
+
+db.Conversations.createIndex(
+  { searchString: 1 },
+  { collation: { locale: "en", strength: 2 } }
+);
 
 
 
