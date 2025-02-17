@@ -36,7 +36,7 @@ services:
       - DOMAIN_URL
 
   sso_node_backend:
-    image: layernextai/sso_node_backend:3.16.2
+    image: layernextai/sso_node_backend:3.16.5
     restart: always
     ports:
       - "8888:8888"
@@ -51,7 +51,7 @@ services:
       - ./.env
 
   sso_frontend:
-    image: layernextai/sso_frontend:3.16.2
+    image: layernextai/sso_frontend:3.16.5
     restart: always
     ports:
       - "8097:8097"
