@@ -32,7 +32,7 @@ db.getCollection("User").insert({
   _id: ObjectId("6374c47ecb468b7a7a68a117"),
   email: adminMail,
   name: "LayerNext Admin",
-  userType: 3,
+  userType: 2,
   profileImgUrl: "defaultProfileImage.png",
   projectList: null,
   teamId: ObjectId(_getEnv("TEAM_ID")),
