@@ -28,7 +28,7 @@ services:
           memory: ${DB_MEMORY_LIMIT}
 
   chat_frontend:
-    image: layernextai/chat_frontend:3.16.5
+    image: layernextai/chat_frontend:3.17.0
     restart: always
     networks:
       - layernext_network
