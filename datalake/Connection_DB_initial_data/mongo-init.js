@@ -20,7 +20,7 @@ db.createUser({
 db.createUser({
   user: _getEnv("CONNECTION_AIRBYTE_USER"),
   pwd: _getEnv("CONNECTION_AIRBYTE_PASSWORD"),
-  roles: [{ role: "readWrite", db: "CONNECTION_DATABASE" }, { role: "dbAdmin", db: "CONNECTION_DATABASE" }],
+  roles: [{ role: "readWrite", db: _getEnv("CONNECTION_DATABASE") }, { role: "dbAdmin", db: _getEnv("CONNECTION_DATABASE") }],
   mechanisms: ["SCRAM-SHA-1"]
 });
 
