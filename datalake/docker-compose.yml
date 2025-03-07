@@ -33,6 +33,7 @@ services:
     restart: always
     networks:
       - layernext_network
+      - kind
     ports:
       - 38017:27017
     volumes:
@@ -134,4 +135,6 @@ services:
 
 networks:
   layernext_network:
+    external: true
+  kind:
     external: true
