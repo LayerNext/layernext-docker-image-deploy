@@ -17,6 +17,14 @@ db.createUser({
   mechanisms: ["SCRAM-SHA-1"],
 });
 
+db.createUser({
+  user: _getEnv("CONNECTION_AIRBYTE_USER"),
+  pwd: _getEnv("CONNECTION_AIRBYTE_PASSWORD"),
+  roles: [{ role: "readWrite", db: "CONNECTION_DATABASE" }],
+  mechanisms: ["SCRAM-SHA-1"]
+});
+
+
 // switch to db
 db = db.getSiblingDB(_getEnv("CONNECTION_DATABASE"));
 

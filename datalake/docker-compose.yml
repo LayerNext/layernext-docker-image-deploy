@@ -48,6 +48,8 @@ services:
       - CONNECTION_DB_PASS
       - CONNECTION_DUMP_USER
       - CONNECTION_DUMP_USER_PWD
+      - CONNECTION_AIRBYTE_USER
+      - CONNECTION_AIRBYTE_PASSWORD
     deploy:
       resources:
         limits:
