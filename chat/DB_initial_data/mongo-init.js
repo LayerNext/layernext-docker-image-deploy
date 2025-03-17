@@ -87,5 +87,5 @@ db.Conversations.createIndex(
   { collation: { locale: "en", strength: 2 } }
 );
 
-
-
+db.LabelCacheMaster.createIndex({ field_id: 1, data_item_id: 1 })
+db.LabelCacheMaster.createIndex({ field_id: 1, data_item_id: 1, primary_label: 1 })
