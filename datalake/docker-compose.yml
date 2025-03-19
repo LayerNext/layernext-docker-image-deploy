@@ -76,7 +76,7 @@ services:
           memory: ${DB_MEMORY_LIMIT}
 
   datalake_node_backend:
-    image: layernextai/datalake_node_backend:3.18.1
+    image: layernextai/datalake_node_backend:3.18.2
     restart: always
     ports:
       - "3000:3000"
@@ -100,7 +100,7 @@ services:
       - ./.env
 
   datalake_flask_backend:
-    image: layernextai/datalake_flask_backend:3.18.1
+    image: layernextai/datalake_flask_backend:3.18.2
     restart: always
     ports:
       - "3100:3100"
@@ -122,7 +122,7 @@ services:
       - ./.env
 
   datalake_frontend:
-    image: layernextai/datalake_frontend:3.18.1
+    image: layernextai/datalake_frontend:3.18.2
     restart: always
     networks:
       - layernext_network
