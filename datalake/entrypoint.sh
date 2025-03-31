@@ -33,16 +33,24 @@ if [ "$ENABLE_WINDOWS_AUTH" = "true" ]; then
         log_message "Warning: Kerberos config file (/host_krb5/krb5.conf) not found. Skipping copy."
     fi
 
-    # Use the provided Kerberos username and password from environment variables
-    HOST_KRB_USER=$KERBEROS_USER
-    HOST_KRB_PASSWORD=$KERBEROS_PASSWORD
+    # Store the password in a temporary file with restricted permissions
+    PASSWORD_FILE=$(mktemp /tmp/kerberos_password.XXXXXX)
+    echo "$KERBEROS_PASSWORD" > "$PASSWORD_FILE"
+    chmod 600 "$PASSWORD_FILE"  # Restrict file permissions
 
-    log_message "Detected Kerberos user: $HOST_KRB_USER"
-    
-    # Store the password in a temporary file for `kinit`
-    echo "$HOST_KRB_PASSWORD" | kinit "$HOST_KRB_USER" || { log_message "Failed to run kinit."; exit 1; }
+    log_message "Detected Kerberos user: $KERBEROS_USER"
+
+    # Run kinit using the password file
+    kinit -k -t "$PASSWORD_FILE" "$KERBEROS_USER" || { log_message "Failed to run kinit."; exit 1; }
+
+    # Clean up the temporary password file
+    rm -f "$PASSWORD_FILE"
 
     log_message "Kerberos authentication successful."
 else
     log_message "Windows Authentication is disabled. Skipping Kerberos setup."
 fi
+
+# Ensure the default command provided in the Dockerfile or Compose file is executed
+log_message "Executing default command..."
+exec "$@"
