@@ -46,6 +46,3 @@ if [ "$ENABLE_WINDOWS_AUTH" = "true" ]; then
 else
     log_message "Windows Authentication is disabled. Skipping Kerberos setup."
 fi
-
-log_message "Executing default command..."
-exec "$@"
