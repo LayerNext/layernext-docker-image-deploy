@@ -22,7 +22,7 @@ if [ "$ENABLE_WINDOWS_AUTH" = "true" ]; then
         log_message "Kerberos credentials not provided. Skipping Kerberos authentication."
     else
         log_message "Setting up Kerberos authentication..."
-        kinit $KERBEROS_USER || log_message "Failed to authenticate with Kerberos."
+        kinit <<< "$KERBEROS_PASSWORD" "$KERBEROS_USER" || log_message "Failed to authenticate with Kerberos."
     fi
 else
     log_message "Windows Authentication is disabled. Skipping Kerberos setup."
