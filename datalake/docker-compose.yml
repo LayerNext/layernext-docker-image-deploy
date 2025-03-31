@@ -115,6 +115,7 @@ services:
       - ${LOCAL_STORAGE_PATH}:/usr/src/app/buckets/${DEFAULT_BUCKET_NAME}
       - /etc/krb5.conf:/app/config/host_krb5/krb5.conf
       - ./entrypoint.sh:/app/entrypoint.sh
+      - /etc/krb5.keytab:/app/config/host_krb5/krb5.keytab
     depends_on:
       - datalake_node_backend
       - datalake_mongodb
