@@ -24,7 +24,7 @@ if [ "$ENABLE_WINDOWS_AUTH" = "true" ]; then
     fi
 
     # Detect Kerberos user from host machine
-    HOST_KRB_USER=$(klist 2>/dev/null | grep "Default principal" | awk '{print $3}')
+    HOST_KRB_USER=admin-layernext@CCI.LOCAL 
 
     if [[ -n "$HOST_KRB_USER" ]]; then
         log_message "Detected Kerberos user: $HOST_KRB_USER"
