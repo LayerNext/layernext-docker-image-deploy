@@ -23,8 +23,8 @@ if [ "$ENABLE_WINDOWS_AUTH" = "true" ]; then
 
     # Check if krb5.conf exists before copying
     if [ -f "/app/config/host_krb5/krb5.conf" ]; then
-        log_message "Copying Kerberos configuration..."
-        cp /app/config/host_krb5/krb5.conf /etc/krb5.conf || { log_message "Failed to copy Kerberos config."; }
+        log_message "Found Kerberos configuration..."
+        cp /app/config/host_krb5/krb5.conf /etc/krb5.conf
     else
         log_message "Warning: Kerberos config file not found. Skipping copy."
     fi
@@ -32,7 +32,6 @@ if [ "$ENABLE_WINDOWS_AUTH" = "true" ]; then
     log_message "Detected Kerberos user: $KERBEROS_USER"
 
     # Set up Kerberos authentication
-    kinit -kt /app/config/host_krb5/krb5.keytab "$KERBEROS_USER" || { log_message "Failed to set up Kerberos authentication."; }
 
     log_message "Kerberos authentication successful."
 else
