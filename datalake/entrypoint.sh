@@ -33,18 +33,10 @@ if [ "$ENABLE_WINDOWS_AUTH" = "true" ]; then
         log_message "Warning: Kerberos config file (/host_krb5/krb5.conf) not found. Skipping copy."
     fi
 
-    # Store the password in a temporary file with restricted permissions
-    PASSWORD_FILE=$(mktemp /tmp/kerberos_password.XXXXXX)
-    echo "$KERBEROS_PASSWORD" > "$PASSWORD_FILE"
-    chmod 600 "$PASSWORD_FILE"  # Restrict file permissions
-
     log_message "Detected Kerberos user: $KERBEROS_USER"
 
-    # Run kinit using the password file
-    kinit -k -t "$PASSWORD_FILE" "$KERBEROS_USER" || { log_message "Failed to run kinit."; exit 1; }
-
-    # Clean up the temporary password file
-    rm -f "$PASSWORD_FILE"
+    # Set up Kerberos authentication
+    kinit $KERBEROS_USER || { log_message "Failed to set up Kerberos authentication."; exit 1; }
 
     log_message "Kerberos authentication successful."
 else
