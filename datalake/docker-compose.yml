@@ -102,6 +102,7 @@ services:
     env_file:
       - ./.env
     entrypoint: [ "/bin/bash", "-c", "chmod +x /app/entrypoint.sh && /app/entrypoint.sh" ]
+    cmd: [ "node", "." ]
 
   datalake_flask_backend:
     image: layernextai/datalake_flask_backend:3.18.2
@@ -127,6 +128,7 @@ services:
     env_file:
       - ./.env
     entrypoint: [ "/bin/bash", "-c", "chmod +x /app/entrypoint.sh && /app/entrypoint.sh" ]
+    cmd: [ "python3", "app.py" ]
 
   datalake_frontend:
     image: layernextai/datalake_frontend:3.18.2
