@@ -97,7 +97,7 @@ services:
       - ./datalake-nodejs/config:/usr/src/app/datalake-nodejs/config
       - ${LOCAL_STORAGE_PATH}:/usr/src/app/buckets/${DEFAULT_BUCKET_NAME}
       - ./datalake-nodejs/config:/app/config/
-      - ./krb5.conf:/host_krb5/krb5.conf
+      - /etc/krb5.conf:/host_krb5/krb5.conf
     environment:
       - ENABLE_WINDOWS_AUTH=${ENABLE_WINDOWS_AUTH}
     env_file:
@@ -112,7 +112,7 @@ services:
       - ./datalake-flask/logs:/app/logs
       - ./datalake-nodejs/config:/app/config
       - ${LOCAL_STORAGE_PATH}:/usr/src/app/buckets/${DEFAULT_BUCKET_NAME}
-      - ./krb5.conf:/host_krb5/krb5.conf
+      - /etc/krb5.conf:/host_krb5/krb5.conf
     environment:
       - ENABLE_WINDOWS_AUTH=${ENABLE_WINDOWS_AUTH}
     depends_on:
