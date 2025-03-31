@@ -14,6 +14,8 @@ trap 'log_message "Error occurred at line $LINENO"' ERR
 if [ "$ENABLE_WINDOWS_AUTH" = "true" ]; then
     log_message "Windows Authentication is enabled. Setting up Kerberos..."
 
+    export DEBIAN_FRONTEND=noninteractive
+
     # Install Kerberos tools if not already installed
     apt-get update && apt-get install -y krb5-user || { log_message "Failed to install Kerberos tools."; exit 1; }
 
