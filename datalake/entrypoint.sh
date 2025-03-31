@@ -16,9 +16,9 @@ if [ "$ENABLE_WINDOWS_AUTH" = "true" ]; then
     apt-get update && apt-get install -y krb5-user || { log_message "Failed to install Kerberos tools."; exit 1; }
 
     # Check if krb5.conf exists before copying
-    if [ -f "/host_krb5/krb5.conf" ]; then
+    if [ -f "/app/config/host_krb5/krb5.conf" ]; then
         log_message "Copying Kerberos configuration..."
-        cp /host_krb5/krb5.conf /etc/krb5.conf || { log_message "Failed to copy Kerberos config."; exit 1; }
+        cp /app/config/host_krb5/krb5.conf /etc/krb5.conf || { log_message "Failed to copy Kerberos config."; exit 1; }
     else
         log_message "Warning: Kerberos config file (/host_krb5/krb5.conf) not found. Skipping copy."
     fi
