@@ -1,5 +1,4 @@
 #!/bin/bash
-set -e  # Exit on error
 
 # Function to log messages to Docker logs
 log_message() {
@@ -7,9 +6,6 @@ log_message() {
 }
 
 log_message "Starting container..."
-
-# Trap to log errors with line number
-trap 'log_message "Error occurred at line $LINENO"' ERR
 
 if [ "$ENABLE_WINDOWS_AUTH" = "true" ]; then
     log_message "Windows Authentication is enabled. Setting up Kerberos..."
