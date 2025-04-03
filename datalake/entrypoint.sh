@@ -43,3 +43,4 @@ log_message "Container started."
 
 # Ensure the default command provided in the Dockerfile or Compose file is executed
 log_message "Executing default command..."
+exec python3 app.py
