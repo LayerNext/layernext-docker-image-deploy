@@ -31,7 +31,8 @@ if [ "$ENABLE_WINDOWS_AUTH" = "true" ]; then
 
     log_message "Detected Kerberos user: $KERBEROS_USER"
 
-    # Set up Kerberos authentication
+    # Set up Kerberos authentication using password
+    echo "$KERBEROS_PASSWORD" | kinit "$KERBEROS_USER" || { log_message "Kerberos authentication failed."; exit 1; }
 
     log_message "Kerberos authentication successful."
 else
