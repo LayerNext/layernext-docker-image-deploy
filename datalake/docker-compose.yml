@@ -101,7 +101,7 @@ services:
       - ./entrypoint.sh:/app/entrypoint.sh
     env_file:
       - ./.env
-    entrypoint: [ "/bin/bash", "-c", "chmod +x /app/entrypoint.sh && /app/entrypoint.sh" ]
+    entrypoint: [ "/bin/bash", "-c", "chmod +x /app/entrypoint.sh && /app/entrypoint.sh && node ." ]
 
   datalake_flask_backend:
     image: layernextai/datalake_flask_backend:3.19.0_windows_auth
