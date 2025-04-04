@@ -77,7 +77,7 @@ services:
           memory: ${DB_MEMORY_LIMIT}
 
   datalake_node_backend:
-    image: layernextai/datalake_node_backend:3.19.0_windows_auth
+    image: layernextai/datalake_node_backend:3.19.0
     restart: always
     ports:
       - "3000:3000"
@@ -104,7 +104,7 @@ services:
     entrypoint: [ "/bin/bash", "-c", "chmod +x /app/entrypoint.sh && /app/entrypoint.sh && node ." ]
 
   datalake_flask_backend:
-    image: layernextai/datalake_flask_backend:3.19.0_windows_auth
+    image: layernextai/datalake_flask_backend:3.19.0
     restart: always
     ports:
       - "3100:3100"
