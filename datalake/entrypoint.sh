@@ -39,8 +39,5 @@ else
     log_message "Windows Authentication is disabled. Skipping Kerberos setup."
 fi
 
-#echo a simple message
-log_message "Container started."
-
 # Ensure the default command provided in the Dockerfile or Compose file is executed
 log_message "Executing default command..."
