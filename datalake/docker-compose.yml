@@ -33,6 +33,7 @@ services:
     restart: always
     networks:
       - layernext_network
+      - kind
     ports:
       - 38017:27017
     volumes:
@@ -96,8 +97,11 @@ services:
       - ./datalake-nodejs/config:/usr/src/app/datalake-nodejs/config
       - ${LOCAL_STORAGE_PATH}:/usr/src/app/buckets/${DEFAULT_BUCKET_NAME}
       - ./datalake-nodejs/config:/app/config/
+      - /etc/krb5.conf:/app/config/host_krb5/krb5.conf
+      - ./entrypoint.sh:/app/entrypoint.sh
     env_file:
       - ./.env
+    entrypoint: [ "/bin/bash", "-c", "chmod +x /app/entrypoint.sh && /app/entrypoint.sh && node ." ]
 
   datalake_flask_backend:
     image: layernextai/datalake_flask_backend:3.19.1
@@ -108,6 +112,8 @@ services:
       - ./datalake-flask/logs:/app/logs
       - ./datalake-nodejs/config:/app/config
       - ${LOCAL_STORAGE_PATH}:/usr/src/app/buckets/${DEFAULT_BUCKET_NAME}
+      - /etc/krb5.conf:/app/config/host_krb5/krb5.conf
+      - ./entrypoint.sh:/app/entrypoint.sh
     depends_on:
       - datalake_node_backend
       - datalake_mongodb
@@ -120,6 +126,7 @@ services:
           memory: ${FLASK_MEMORY_LIMIT}
     env_file:
       - ./.env
+    entrypoint: [ "/bin/bash", "-c", "chmod +x /app/entrypoint.sh && /app/entrypoint.sh && python3 app.py" ]
 
   datalake_frontend:
     image: layernextai/datalake_frontend:3.18.2
@@ -134,4 +141,6 @@ services:
 
 networks:
   layernext_network:
+    external: true
+  kind:
     external: true
