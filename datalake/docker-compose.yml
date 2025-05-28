@@ -129,7 +129,7 @@ services:
     entrypoint: [ "/bin/bash", "-c", "chmod +x /app/entrypoint.sh && /app/entrypoint.sh && python3 app.py" ]
 
   datalake_frontend:
-    image: layernextai/datalake_frontend:3.19.5
+    image: layernextai/datalake_frontend:3.19.6
     restart: always
     networks:
       - layernext_network
