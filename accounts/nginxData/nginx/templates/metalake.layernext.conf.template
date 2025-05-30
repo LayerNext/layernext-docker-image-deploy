@@ -1,0 +1,46 @@
+
+server{
+
+   index index.html index.htm index.nginx-debian.html;
+   client_max_body_size 100M;
+   server_name datalake.${DOMAIN_URL};
+   resolver 127.0.0.11 valid=10s;
+   resolver_timeout 5s;
+
+       location / {
+		set $target http://datalake_frontend:${DATALAKE_FRONTEND_PORT};
+		proxy_set_header        Host $host;
+		proxy_set_header        X-Real-IP $remote_addr;
+	 	proxy_set_header        X-Forwarded-For $proxy_add_x_forwarded_for;
+		proxy_set_header        X-Forwarded-Proto $scheme;
+		proxy_pass          	$target;
+	        proxy_read_timeout  90;
+                proxy_set_header 'Access-Control-Allow-Origin' '*';
+        }
+
+        location /api {
+			set $target http://datalake_node_backend:${DATALAKE_BACKEND_PORT};
+	        proxy_set_header        Host $host;
+		proxy_set_header        X-Real-IP $remote_addr;
+		proxy_set_header        X-Forwarded-For $proxy_add_x_forwarded_for;
+		proxy_set_header        X-Forwarded-Proto $scheme;
+		proxy_pass          	$target;
+	        proxy_read_timeout  90;
+                proxy_set_header 'Access-Control-Allow-Origin' '*';
+        }
+
+       
+        location /users {
+			set $target http://datalake_node_backend:${DATALAKE_BACKEND_PORT};
+	        proxy_set_header        Host $host;
+		proxy_set_header        X-Real-IP $remote_addr;
+		proxy_set_header        X-Forwarded-For $proxy_add_x_forwarded_for;
+		proxy_set_header        X-Forwarded-Proto $scheme;
+		proxy_pass          	$target;
+	        proxy_read_timeout  90;
+        	proxy_set_header 'Access-Control-Allow-Origin' '*';
+        }
+
+}
+
+

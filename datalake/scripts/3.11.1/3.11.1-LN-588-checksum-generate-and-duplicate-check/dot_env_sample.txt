@@ -1,0 +1,24 @@
+#DB
+DB_HOST=<example.layernext.ai>
+DB_PORT=xxxxx
+DB_USER=xxxxxx
+DB_PASS=xxxxxx
+DATABASE=xxxxx
+
+JWT_SECRET=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+# storage
+# STORAGE_TYPE=lds
+#STORAGE_TYPE=azure_blob
+
+#AZURE
+AZURE_ACCOUNT_NAME=xxxxxxx
+AZURE_STORAGE_ACCOUNT_KEY=xxxxxxxxxx
+
+#DISK
+DISK_STORAGE_BASE_PATH=<<Use-deployment-.env-DISK_STORAGE_BASE_PATH>>
+
+#BUCKETS
+DEFAULT_BUCKET_NAME=<<Use-deployment-.env DEFAULT_BUCKET_NAME>>
+
+NODEJS_BASE_URL= <<Use-deployment-.env NODEJS_BASE_URL>>

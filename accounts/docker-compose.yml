@@ -1,35 +1,49 @@
 version: "3.8"
 services:
   sso_mongodb:
-      image: mongo:5.0.13
-      restart: always
-      ports:
-        - 17017:27017
-      volumes:
-        - ./mongoData:/data/db
-        - ./DB_initial_data/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js
-      environment:
-        - MONGO_INITDB_ROOT_USERNAME=admin
-        - MONGO_INITDB_ROOT_PASSWORD=${MONGODB_ADMIN_PASSWORD}
-        - MONGO_INITDB_DATABASE=admin
-        - DATABASE
-        - DB_USER
-        - DB_PASS
-        - DUMP_USER
-        - DUMP_USER_PWD
-        - SETUP_CUSTOMER
-        - ADMIN_EMAIL
-        - ADMIN_PASSWORD
+    image: mongo:5.0.13
+    restart: always
+    ports:
+      - 17017:27017
+    volumes:
+      - ./mongoData:/data/db
+      - ./DB_initial_data/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js
+    networks:
+      - layernext_network
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=admin
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGODB_ADMIN_PASSWORD}
+      - MONGO_INITDB_DATABASE=admin
+      - DATABASE
+      - DB_USER
+      - DB_PASS
+      - DUMP_USER
+      - DUMP_USER_PWD
+      - SETUP_CUSTOMER
+      - ADMIN_EMAIL
+      - ADMIN_PASSWORD
+      - TEAM_ID
+      - ANALYTICS_KEY
+      - ANALYTICS_SECRET
+      - STUDIO_KEY
+      - STUDIO_SECRET
+      - DATASET_KEY
+      - DATASET_SECRET
+      - DATALAKE_KEY
+      - DATALAKE_SECRET
+      - CHAT_KEY
+      - CHAT_SECRET
+      - DOMAIN_URL
 
   sso_node_backend:
-    image: layernextai/sso_node_backend:1.0.21
+    image: layernextai/sso_node_backend:3.16.5
     restart: always
     ports:
       - "8888:8888"
     depends_on:
       - sso_mongodb
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
+    networks:
+      - layernext_network
     volumes:
       - ./sso-layernext-backend/logs:/usr/src/app/logs
       - ./sso-layernext-backend/storage:/usr/src/app/storage
@@ -37,24 +51,23 @@ services:
       - ./.env
 
   sso_frontend:
-    image: layernextai/sso_frontend:1.0.21
+    image: layernextai/sso_frontend:3.19.2
     restart: always
     ports:
       - "8097:8097"
+    networks:
+      - layernext_network
     environment:
       - TZ:utc
-      - LAYERNEXT_SUB_DOMAIN=${SETUP_CUSTOMER}
+      - LAYERNEXT_SUB_DOMAIN=${DOMAIN_URL}
 
   layernext_nginx:
     image: nginx
     restart: always
     volumes:
       - ./nginxData/nginx/templates:/etc/nginx/templates
-      - ../dataset/layernext-sync-tool:/home/layernext-sync-tool
-      - ./nginxData/certbot/conf:/etc/letsencrypt
-      - ./nginxData/certbot/www:/var/www/certbot
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
+    networks:
+      - layernext_network
     ports:
       - "81:80"
     environment:
@@ -67,4 +80,11 @@ services:
       - DATASET_FRONTEND_PORT=8098
       - STUDIO_BACKEND_PORT=8080
       - STUDIO_FRONTEND_PORT=8096
-      - SETUP_CUSTOMER
+      - ANALYTICS_BACKEND_PORT=5081
+      - CHAT_FRONTEND_PORT=8099
+      - CHAT_BACKEND_PORT=5082
+      - DOMAIN_URL
+
+networks:
+  layernext_network:
+    external: true

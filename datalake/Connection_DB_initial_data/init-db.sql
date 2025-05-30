@@ -1,0 +1,2 @@
+GRANT CREATE, INSERT, SELECT, DROP ON *.* TO ${MYSQL_USER};
+SET GLOBAL local_infile = true

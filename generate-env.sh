@@ -3,6 +3,12 @@
 export $(grep -v '^#' .env | xargs -d '\n')
 JWT_SECRET=$(openssl rand -hex 32)
 
+# Generating random keys
+DATALAKE_KEY=key_$(openssl rand -base64 60 | tr -dc 'a-z0-9' | head -c 32)
+DATALAKE_SECRET=$(openssl rand -base64 45 | tr -dc 'a-z0-9' | head -c 20)
+CHAT_KEY=key_$(openssl rand -base64 60 | tr -dc 'a-z0-9' | head -c 32)
+CHAT_SECRET=$(openssl rand -base64 45 | tr -dc 'a-z0-9' | head -c 20)
+GRAFANA_PASSWORD=$(openssl rand -base64 32 | tr -dc 'a-z0-9' | head -c 20)
 # generate accounts env
 accounts_env="./accounts/.env"
 if [ -f $accounts_env ]; then
@@ -11,8 +17,8 @@ if [ -f $accounts_env ]; then
 fi
 cat > $accounts_env <<EOL
 #DB
-DB_HOST=host.docker.internal
-DB_PORT=17017
+DB_HOST=sso_mongodb
+DB_PORT=27017
 DB_USER=sso_user
 DB_PASS=$(openssl rand -hex 10)
 DATABASE=authDB
@@ -32,10 +38,11 @@ SYNC_TOOL_PATH=./../dataset
 
 #env
 PORT=8888
+TEAM_ID=6374c3decb468b7a7a68a116
 
 JWT_SECRET=$JWT_SECRET
 ADMIN_EMAIL=$ADMIN_EMAIL
-ADMIN_PASSWORD=$ADMIN_PASSWORD
+ADMIN_PASSWORD=$ADMIN_PASSWORD_ENCRYPT
 
 #apps
 DATALAKE=2E7GG9DZB7J8G45
@@ -43,8 +50,8 @@ STUDIO=ZQ9YR6HDFGFRJKQ
 SSO=1RMBHCWM8QIJ6QH
 DATASET=8F7TT5VB77K0GGH
 
-BASE_URL=https://accounts.$SETUP_CUSTOMER.layernext.ai
-FRONT_END_BASE_URL=https://accounts.$SETUP_CUSTOMER.layernext.ai
+BASE_URL=https://accounts.$DOMAIN_URL
+FRONT_END_BASE_URL=https://accounts.$DOMAIN_URL
 ANNO_INTERNAL_SERVER=http://host.docker.internal:8080
 
 ENVIRONMENT=enterprise
@@ -58,8 +65,23 @@ GOOGLE_API_KEY=$GOOGLE_API_KEY
 GOOGLE_CLIENT_ID=$GOOGLE_CLIENT_ID
 GOOGLE_CLIENT_SECRET=$GOOGLE_CLIENT_SECRET
 GOOGLE_REFRESH_TOKEN=$GOOGLE_REFRESH_TOKEN
-EOL
 
+#api key secrets
+STUDIO_KEY=$STUDIO_KEY
+STUDIO_SECRET=$STUDIO_SECRET
+DATASET_KEY=$DATASET_KEY
+DATASET_SECRET=$DATASET_KEY
+ANALYTICS_KEY=$ANALYTICS_KEY
+ANALYTICS_SECRET=$ANALYTICS_SECRET
+DATALAKE_KEY=$DATALAKE_KEY
+DATALAKE_SECRET=$DATALAKE_SECRET
+CHAT_KEY=$CHAT_KEY
+CHAT_SECRET=$CHAT_SECRET
+
+LOG_BACKUP_COUNT=90
+
+DOMAIN_URL=$DOMAIN_URL
+EOL
 
 # generate datalake env
 datalake_env="./datalake/.env"
@@ -69,8 +91,8 @@ if [ -f $datalake_env ]; then
 fi
 cat > $datalake_env <<EOL
 #DB
-DB_HOST=host.docker.internal
-DB_PORT=37017
+DB_HOST=datalake_mongodb
+DB_PORT=27017
 DB_USER=datalake_user
 DB_PASS=$(openssl rand -hex 10)
 DATABASE=datalakeDB
@@ -86,22 +108,32 @@ DUMP_PER_DAY=4
 # Build time
 SETUP_CUSTOMER=$SETUP_CUSTOMER
 MONGODB_ADMIN_PASSWORD=$(openssl rand -hex 16)
+
+# Database
+DB_CPU_LIMIT=$CPU_LIMIT
+DB_MEMORY_LIMIT=$MEMORY_LIMIT
+
+# Limits
 CPU_LIMIT=$CPU_LIMIT
 MEMORY_LIMIT=$MEMORY_LIMIT
+
+NODE_CPU_LIMIT=$CPU_LIMIT
+NODE_MEMORY_LIMIT=$MEMORY_LIMIT
+
+FLASK_CPU_LIMIT=$CPU_LIMIT
+FLASK_MEMORY_LIMIT=$MEMORY_LIMIT
 
 #server
 INSTANCE_TYPE=master
 
 #env
 PORT=3000
+TEAM_ID=6374c3decb468b7a7a68a116
 
 JWT_SECRET=$JWT_SECRET
 
 # Auth
-SSO_INTERNAL_SERVER=http://host.docker.internal:8888
-
-# studio
-ANNO_INTERNAL_SERVER=http://host.docker.internal:8080
+SSO_INTERNAL_SERVER=http://sso_node_backend:8888
 
 # storage
 STORAGE_TYPE=$STORAGE_TYPE
@@ -120,6 +152,9 @@ GCP_PROJECT_ID=$GCP_PROJECT_ID
 AZURE_ACCOUNT_NAME=$AZURE_ACCOUNT_NAME
 AZURE_STORAGE_ACCOUNT_KEY=$AZURE_STORAGE_ACCOUNT_KEY
 
+#LOCAL_STORAGE
+LOCAL_STORAGE_PATH=$LOCAL_STORAGE_PATH
+
 #BUCKETS
 DEFAULT_BUCKET_NAME=$DEFAULT_BUCKET_NAME
 ALL_BUCKETS=$ALL_BUCKETS
@@ -127,119 +162,177 @@ ALL_BUCKETS=$ALL_BUCKETS
 # Enabling optional features
 SUBSEQUENT_CRAWL=$SUBSEQUENT_CRAWL
 
+#CONNECTION DB
+CONNECTION_DB_HOST=datalake_connection_mongodb
+CONNECTION_DB_HOST_AIRBYTE=localhost
+CONNECTION_DB_PORT=27017
+CONNECTION_DB_USER=connection_user
+CONNECTION_DB_PASS=$(openssl rand -hex 10)
+CONNECTION_DATABASE=connectionDB
+CONNECTION_DUMP_USER=connection_dumprestoreuser
+CONNECTION_DUMP_USER_PWD=$(openssl rand -hex 10)
+CONNECTION_MONGODB_ADMIN_PASSWORD=$(openssl rand -hex 16)
+CONNECTION_MYSQL_DB_HOST_AIRBYTE=localhost
+CONNECTION_MYSQL_DB_HOST=datalake_connection_mysql
+CONNECTION_MYSQL_DB_PORT=3306
+MYSQL_ROOT_PASSWORD=$(openssl rand -hex 16)
+MYSQL_DATABASE=connectiondb
+MYSQL_USER=connection_user
+MYSQL_PASSWORD=$(openssl rand -hex 10)
+
+AZURE_OPENAI_ENDPOINT=$AZURE_OPENAI_ENDPOINT
+
+LLM_API_PROVIDER_DOC_METADATA_GENERATION=openai
+LLM_API_KEY_DOC_METADATA_GENERATION=$OPENAI_API_KEY
+
+LLM_API_PROVIDER_DOC_STRUCTURE_GENERATION=openai
+LLM_API_KEY_DOC_STRUCTURE=$OPENAI_API_KEY
+
+LLM_API_PROVIDER_ELEM_SEARCH=openai
+LLM_API_KEY_ELEM_SEARCH=$OPENAI_API_KEY
+
+LLM_API_PROVIDER_DATA_EXTRACTION=openai
+LLM_API_KEY_DATA_EXTRACTION=$OPENAI_API_KEY
+
+LLM_API_PROVIDER_DATA_SOURCE_OVERVIEW_GENERATOR=openai
+LLM_API_KEY_DATA_SOURCE_OVERVIEW_GENERATOR=$OPENAI_API_KEY
+LLM_MODEL_FIELD_DESCRIPTION_GENERATION=gpt-4o-mini-2024-07-18
+LLM_FIELD_DESCRIPTION_GENERATION_MAX_TOKEN_LIMIT=16000
+
+LLM_DATA_SOURCE_OVERVIEW_GENERATION_MAX_TOKEN_LIMIT=1000
+LLM_MODEL_DATA_SOURCE_OVERVIEW_GENERATION=gpt-4o-2024-05-13
+MODEL_DATABASE_TRANSFORMATION=gpt-4o-2024-08-06
+
+MODEL_DOC_METADATA_GENERATION=gpt-4o-mini-2024-07-18
+MODEL_DOC_STRUCTURE_GENERATION=gpt-4o-2024-05-13
+MODEL_ELEM_SEARCH=gpt-4o-2024-05-13
+MODEL_DATA_EXTRACTION=gpt-4o-2024-05-13
+
+MODEL_ELEM_SEARCH=gpt-4o-2024-05-13
+MODEL_DATA_EXTRACTION=gpt-4o-2024-05-13
+
+LLM_API_PROVIDER_AUTO_TUNER=openai
+MODEL_AUTO_TUNER=gpt-4o-2024-08-06
+LLM_API_KEY_AUTO_TUNER=$OPENAI_API_KEY
+MODEL_DATABASE_TRANSFORMATION=gpt-4o-2024-08-06
+
+LOAD_FROM_FILE=False
+
+#Evaluation
+LLM_API_PROVIDER_ANSWER_EVALUATION=openai
+LLM_API_KEY_ANSWER_EVALUATION=$OPENAI_API_KEY
+MODEL_ANSWER_EVALUATION=gpt-4o-2024-08-06
+
+DATALAKE_KEY=$DATALAKE_KEY
+DATALAKE_SECRET=$DATALAKE_SECRET
+
+TEXT_SIMILARITY_THRESHOLD=0.75
+
+PYTHON_BASE_URL=http://datalake_flask_backend:3100
+API_URL=https://api.$DOMAIN_URL
+
+LOCAL_STORAGE_PATH=$LOCAL_STORAGE_PATH
+LOG_BACKUP_COUNT=90
+DOMAIN_URL=$DOMAIN_URL
+LLM_AGENT_INTERNAL_URL=http://llm_fast_api_backend:5082
+
+LOAD_TABLES_LIST=
+
+ENABLE_WINDOWS_AUTH=false
+KERBEROS_USER=
+KERBEROS_PASSWORD=
+
+ADDITIONAL_SCHEMAS=
 EOL
 
-
-# generate dataset env
-dataset_env="./dataset/.env"
-if [ -f $dataset_env ]; then
-  echo "Existing env file found for dataset. replacing..."
+# generate chat env
+source_env="./chat/.env"
+if [ -f $source_env ]; then
+  echo "Existing env file found for chat. replacing..."
   echo "Warning: If the system was already built, the system may become non functional due to regeneration of db passwords"
 fi
-cat > $dataset_env <<EOL
+cat > $source_env <<EOL
 #DB
-DB_HOST=host.docker.internal
-DB_PORT=47017
-DB_USER=dataset_user
-DB_PASS=$(openssl rand -hex 10)
-DATABASE=datasetDB
-
-#DUMP
-DUMP_USER=layernext_dumprestoreuser
-DUMP_USER_PWD=$(openssl rand -hex 10)
-OUTPUT_DIRECTORY=dataset
-#change dump keepeing days as prefer and use dump per day like 1,2,3,4,6,12,24
-DUMP_KEEPING_DAYS=30
-DUMP_PER_DAY=4
-
-# Build time
-SETUP_CUSTOMER=$SETUP_CUSTOMER
-MONGODB_ADMIN_PASSWORD=$(openssl rand -hex 16)
-CPU_LIMIT=$CPU_LIMIT
-MEMORY_LIMIT=$MEMORY_LIMIT
-
-#env
-PORT=4000
-
-JWT_SECRET=$JWT_SECRET
-
-BASE_URL=https://dataset.$SETUP_CUSTOMER.layernext.ai
-API_URL=https://api.$SETUP_CUSTOMER.layernext.ai
-FRONT_END_BASE_URL=http://dataset.$SETUP_CUSTOMER.layernext.ai
-
-SSO_INTERNAL_SERVER=http://host.docker.internal:8888
-ANNO_INTERNAL_SERVER=http://host.docker.internal:8080
-DATALAKE_INTERNAL_SERVER=http://host.docker.internal:3000
-
-DATALAKE_BASE_URL=http://datalake.$SETUP_CUSTOMER.layernext.ai
-
-EOL
-
-
-
-# generate studio env
-studio_env="./studio/.env"
-if [ -f $studio_env ]; then
-  echo "Existing env file found for studio. replacing..."
-  echo "Warning: If the system was already built, the system may become non functional due to regeneration of db passwords"
-fi
-cat > $studio_env <<EOL
-#DB
-DB_HOST=host.docker.internal
+DB_HOST=chat_mongodb
 DB_PORT=27017
-DB_USER=studio_user
+DB_USER=chat_user
 DB_PASS=$(openssl rand -hex 10)
-DATABASE=studioDB
+DATABASE=chatDB
 
 #DUMP
 DUMP_USER=layernext_dumprestoreuser
 DUMP_USER_PWD=$(openssl rand -hex 10)
-OUTPUT_DIRECTORY=studio
+
 #change dump keepeing days as prefer and use dump per day like 1,2,3,4,6,12,24
 DUMP_KEEPING_DAYS=30
 DUMP_PER_DAY=4
 
 # Build time
 SETUP_CUSTOMER=$SETUP_CUSTOMER
-MONGODB_ADMIN_PASSWORD=$(openssl rand -hex 16)
-CPU_LIMIT=$CPU_LIMIT
-MEMORY_LIMIT=$MEMORY_LIMIT
+MONGODB_ADMIN_PASSWORD=$(openssl rand -hex 20)
 
-#For uploadx listener
-EXPRESS_PORT=8082
+DB_CPU_LIMIT=$CPU_LIMIT
+DB_MEMORY_LIMIT=$MEMORY_LIMIT
 
 JWT_SECRET = $JWT_SECRET
-ADMIN_EMAIL=$ADMIN_EMAIL
 
-# Auth
-SSO_INTERNAL_SERVER=http://host.docker.internal:8888
+#LLM FAST-API
+LLM_TYPE=openai
 
-PYTHON_BASE_URL=http://host.docker.internal:8081
-BASE_URL=https://studio.$SETUP_CUSTOMER.layernext.ai
-PYTHON_SERVER=../../../contents/uploads/
-FRONT_END_BASE_URL=https://studio.$SETUP_CUSTOMER.layernext.ai
-DATALAKE_INTERNAL_SERVER=http://host.docker.internal:3000
-DATALAKE_BASE_URL=http://host.docker.internal:3000
-# DATALAKE_BASE_URL=https://datalake.$SETUP_CUSTOMER.layernext.ai
-API_URL=https://api.$SETUP_CUSTOMER.layernext.ai
+AZURE_OPENAI_ENDPOINT=$AZURE_OPENAI_ENDPOINT
+LLM_API_PROVIDER=openai
+LLM_API_KEY=$AZURE_OPENAI_API_KEY
+OPENAI_API_KEY=$OPENAI_API_KEY
+AZURE_OPENAI_API_VERSION=2024-08-01-preview
+TEMPERATURE=0.7
 
-ENVIRONMENT=enterprise
+MODEL=gpt-4o-2024-08-06
+MODEL_INSIGHT=gpt-4o-2024-08-06
+MODEL_DATA_GENERATOR=gpt-4o-2024-08-06
+CODE_REVIEW_MODEL=gpt-4-0125-preview
+MODEL_DATA_REVIEWER=gpt-4o-2024-08-06
+MODEL_REPORT_GENERATOR=gpt-4o-2024-08-06
+MODEL_HYPOTHESIS=gpt-4o-2024-08-06
+MODEL_VISUAL_REVIEWER=gpt-4o-2024-08-06
+MODEL_UNSTRUCTURED_PROCESSING=gpt-4o-mini-2024-07-18
+MODEL_UNSTRUCTURED_LABEL_IDENTIFICATION=gpt-4o-2024-08-06
+MODEL_VISUAL_RENDER=gpt-4o-mini-2024-07-18
 
-#support email sendgrid
+
+URL=http://datalake_node_backend:3000
+
+APP_PORT=5082
+DEBUG=False
+COUNT_TOKENS=True
+
+COMPANY=$SETUP_CUSTOMER
+
+#limitation
+FAST_CPU_LIMIT=2
+FAST_MEMORY_LIMIT=2GB
+
+#Sendgrid credentails
 SUPPORT_EMAIL=$SUPPORT_EMAIL
 SENDGRID_API_KEY=$SENDGRID_API_KEY
 
-# Google login
-GOOGLE_API_KEY=$GOOGLE_API_KEY
-GOOGLE_CLIENT_ID=$GOOGLE_CLIENT_ID
-GOOGLE_CLIENT_SECRET=$GOOGLE_CLIENT_SECRET
-GOOGLE_REFRESH_TOKEN=$GOOGLE_REFRESH_TOKEN
+FRONTEND_URL=https://chat.$DOMAIN_URL
+METALAKE_URL=https://datalake.$DOMAIN_URL
 
-# Enabling optional features
-RESET_ASSIGNEE_ON_NEW_CYCLE=$RESET_ASSIGNEE_ON_NEW_CYCLE
+#api key secrets
+API_KEY=$CHAT_KEY
+SECRET_KEY=$CHAT_SECRET
+LOG_BACKUP_COUNT=90
+DOMAIN_URL=$DOMAIN_URL
 
+CLIENT_EMAILS=
+
+
+SIMULTANEOUS_INSIGHT_INVOKES_LIMIT=2
+INSIGHT_PARALLEL_THREAD_COUNT=5
+DAILY_TRIGGER_HOUR=04 
+DAILY_TRIGGER_MINUTE=10 
+TIME_ZONE=America/Winnipeg
 EOL
-
 
 # generate ssl creator nginx env
 ssl_nginx_env="./accounts/nginxData/.env"
@@ -249,8 +342,27 @@ fi
 cat > $ssl_nginx_env <<EOL
 # Build time
 SETUP_CUSTOMER=$SETUP_CUSTOMER
+DOMAIN_URL=$DOMAIN_URL
 
 EOL
 
-pip install python-dotenv
 
+# generate monitoring env
+monitoring_env="./monitoring/.env"
+if [ -f $monitoring_env ]; then
+  echo "Existing env file found for monitoring. replacing..."
+  echo "Warning: If the system was already built, the system may become non functional due to regeneration of db passwords"
+fi
+cat > $monitoring_env <<EOL
+GRAFANA_USERNAME=$GRAFANA_USERNAME
+GRAFANA_PASSWORD=$GRAFANA_PASSWORD
+SMTP_SMARTHOST='smtp.sendgrid.net:587'
+SMTP_FROM=$SMTP_FROM
+SMTP_AUTH_USERNAME='apiKey'
+SMTP_AUTH_PASSWORD=$SENDGRID_API_KEY
+SUPPORT_EMAIL=$ALERT_SUPPORT_MAIL
+SETUP_CUSTOMER=$SETUP_CUSTOMER
+EOL
+
+
+pip install python-dotenv

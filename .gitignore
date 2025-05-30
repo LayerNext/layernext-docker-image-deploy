@@ -1,2 +1,4 @@
 
 .env
+/source/manual/venv
+source/manual/logfile.log

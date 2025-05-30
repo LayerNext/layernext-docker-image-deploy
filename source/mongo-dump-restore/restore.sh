@@ -1,0 +1,1 @@
+mongorestore --port=38017 --authenticationDatabase=admin --username=connection_dumprestoreuser --password=############## --db=sales-data --gzip --archive="sales-data_2024-04-25T07.gz" --nsFrom='sales-data.*' --nsTo='sales-data.*' --gzip
