@@ -104,7 +104,7 @@ services:
     entrypoint: [ "/bin/bash", "-c", "chmod +x /app/entrypoint.sh && /app/entrypoint.sh && node ." ]
 
   datalake_flask_backend:
-    image: layernextai/datalake_flask_backend:3.19.7
+    image: layernextai/datalake_flask_backend:3.19.8
     restart: always
     ports:
       - "3100:3100"
