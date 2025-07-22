@@ -28,7 +28,7 @@ services:
           memory: ${DB_MEMORY_LIMIT}
 
   chat_frontend:
-    image: layernextai/chat_frontend:3.20.1
+    image: layernextai/chat_frontend:3.20.2
     restart: always
     networks:
       - layernext_network
@@ -39,7 +39,7 @@ services:
       - LAYERNEXT_SUB_DOMAIN=${DOMAIN_URL}
 
   llm_fast_api_backend:
-    image: layernextai/llm_fast_api_backend:3.20.1
+    image: layernextai/llm_fast_api_backend:3.20.2
     restart: always
     networks:
       - layernext_network
