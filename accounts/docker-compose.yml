@@ -51,7 +51,7 @@ services:
       - ./.env
 
   sso_frontend:
-    image: layernextai/sso_frontend:3.19.2
+    image: layernextai/sso_frontend:3.20.2
     restart: always
     ports:
       - "8097:8097"
