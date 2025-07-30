@@ -77,7 +77,7 @@ services:
           memory: ${DB_MEMORY_LIMIT}
 
   datalake_node_backend:
-    image: layernextai/datalake_node_backend:3.20.1
+    image: layernextai/datalake_node_backend:3.20.3
     restart: always
     ports:
       - "3000:3000"
@@ -104,13 +104,14 @@ services:
     entrypoint: [ "/bin/bash", "-c", "chmod +x /app/entrypoint.sh && /app/entrypoint.sh && node ." ]
 
   datalake_flask_backend:
-    image: layernextai/datalake_flask_backend:3.19.8
+    image: layernextai/datalake_flask_backend:3.20.3
     restart: always
     ports:
       - "3100:3100"
     volumes:
       - ./datalake-flask/logs:/app/logs
       - ./datalake-nodejs/config:/app/config
+      - ./datalake-nodejs/storage:/app/storage
       - ${LOCAL_STORAGE_PATH}:/usr/src/app/buckets/${DEFAULT_BUCKET_NAME}
       - /etc/krb5.conf:/app/config/host_krb5/krb5.conf
       - ./entrypoint.sh:/app/entrypoint.sh
