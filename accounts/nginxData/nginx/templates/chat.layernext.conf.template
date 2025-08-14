@@ -33,6 +33,33 @@ server{
 	        # Prevent buffering
 	        proxy_buffering off;
 	    }
+		# Web socket - socket.io compatible
+        location /socket.io/ {
+                proxy_pass http://llm_fast_api_backend:${CHAT_BACKEND_PORT}; 
+
+                proxy_http_version 1.1;
+                proxy_set_header Upgrade $http_upgrade;
+                proxy_set_header Connection "upgrade";
+
+                proxy_set_header Host $host;
+                proxy_set_header X-Real-IP $remote_addr;
+                proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+                proxy_set_header X-Forwarded-Proto $scheme;
+
+                # Socket.IO specific settings
+                proxy_buffering off;
+                proxy_cache off;
+                proxy_set_header X-Accel-Buffering no;
+
+                # Timeout settings for Socket.IO
+                proxy_read_timeout 86400s;
+                proxy_send_timeout 86400s;
+
+                # Enable CORS for Socket.IO if needed
+                add_header Access-Control-Allow-Origin *;
+                add_header Access-Control-Allow-Methods "GET, POST, OPTIONS";
+                add_header Access-Control-Allow-Headers "Origin, X-Requested-With, Content-Type, Accept, Authorization";
+        }
 
         location /api {
 			set $target http://llm_fast_api_backend:${CHAT_BACKEND_PORT};
