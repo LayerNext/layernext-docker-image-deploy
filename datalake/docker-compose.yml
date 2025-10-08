@@ -10,7 +10,7 @@ services:
       - ./DB_initial_data/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js
     environment:
       - MONGO_INITDB_ROOT_USERNAME=admin
-      - MONGO_INITDB_ROOT_PASSWORD=${MONGODB_ADMIN_PASSWORD:-changeme}
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGODB_ADMIN_PASSWORD}
       - MONGO_INITDB_DATABASE=admin
       - DATABASE
       - DB_USER
@@ -25,8 +25,8 @@ services:
     deploy:
       resources:
         limits:
-          cpus: ${DB_CPU_LIMIT:-1.0}
-          memory: ${DB_MEMORY_LIMIT:-1G}
+          cpus: ${DB_CPU_LIMIT}
+          memory: ${DB_MEMORY_LIMIT}
 
   datalake_connection_mongodb:
     image: mongo:5.0.13
@@ -41,7 +41,7 @@ services:
       - ./Connection_DB_initial_data/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js
     environment:
       - MONGO_INITDB_ROOT_USERNAME=admin
-      - MONGO_INITDB_ROOT_PASSWORD=${CONNECTION_MONGODB_ADMIN_PASSWORD:-changeme}
+      - MONGO_INITDB_ROOT_PASSWORD=${CONNECTION_MONGODB_ADMIN_PASSWORD}
       - MONGO_INITDB_DATABASE=admin
       - CONNECTION_DATABASE
       - CONNECTION_DB_USER
@@ -51,18 +51,18 @@ services:
     deploy:
       resources:
         limits:
-          cpus: ${DB_CPU_LIMIT:-1.0}
-          memory: ${DB_MEMORY_LIMIT:-1G}
+          cpus: ${DB_CPU_LIMIT}
+          memory: ${DB_MEMORY_LIMIT}
 
   datalake_connection_mysql:
     image: mysql:8.0
     command: --default-authentication-plugin=mysql_native_password
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-changeme}
-      MYSQL_DATABASE: ${MYSQL_DATABASE:-changeme}
-      MYSQL_USER: ${MYSQL_USER:-changeme}
-      MYSQL_PASSWORD: ${MYSQL_PASSWORD:-changeme}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
     networks:
       - layernext_network
     ports:
@@ -73,8 +73,8 @@ services:
     deploy:
       resources:
         limits:
-          cpus: ${DB_CPU_LIMIT:-1.0}
-          memory: ${DB_MEMORY_LIMIT:-1G}
+          cpus: ${DB_CPU_LIMIT}
+          memory: ${DB_MEMORY_LIMIT}
 
   datalake_node_backend:
     image: layernextai/datalake_node_backend:3.20.3
@@ -88,25 +88,20 @@ services:
     deploy:
       resources:
         limits:
-          cpus: ${NODE_CPU_LIMIT:-2.0}
-          memory: ${NODE_MEMORY_LIMIT:-2G}
+          cpus: ${NODE_CPU_LIMIT}
+          memory: ${NODE_MEMORY_LIMIT}
     volumes:
       - ./datalake-nodejs/logs:/usr/src/app/datalake-nodejs/logs
       - ./datalake-nodejs/storage:/usr/src/app/datalake-nodejs/storage
       - ./datalake-python-processor/logs:/usr/src/app/datalake-python-processor/logs
       - ./datalake-nodejs/config:/usr/src/app/datalake-nodejs/config
-      - ${LOCAL_STORAGE_PATH:-changeme}:/usr/src/app/buckets/${DEFAULT_BUCKET_NAME:-changeme}
+      - ${LOCAL_STORAGE_PATH}:/usr/src/app/buckets/${DEFAULT_BUCKET_NAME}
       - ./datalake-nodejs/config:/app/config/
       - /etc/krb5.conf:/app/config/host_krb5/krb5.conf
       - ./entrypoint.sh:/app/entrypoint.sh
     env_file:
       - ./.env
-    entrypoint:
-      [
-        "/bin/bash",
-        "-c",
-        "chmod +x /app/entrypoint.sh && /app/entrypoint.sh && node .",
-      ]
+    entrypoint: [ "/bin/bash", "-c", "chmod +x /app/entrypoint.sh && /app/entrypoint.sh && node ." ]
 
   datalake_flask_backend:
     image: layernextai/datalake_flask_backend:3.20.3
@@ -117,7 +112,7 @@ services:
       - ./datalake-flask/logs:/app/logs
       - ./datalake-nodejs/config:/app/config
       - ./datalake-nodejs/storage:/app/storage
-      - ${LOCAL_STORAGE_PATH:-changeme}:/usr/src/app/buckets/${DEFAULT_BUCKET_NAME:-changeme}
+      - ${LOCAL_STORAGE_PATH}:/usr/src/app/buckets/${DEFAULT_BUCKET_NAME}
       - /etc/krb5.conf:/app/config/host_krb5/krb5.conf
       - ./entrypoint.sh:/app/entrypoint.sh
     depends_on:
@@ -128,16 +123,11 @@ services:
     deploy:
       resources:
         limits:
-          cpus: ${FLASK_CPU_LIMIT:-2.0}
-          memory: ${FLASK_MEMORY_LIMIT:-2G}
+          cpus: ${FLASK_CPU_LIMIT}
+          memory: ${FLASK_MEMORY_LIMIT}
     env_file:
       - ./.env
-    entrypoint:
-      [
-        "/bin/bash",
-        "-c",
-        "chmod +x /app/entrypoint.sh && /app/entrypoint.sh && python3 app.py",
-      ]
+    entrypoint: [ "/bin/bash", "-c", "chmod +x /app/entrypoint.sh && /app/entrypoint.sh && python3 app.py" ]
 
   datalake_frontend:
     image: layernextai/datalake_frontend:3.20.1
@@ -148,7 +138,7 @@ services:
       - "8095:8095"
     environment:
       - TZ:utc
-      - LAYERNEXT_SUB_DOMAIN=${DOMAIN_URL:-changeme}
+      - LAYERNEXT_SUB_DOMAIN=${DOMAIN_URL}
 
 networks:
   layernext_network:

@@ -12,7 +12,7 @@ services:
       - layernext_network
     environment:
       - MONGO_INITDB_ROOT_USERNAME=admin
-      - MONGO_INITDB_ROOT_PASSWORD=${MONGODB_ADMIN_PASSWORD:-changeme}
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGODB_ADMIN_PASSWORD}
       - MONGO_INITDB_DATABASE=admin
       - DATABASE
       - DB_USER
@@ -24,8 +24,8 @@ services:
     deploy:
       resources:
         limits:
-          cpus: ${DB_CPU_LIMIT:-1.0}
-          memory: ${DB_MEMORY_LIMIT:-1G}
+          cpus: ${DB_CPU_LIMIT}
+          memory: ${DB_MEMORY_LIMIT}
 
   chat_frontend:
     image: layernextai/chat_frontend:3.20.3
@@ -36,7 +36,7 @@ services:
       - "8099:8099"
     environment:
       - TZ:utc
-      - LAYERNEXT_SUB_DOMAIN=${DOMAIN_URL:-changeme}
+      - LAYERNEXT_SUB_DOMAIN=${DOMAIN_URL}
 
   llm_fast_api_backend:
     image: layernextai/llm_fast_api_backend:3.20.3
@@ -60,8 +60,8 @@ services:
     deploy:
       resources:
         limits:
-          cpus: ${FAST_CPU_LIMIT:-2.0}
-          memory: ${FAST_MEMORY_LIMIT:-2G}
+          cpus: ${FAST_CPU_LIMIT}
+          memory: ${FAST_MEMORY_LIMIT}
     env_file:
       - ./.env
 
