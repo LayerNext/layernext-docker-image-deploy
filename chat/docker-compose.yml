@@ -1,4 +1,3 @@
-version: "3.8"
 services:
   chat_mongodb:
     image: mongo:5.0.13
