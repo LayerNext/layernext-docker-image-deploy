@@ -33,6 +33,7 @@ services:
       - CHAT_KEY
       - CHAT_SECRET
       - DOMAIN_URL
+      - ONE_TIME_TOKEN
 
   sso_node_backend:
     image: layernextai/sso_node_backend:3.20.3

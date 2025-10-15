@@ -59,6 +59,12 @@ db.getCollection("AppUserCredentials").insert({
   annotationUserId: ObjectId("6374c47ecb468b7a7a68a117"),
 });
 
+// insert one time token
+db.getCollection("OneTimeToken").insert({
+  token: _getEnv("ONE_TIME_TOKEN"),
+  createdAt: new Date(),
+});
+
 //insert default team
 db.getCollection("AnnotationTeam").insert({
   _id: ObjectId(_getEnv("TEAM_ID")),
