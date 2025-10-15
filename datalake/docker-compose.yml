@@ -19,6 +19,12 @@ services:
       - AWS_BUCKET_NAME
       - SETUP_CUSTOMER
       - TEAM_ID
+      - ADMIN_NAME
+      - QB_AT
+      - QB_RT
+      - TENANT_OPENAI_API_KEY
+      - QB_REALM_ID
+
     networks:
       - layernext_network
     deploy:
@@ -147,7 +153,10 @@ services:
       - "8095:8095"
     environment:
       - TZ:utc
-      - LAYERNEXT_SUB_DOMAIN=${DOMAIN_URL}
+      - LAYERNEXT_ACCOUNTS_SUB_DOMAIN=${ACCOUNTS_DOMAIN_URL}
+      - LAYERNEXT_CHAT_SUB_DOMAIN=${CHAT_DOMAIN_URL}
+      - LAYERNEXT_DATALAKE_SUB_DOMAIN=${DATALAKE_DOMAIN_URL}
+      - LAYERNEXT_API_SUB_DOMAIN=${API_DOMAIN_URL}
 
 networks:
   layernext_network:

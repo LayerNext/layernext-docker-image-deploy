@@ -31,7 +31,7 @@ var imageUrl = `https://accounts.${DOMAIN_URL}/api/user/profileImage/6374c47ecb4
 db.getCollection("User").insert({
   _id: ObjectId("6374c47ecb468b7a7a68a117"),
   email: adminMail,
-  name: "LayerNext Admin",
+  name: _getEnv("ADMIN_NAME"),
   userType: 2,
   profileImgUrl: "defaultProfileImage.png",
   projectList: null,
@@ -63,6 +63,7 @@ db.getCollection("AppUserCredentials").insert({
 db.getCollection("OneTimeToken").insert({
   token: _getEnv("ONE_TIME_TOKEN"),
   createdAt: new Date(),
+  userId: ObjectId("6374c47ecb468b7a7a68a117"),
 });
 
 //insert default team

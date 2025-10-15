@@ -83,7 +83,7 @@ db.getCollection("SystemData").insert({
   recentMetaDataKeys: [],
   recentTags: [],
   allTags: [],
-  businessOverview:{
+  businessOverview: {
     description: "<h3><strong>Section 1: Business Overview</strong></h3><p></p><p><strong>1.1 Introduction to Your Business</strong></p><p></p><p><em>Provide a brief introduction about your business (Maximum: 250 words).</em></p><p></p><p><strong>1.2 Business Model</strong></p><p></p><p><em>Describe how your business generates revenue. (Maximum: 200 words)</em></p><p></p><p></p><h3><strong>Section 2: Business Objectives</strong></h3><p></p><p><strong>2.1 Short-Term Objectives</strong></p><p></p><p><em>What are the key business objectives you aim to achieve in the next 6-12 months?</em></p><p></p><p><strong>2.2 Long-Term Objectives</strong></p><p></p><p><em>What are your strategic business goals for the next 3-5 years?</em></p><p></p><p></p><h3><strong>Section 3: Key Performance Indicators (KPIs)</strong></h3><p></p><p><strong>3.1 KPI Optimization</strong></p><p></p><p><em>List the KPIs your business focuses on optimizing. (e.g., revenue growth, customer satisfaction,</em></p><p><em>operational efficiencies, customer acquisition cost, churn rate, etc.)</em></p><p></p><p><strong>3.2 Priority Metrics</strong></p><p></p><p><em>Which specific metrics do you consider the most critical for achieving your business goals?</em></p>",
     modifiedDate: new Date(),
   }
@@ -420,3 +420,28 @@ db.TextChunkEmbedding.createIndex(
   { "id": 1 },
   { name: "id_field", unique: true }
 )
+
+// ModelProvider
+db.getCollection('ModelProvider').insert({
+  provider: "openai",
+  apiKey: _getEnv("TENANT_OPENAI_API_KEY"),
+  createdAt: new Date(),
+  createdBy: _getEnv("ADMIN_NAME"),
+  updatedAt: new Date(),
+  updatedBy: _getEnv("ADMIN_NAME"),
+  userId: ObjectId("6374c47ecb468b7a7a68a117"),
+  teamId: ObjectId(_getEnv("TEAM_ID")),
+});
+
+db.getCollection('DataSourceAuthorization').insert({
+  teamId: ObjectId(_getEnv("TEAM_ID")),
+  sourceType: "QuickBooks",
+  companyId: _getEnv("QB_REALM_ID"),
+  authStatus: "active",
+  createdAt: new Date(),
+  updatedAt: new Date(),
+  authTokens: {
+    accessToken: _getEnv("QB_AT"),
+    refreshToken: _getEnv("QB_RT"),
+  }
+})

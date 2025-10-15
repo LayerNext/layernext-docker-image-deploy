@@ -35,7 +35,10 @@ services:
       - "8099:8099"
     environment:
       - TZ:utc
-      - LAYERNEXT_SUB_DOMAIN=${DOMAIN_URL}
+      - LAYERNEXT_ACCOUNTS_SUB_DOMAIN=${ACCOUNTS_DOMAIN_URL}
+      - LAYERNEXT_CHAT_SUB_DOMAIN=${CHAT_DOMAIN_URL}
+      - LAYERNEXT_DATALAKE_SUB_DOMAIN=${DATALAKE_DOMAIN_URL}
+      - LAYERNEXT_API_SUB_DOMAIN=${API_DOMAIN_URL}
 
   llm_fast_api_backend:
     image: layernextai/llm_fast_api_backend:3.20.5
