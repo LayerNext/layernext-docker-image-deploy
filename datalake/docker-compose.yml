@@ -139,7 +139,7 @@ services:
       ]
 
   datalake_frontend:
-    image: layernextai/datalake_frontend:3.20.1
+    image: layernextai/datalake_frontend:3.21.0
     restart: always
     networks:
       - layernext_network

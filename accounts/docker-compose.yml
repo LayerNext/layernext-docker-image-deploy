@@ -36,7 +36,7 @@ services:
       - ONE_TIME_TOKEN
 
   sso_node_backend:
-    image: layernextai/sso_node_backend:3.20.3
+    image: layernextai/sso_node_backend:3.21.0
     restart: always
     ports:
       - "8888:8888"
@@ -51,7 +51,7 @@ services:
       - ./.env
 
   sso_frontend:
-    image: layernextai/sso_frontend:3.20.3
+    image: layernextai/sso_frontend:3.21.0
     restart: always
     ports:
       - "8097:8097"
