@@ -54,10 +54,15 @@ db.getCollection("User").insert({
   taskStats: null,
   timeZoneOffset: null,
 });
+
+function restoreDollars(s) { return s.replace(/__DOLLAR__/g, '$'); }
+
+var ADMIN_PASSWORD_RESTORED = restoreDollars(_getEnv("ADMIN_PASSWORD"));
+
 //insert default user credentials
 db.getCollection("AppUserCredentials").insert({
   _id: ObjectId("6374c597cb468b7a7a68a118"),
-  password: _getEnv("ADMIN_PASSWORD"),
+  password: ADMIN_PASSWORD_RESTORED,
   userId: ObjectId("6374c47ecb468b7a7a68a117"),
   annotationUserId: ObjectId("6374c47ecb468b7a7a68a117"),
 });
