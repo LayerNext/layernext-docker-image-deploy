@@ -33,6 +33,7 @@ services:
       - CHAT_KEY
       - CHAT_SECRET
       - DOMAIN_URL
+      - ACCOUNTS_DOMAIN_URL
       - ONE_TIME_TOKEN
       - ADMIN_NAME
 
