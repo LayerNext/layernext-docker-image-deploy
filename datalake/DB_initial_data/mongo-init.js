@@ -421,14 +421,16 @@ db.TextChunkEmbedding.createIndex(
   { name: "id_field", unique: true }
 )
 
+var adminName = `${_getEnv("ADMIN_FIRST_NAME")} ${_getEnv("ADMIN_LAST_NAME")}`;
+
 // ModelProvider
 db.getCollection('ModelProvider').insert({
   provider: "openai",
   apiKey: _getEnv("TENANT_OPENAI_API_KEY"),
   createdAt: new Date(),
-  createdBy: _getEnv("ADMIN_NAME"),
+  createdBy: adminName,
   updatedAt: new Date(),
-  updatedBy: _getEnv("ADMIN_NAME"),
+  updatedBy: adminName,
   userId: ObjectId("6374c47ecb468b7a7a68a117"),
   teamId: ObjectId(_getEnv("TEAM_ID")),
 });

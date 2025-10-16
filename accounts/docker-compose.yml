@@ -35,7 +35,8 @@ services:
       - DOMAIN_URL
       - ACCOUNTS_DOMAIN_URL
       - ONE_TIME_TOKEN
-      - ADMIN_NAME
+      - ADMIN_FIRST_NAME
+      - ADMIN_LAST_NAME
 
   sso_node_backend:
     image: layernextai/sso_node_backend:3.21.0
