@@ -64,6 +64,7 @@ db.getCollection("OneTimeToken").insert({
   token: _getEnv("ONE_TIME_TOKEN"),
   createdAt: new Date(),
   userId: ObjectId("6374c47ecb468b7a7a68a117"),
+  isActive: true,
 });
 
 //insert default team
