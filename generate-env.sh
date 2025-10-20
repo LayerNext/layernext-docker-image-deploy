@@ -9,6 +9,7 @@ DATALAKE_SECRET=$(openssl rand -base64 45 | tr -dc 'a-z0-9' | head -c 20)
 CHAT_KEY=key_$(openssl rand -base64 60 | tr -dc 'a-z0-9' | head -c 32)
 CHAT_SECRET=$(openssl rand -base64 45 | tr -dc 'a-z0-9' | head -c 20)
 GRAFANA_PASSWORD=$(openssl rand -base64 32 | tr -dc 'a-z0-9' | head -c 20)
+
 # generate accounts env
 accounts_env="./accounts/.env"
 if [ -f $accounts_env ]; then
