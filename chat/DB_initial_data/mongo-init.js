@@ -107,3 +107,17 @@ db.Conversations.createIndex({ "name": "text" });
 db.Conversations.createIndex({ "userName": "text" });
 
 db.DataBlocks.createIndex({ "user_visibility": 1 })
+
+var adminName = `${_getEnv("ADMIN_FIRST_NAME")} ${_getEnv("ADMIN_LAST_NAME")}`;
+
+
+db.getCollection('APIConfigs').insert({
+  "provider": "openai",
+  "apiKey": _getEnv("OPENAI_API_KEY"),
+  "apiUrl": "",
+  "teamId": ObjectId(_getEnv("TEAM_ID")),
+  "updatedBy": adminName,
+  "createdBy": adminName,
+  "createdAt": new Date(),
+  "updatedAt": new Date(),
+})

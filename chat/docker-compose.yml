@@ -20,6 +20,9 @@ services:
       - DUMP_USER_PWD
       - SETUP_CUSTOMER
       - TEAM_ID
+      - OPENAI_API_KEY
+      - ADMIN_FIRST_NAME
+      - ADMIN_LAST_NAME
     deploy:
       resources:
         limits:
