@@ -24,6 +24,7 @@ db.createUser({
 db.getCollection("SystemData").insert({
   _id: ObjectId("62c68556ebeb17f23b74823d"),
   teamId: ObjectId(_getEnv("TEAM_ID")),
+  tenant: _getEnv("SETUP_CUSTOMER"),
   apiConfigs: {
     maxSyncInterval: 50000.0,
   },
