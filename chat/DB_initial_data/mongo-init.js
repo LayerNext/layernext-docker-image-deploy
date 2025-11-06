@@ -126,4 +126,5 @@ db.getCollection("APIConfigs").insert({
 db.getCollection("SystemData").insert({
   teamId: ObjectId(_getEnv("TEAM_ID")),
   lastDataDictionarySyncedAt: null,
+  isInitialKBCreated: false,
 });
