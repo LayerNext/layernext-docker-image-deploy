@@ -35,7 +35,7 @@ db.getCollection("User").insert({
   email: adminMail,
   name: adminName,
   tenant: _getEnv("SETUP_CUSTOMER"),
-  userType: 2,
+  userType: 3,
   profileImgUrl: "defaultProfileImage.png",
   projectList: null,
   teamId: ObjectId(_getEnv("TEAM_ID")),
