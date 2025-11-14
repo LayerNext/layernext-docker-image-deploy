@@ -1,17 +1,19 @@
 #!/bin/bash
 set -e
 
+BRANCH_NAME="$1"
+
 # -----------------------------------------------------------------------------
 # Auto-switch to 'ubuntu' user if running as root
 # -----------------------------------------------------------------------------
 if [ "$(whoami)" != "ubuntu" ]; then
   echo "Detected execution as root. Switching to 'ubuntu' user..."
-  sudo -u ubuntu bash -c "bash '$0' --as-ubuntu"
+  sudo -u ubuntu bash -c "bash '$0' \"$BRANCH_NAME\" --as-ubuntu"
   echo "Switched execution to ubuntu user. Exiting root process..."
   exit 0
 fi
 
-if [ "$1" == "--as-ubuntu" ]; then
+if [ "$2" == "--as-ubuntu" ]; then
   shift
 fi
 
@@ -47,17 +49,17 @@ fi
 cd /home/ubuntu/layernext/layernext-docker-image-deploy
 echo "Current repo path: $(pwd)"
 
-echo -e "\nChecking out 'layernext-tenant' branch..."
+echo -e "\nChecking out '$BRANCH_NAME' branch..."
 git fetch origin
-git checkout layernext-tenant || git checkout -b layernext-tenant origin/layernext-tenant
-git pull origin layernext-tenant
+git checkout "$BRANCH_NAME" || git checkout -b "$BRANCH_NAME" origin/"$BRANCH_NAME"
+git pull origin "$BRANCH_NAME"
 echo "Branch synced: $(git branch --show-current)"
 
 # -----------------------------------------------------------------------------
 # Pull Docker images
 # -----------------------------------------------------------------------------
 echo -e "\nPulling Docker images for updated services..."
-SERVICES=("accounts" "chat" "datalake" "monitoring")
+SERVICES=("accounts" "chat" "datalake")
 
 for service in "${SERVICES[@]}"; do
   if [ -d "$service" ]; then
@@ -76,4 +78,3 @@ echo "Docker image pulls completed."
 # Final message
 # -----------------------------------------------------------------------------
 echo "LayerNext setup completed successfully"
-
