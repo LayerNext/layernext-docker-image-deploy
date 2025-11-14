@@ -6,7 +6,7 @@ echo "    LayerNext Tenant Release Publisher"
 echo "    (publish-existing-tenant-release.sh)"
 echo "====================================================="
 
-REPO_ROOT_DIR=$(pwd)
+REPO_ROOT_DIR="$(cd "$(dirname "$0")/.." && pwd)"
 echo "Repo root directory: $REPO_ROOT_DIR"
 
 # ---------------------------------------
@@ -50,7 +50,7 @@ for service in "${SERVICES[@]}"; do
 
         cd "$REPO_ROOT_DIR"
     else
-        echo "Skipping '$service' — directory not found."
+        echo "Skipping '$service' - directory not found."
     fi
 done
 
