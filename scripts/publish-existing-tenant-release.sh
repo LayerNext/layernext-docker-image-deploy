@@ -9,16 +9,12 @@ echo "====================================================="
 REPO_ROOT_DIR=$(pwd)
 echo "Repo root directory: $REPO_ROOT_DIR"
 
-# ---------------------------------------
 # Services to update
-# ---------------------------------------
 SERVICES=("accounts" "chat" "datalake")
 
 echo "Services to process: ${SERVICES[*]}"
 
-# ---------------------------------------
 # Docker updates
-# ---------------------------------------
 echo ""
 echo "===== Starting Docker Update Process ====="
 
@@ -57,13 +53,22 @@ done
 echo ""
 echo "===== Docker Update Process Completed ====="
 
-# ---------------------------------------
 # Cleanup
-# ---------------------------------------
 echo ""
 echo "===== Cleaning Docker System ====="
 sudo docker system prune -f
 echo "Docker cleanup completed."
+
+# Restart nginx
+echo ""
+echo "===== Restarting nginx container ====="
+
+if sudo docker ps --format '{{.Names}}' | grep -q "^nginx$"; then
+    echo "Found nginx container. Restarting..."
+    sudo docker restart nginx && echo "nginx restarted successfully."
+else
+    echo "WARNING: nginx container not found. Skipping restart."
+fi
 
 echo ""
 echo "====================================================="
