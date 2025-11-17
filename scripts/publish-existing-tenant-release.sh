@@ -10,7 +10,7 @@ REPO_ROOT_DIR=$(pwd)
 echo "Repo root directory: $REPO_ROOT_DIR"
 
 # Services to update
-SERVICES=("accounts" "chat" "datalake")
+SERVICES=("accounts" "cdatalakeat" "chat")
 
 echo "Services to process: ${SERVICES[*]}"
 
@@ -63,9 +63,16 @@ echo "Docker cleanup completed."
 echo ""
 echo "===== Restarting nginx container ====="
 
-if sudo docker ps --format '{{.Names}}' | grep -q "^nginx$"; then
-    echo "Found nginx container. Restarting..."
-    sudo docker restart nginx && echo "nginx restarted successfully."
+# Find nginx container by name pattern
+NGINX_CONTAINER=$(sudo docker ps --format '{{.Names}}' | grep -i 'nginx' || true)
+
+if [ -n "$NGINX_CONTAINER" ]; then
+    echo "Found nginx container: $NGINX_CONTAINER"
+    if sudo docker restart "$NGINX_CONTAINER"; then
+        echo "nginx restarted successfully."
+    else
+        echo "WARNING: Failed to restart nginx container."
+    fi
 else
     echo "WARNING: nginx container not found. Skipping restart."
 fi
