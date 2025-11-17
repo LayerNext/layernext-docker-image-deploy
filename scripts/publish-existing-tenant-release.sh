@@ -10,7 +10,7 @@ REPO_ROOT_DIR=$(pwd)
 echo "Repo root directory: $REPO_ROOT_DIR"
 
 # Services to update
-SERVICES=("accounts" "cdatalakeat" "chat")
+SERVICES=("accounts" "datalake" "chat")
 
 echo "Services to process: ${SERVICES[*]}"
 
