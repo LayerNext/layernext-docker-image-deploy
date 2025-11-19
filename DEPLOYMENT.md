@@ -26,7 +26,8 @@
 
 ### Central Server
 
--
+- Added a new feature to check whether a DNS record already exists for a tenant name, and if it does, generate a new random tenant name by adding a numeric suffix. - Oshan
+- Fixed an issue where sync failures were not being properly detected through the webhook. - Oshan
 
 ### Account App
 
@@ -34,15 +35,16 @@
 
 ### Datalake App
 
--
+- Added automatic connection status updates to the data_sources table during the initial QB-Fivetran sync. - Oshan
+- Included a new connectionStatus field in the getDataDictionarySectionList output - Oshan
 
 ### Chat App
 
--
+- Modified sorting order of task list.(Now sort in this order [IN_PROGRESS, TO_DO, COMPLETED]) and new created task will be on top . - Oshan
 
 ## Backward Compatibility Notes
 
--
+- Need to update the existing system’s AutomationTask collection by swapping the status values 10 and 20 (To-Do - In-Progress).Scripts is in 3.21.5 script directory in chat. - Oshan
 
 ## Additional Notes
 
