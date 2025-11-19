@@ -37,14 +37,18 @@
 
 - Added automatic connection status updates to the data_sources table during the initial QB-Fivetran sync. - Oshan
 - Included a new connectionStatus field in the getDataDictionarySectionList output - Oshan
+- Initial sync success notification message to all users via email and push notification. - udakara
 
 ### Chat App
 
 - Modified sorting order of task list.(Now sort in this order [IN_PROGRESS, TO_DO, COMPLETED]) and new created task will be on top . - Oshan
+- notify all user after quick book connectivity fails via email and push notifications. - udakara
+- Initial sync success notification message to all users via email and push notification. - udakara
 
 ## Backward Compatibility Notes
 
 - Need to update the existing system’s AutomationTask collection by swapping the status values 10 and 20 (To-Do - In-Progress).Scripts is in 3.21.5 script directory in chat. - Oshan
+- Need to run DB script to ensure existing users not get the quickbook data initial sync email and notification - udakara
 
 ## Additional Notes
 
