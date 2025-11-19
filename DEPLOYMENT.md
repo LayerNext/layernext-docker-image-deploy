@@ -19,6 +19,7 @@
 - [ ] Code merged to `layernext-tenant`
 - [ ] Docker images built and pushed to `layernextai/` docker hub repository
 - [ ] AWS AMI built for production environment
+- [ ] beta version verified
 - [ ] Central server updated for production environment
 - [ ] backward compatibility verified (.env and db changes)
 
