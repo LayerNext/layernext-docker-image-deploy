@@ -27,13 +27,17 @@ var ACCOUNTS_DOMAIN_URL = _getEnv("ACCOUNTS_DOMAIN_URL");
 var adminMail = _getEnv("ADMIN_EMAIL");
 var teamName = `${SETUP_CUSTOMER} team`;
 var imageUrl = `https://${ACCOUNTS_DOMAIN_URL}/api/user/profileImage/6374c47ecb468b7a7a68a117/defaultProfileImage.png?1669197094012`;
-var adminName = `${_getEnv("ADMIN_FIRST_NAME")} ${_getEnv("ADMIN_LAST_NAME")}`;
+var adminFirstName = _getEnv("ADMIN_FIRST_NAME") || "";
+var adminLastName = _getEnv("ADMIN_LAST_NAME") || "";
+var adminName = `${adminFirstName} ${adminLastName}`.trim();
 
 //insert default user
 db.getCollection("User").insert({
   _id: ObjectId("6374c47ecb468b7a7a68a117"),
   email: adminMail,
   name: adminName,
+  firstName: adminFirstName,
+  lastName: adminLastName,
   tenant: _getEnv("SETUP_CUSTOMER"),
   userType: 3,
   profileImgUrl: "defaultProfileImage.png",
