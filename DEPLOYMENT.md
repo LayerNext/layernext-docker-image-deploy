@@ -32,7 +32,7 @@
 
 ### Account App
 
--
+- SSO Front end profile section bug fixing - udakara
 
 ### Datalake App
 
@@ -42,7 +42,7 @@
 
 ### Chat App
 
-- Modified sorting order of task list.(Now sort in this order [IN_PROGRESS, TO_DO, COMPLETED]) and new created task will be on top . - Oshan
+- Modified sorting order of task list.(Now sort in this order [IN_PROGRESS, TO_DO, COMPLETED]) and new created task will be on top . - Oshan, udakara
 - notify all user after quick book connectivity fails via email and push notifications. - udakara
 - Initial sync success notification message to all users via email and push notification. - udakara
 
