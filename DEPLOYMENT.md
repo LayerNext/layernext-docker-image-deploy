@@ -1,5 +1,52 @@
 # Deployment Notes
 
+## 3.21.6
+
+- **Version**: `v3.21.6`
+- **Beta release date → Dev deployment**: `2025-11-21`
+- **Release date → Prod deployment**: `YYYY-MM-DD`
+
+
+## Beta Release Checklist
+
+
+## Release Checklist
+
+
+
+## Change Log
+
+### Central Server
+
+
+
+### Account App
+
+
+
+### Datalake App
+
+
+
+### Chat App
+
+- The uploaded attachments for conversation can be preview by clicking data sources in separate browser
+
+
+
+## Backward Compatibility Notes
+
+
+
+## Additional Notes
+
+-
+
+
+
+
+
+
 # 3.21.5
 
 - **Version**: `v3.21.5`
