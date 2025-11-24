@@ -1,5 +1,34 @@
 # Deployment Notes
 
+## 3.21.6
+
+- **Version**: `v3.21.6`
+- **Beta release date → Dev deployment**: `2025-11-21`
+- **Release date → Prod deployment**: `YYYY-MM-DD`
+
+## Beta Release Checklist
+
+## Release Checklist
+
+## Change Log
+
+### Central Server
+
+### Account App
+
+### Datalake App
+
+### Chat App
+
+- The uploaded attachments for conversation can be preview by clicking data sources in separate browser
+- handle automation task status update
+
+## Backward Compatibility Notes
+
+## Additional Notes
+
+-
+
 # 3.21.5
 
 - **Version**: `v3.21.5`
@@ -27,29 +56,29 @@
 
 ### Central Server
 
-- Added a new feature to check whether a DNS record already exists for a tenant name, and if it does, generate a new random tenant name by adding a numeric suffix. - Oshan
-- Fixed an issue where sync failures were not being properly detected through the webhook. - Oshan
+- Added a new feature to check whether a DNS record already exists for a tenant name, and if it does, generate a new random tenant name by adding a numeric suffix.
+- Fixed an issue where sync failures were not being properly detected through the webhook.
 
 ### Account App
 
-- SSO Front end profile section bug fixing - udakara
+- SSO Front end profile section bug fixing
 
 ### Datalake App
 
-- Added automatic connection status updates to the data_sources table during the initial QB-Fivetran sync. - Oshan
-- Included a new connectionStatus field in the getDataDictionarySectionList output - Oshan
-- Initial sync success notification message to all users via email and push notification. - udakara
+- Added automatic connection status updates to the data_sources table during the initial QB-Fivetran sync.
+- Included a new connectionStatus field in the getDataDictionarySectionList output
+- Initial sync success notification message to all users via email and push notification.
 
 ### Chat App
 
-- Modified sorting order of task list.(Now sort in this order [IN_PROGRESS, TO_DO, COMPLETED]) and new created task will be on top . - Oshan, udakara
-- notify all user after quick book connectivity fails via email and push notifications. - udakara
-- Initial sync success notification message to all users via email and push notification. - udakara
+- Modified sorting order of task list.(Now sort in this order [IN_PROGRESS, TO_DO, COMPLETED]) and new created task will be on top .
+- notify all user after quick book connectivity fails via email and push notifications.
+- Initial sync success notification message to all users via email and push notification.
 
 ## Backward Compatibility Notes
 
-- Need to update the existing system’s AutomationTask collection by swapping the status values 10 and 20 (To-Do - In-Progress).Scripts is in 3.21.5 script directory in chat. - Oshan
-- Need to run DB script to ensure existing users not get the quickbook data initial sync email and notification - udakara
+- Need to update the existing system’s AutomationTask collection by swapping the status values 10 and 20 (To-Do - In-Progress).Scripts is in 3.21.5 script directory in chat.
+- Need to run DB script to ensure existing users not get the quickbook data initial sync email and notification
 
 ## Additional Notes
 
