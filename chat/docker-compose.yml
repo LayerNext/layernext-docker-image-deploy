@@ -46,6 +46,8 @@ services:
   llm_fast_api_backend:
     image: layernextai/llm_fast_api_backend:3.21.6
     restart: always
+    environment:
+      - LAYERNEXT_VERSION=3.21.6
     networks:
       - layernext_network
     ports:
