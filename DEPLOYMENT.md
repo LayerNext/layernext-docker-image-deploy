@@ -4,7 +4,7 @@
 
 - **Version**: `v3.21.6`
 - **Beta release date → Dev deployment**: `2025-11-21`
-- **Release date → Prod deployment**: `YYYY-MM-DD`
+- **Release date → Prod deployment**: `2025-11-24`
 
 ## Beta Release Checklist
 
@@ -20,6 +20,16 @@
 
 ### Chat App
 
+- Fixed screenshot attachment file accessing issue due to non-printable characters in file name: Renamed file names before processing to avoid the problem.
+- Enabled the transaction analyzer to use generic function to create or update an entry in accounting system.
+- Fixed the issue of missing amount in journal entries by using enhanced output from datalake for 'Account_Transactions' records.
+- Instruction change to improve the handling payroll expenses by transaction analyzer: Added more scenarios to expense processing prompt.
+- Disabled the master agent from posting to QuickBooks by removing the instructions for updating functionalities (eg: add_expenses, add_bills, update_expenses, etc).
+- Minor instruction change to confusion by master agent when processing user question in a task: Make it aware that the transaction is not posted it needs to help analyzer to complete it with user feedback/input.
+- Fixed result confirmation of transfer transactions to avoid trying to post again.
+- Simplified analyzer output processing to get the transaction posting status correctly.
+- Fixed the disconnection of context between the master agent and transaction analyzer when re-invoking from user feedback (Done update to master agent system instruction).
+- Updated the transaction query function (in Accounting API tool) to fix missing of other party account information in case of transfers and journal entries (Fixed empty result when filtering by other party account id).
 - The uploaded attachments for conversation can be preview by clicking data sources in separate browser
 - handle automation task status update
 
@@ -33,7 +43,7 @@
 
 - **Version**: `v3.21.5`
 - **Beta release date → Dev deployment**: `2025-11-19`
-- **Release date → Prod deployment**: `YYYY-MM-DD`
+- **Release date → Prod deployment**: `2025-11-20`
 
 ## Beta Release Checklist
 
