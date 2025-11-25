@@ -1,5 +1,36 @@
 # Deployment Notes
 
+## 3.21.7
+
+- **Version**: `v3.21.6`
+- **Beta release date → Dev deployment**: `2025-11-21`
+- **Release date → Prod deployment**: `2025-11-24`
+
+## Beta Release Checklist
+
+## Release Checklist
+
+[] - chat -> docker-compose.yml -> llm_fast_api_backend -> environment -> LAYERNEXT_VERSION should be updated each and every release with new version number. EX:LAYERNEXT_VERSION=3.21.7
+
+## Change Log
+
+### Central Server
+
+### Account App
+
+### Datalake App
+
+### Chat App
+
+- LayerNext version is added in setting tab.
+- Datasource previewer default favicon change 
+
+## Backward Compatibility Notes
+
+## Additional Notes
+
+-
+
 ## 3.21.6
 
 - **Version**: `v3.21.6`
