@@ -16,16 +16,29 @@
 
 ### Central Server
 
+- Added an email scrubber feature to automatically create conversations in the appropriate tenant system based on incoming emails.
+
 ### Account App
+
+- Added new fields(`isOnboardedUser and teamId`) for the getUserList internal API response.
 
 ### Datalake App
 
 ### Chat App
 
 - LayerNext version is added in setting tab.
-- Datasource previewer default favicon change 
+- Datasource previewer default favicon change.
+- Added an endpoint to create conversations from emails processed by the CMS system.
 
 ## Backward Compatibility Notes
+
+### Chat App
+
+- Need to verify whether the CMS_TOKEN environment variable exists; if not, it should be added.
+
+### Account App
+
+- Add the `isOnboardedUser` flag to the previously deployed SSO backend database (applies only to the system’s first user(value `true`)).
 
 ## Additional Notes
 
