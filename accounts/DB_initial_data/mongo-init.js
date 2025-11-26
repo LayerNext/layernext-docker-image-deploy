@@ -57,9 +57,12 @@ db.getCollection("User").insert({
   offsetTime: null,
   taskStats: null,
   timeZoneOffset: null,
+  isOnboardedUser: true,
 });
 
-function restoreDollars(s) { return s.replace(/__DOLLAR__/g, '$'); }
+function restoreDollars(s) {
+  return s.replace(/__DOLLAR__/g, "$");
+}
 
 var ADMIN_PASSWORD_RESTORED = restoreDollars(_getEnv("ADMIN_PASSWORD"));
 
