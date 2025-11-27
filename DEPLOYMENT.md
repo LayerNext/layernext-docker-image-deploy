@@ -1,5 +1,49 @@
 # Deployment Notes
 
+## 3.21.7
+
+- **Version**: `v3.21.6`
+- **Beta release date → Dev deployment**: `2025-11-21`
+- **Release date → Prod deployment**: `2025-11-24`
+
+## Beta Release Checklist
+
+## Release Checklist
+
+[] - chat -> docker-compose.yml -> llm_fast_api_backend -> environment -> LAYERNEXT_VERSION should be updated each and every release with new version number. EX:LAYERNEXT_VERSION=3.21.7
+
+## Change Log
+
+### Central Server
+
+- Added an email scrubber feature to automatically create conversations in the appropriate tenant system based on incoming emails.
+
+### Account App
+
+- Added new fields(`isOnboardedUser and teamId`) for the getUserList internal API response.
+
+### Datalake App
+
+### Chat App
+
+- LayerNext version is added in setting tab.
+- Datasource previewer default favicon change.
+- Added an endpoint to create conversations from emails processed by the CMS system.
+
+## Backward Compatibility Notes
+
+### Chat App
+
+- Need to verify whether the CMS_TOKEN environment variable exists; if not, it should be added.
+
+### Account App
+
+- Add the `isOnboardedUser` flag to the previously deployed SSO backend database (applies only to the system’s first user(value `true`)).
+
+## Additional Notes
+
+-
+
 ## 3.21.6
 
 - **Version**: `v3.21.6`
