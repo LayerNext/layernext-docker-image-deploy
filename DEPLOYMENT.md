@@ -53,6 +53,7 @@
 1. Need DB script to get insight board user question showing. ( layernext-docker-image-deploy --> scripts --> 3.21.7 ---> session_user_input_to_insight_board.js)
 2. Make sure has this env variable in layernext-docker-image-deploy --> chat -> docker-compose.yml -> llm_fast_api_backend -> environment -> LAYERNEXT_VERSION with latest release version.
 3. Need to verify whether the CMS_TOKEN environment variable exists; if not, it should be added.
+4. Add the `isOnboardedUser` flag to the previously deployed SSO backend database (applies only to the system’s first user(value `true`)).
 
 ## Additional Notes
 
