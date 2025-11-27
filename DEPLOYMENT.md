@@ -2,43 +2,57 @@
 
 ## 3.21.7
 
-- **Version**: `v3.21.6`
-- **Beta release date → Dev deployment**: `2025-11-21`
-- **Release date → Prod deployment**: `2025-11-24`
+- **Version**: `v3.21.7`
+- **Beta release date → Dev deployment**: `2025-11-27`
+- **Release date → Prod deployment**: `2025-11-27`
 
 ## Beta Release Checklist
 
+- [ ] Code merged to `layernext-tenant-dev`
+- [ ] Docker images built and pushed to `layernextai/` docker hub repository
+- [ ] AWS AMI built for development environment
+- [ ] Central server updated for development environment
+- [ ] backward compatibility verified (.env and db changes)
+
 ## Release Checklist
 
-[] - chat -> docker-compose.yml -> llm_fast_api_backend -> environment -> LAYERNEXT_VERSION should be updated each and every release with new version number. EX:LAYERNEXT_VERSION=3.21.7
+- [ ] Code merged to `layernext-tenant`
+- [ ] Docker images built and pushed to `layernextai/` docker hub repository
+- [ ] AWS AMI built for production environment
+- [ ] beta version verified
+- [ ] Central server updated for production environment
+- [ ] backward compatibility verified (.env and db changes)
 
 ## Change Log
 
 ### Central Server
 
-- Added an email scrubber feature to automatically create conversations in the appropriate tenant system based on incoming emails.
+1. Added an email scrubber feature to automatically create conversations in the appropriate tenant system based on incoming emails.
 
 ### Account App
 
-- Added new fields(`isOnboardedUser and teamId`) for the getUserList internal API response.
+1. Added new fields(`isOnboardedUser and teamId`) for the getUserList internal API response.
 
 ### Datalake App
 
+1. Knowledge enhancement to avoid agent using invoice total to capture the revenue.
+
 ### Chat App
 
-- LayerNext version is added in setting tab.
-- Datasource previewer default favicon change.
-- Added an endpoint to create conversations from emails processed by the CMS system.
+1. Fixed the issue of master agent handling the user's answer when processing tasks - prevented it from analyzing the transaction or asking clarifications from user.
+2. Enforced the transaction analyzer to do deeper analysis before coming to conclusions on already posted transactions and matching invoices / bills.
+3. Fixed the issue of final answer list not loading to insight board main graph rendering when agent do a followup question.
+4. Fixed the issue of missing log folder when generating insight report.
+5. Enabled the agent to understand the content of the uploaded files and decide what action to take even if the user doesn't mention anything in the request.
+6. Send layernext version to chat app
+7. Insight board user question related data is added.
+8. Added an endpoint to create conversations from emails processed by the CMS system.
 
 ## Backward Compatibility Notes
 
-### Chat App
-
-- Need to verify whether the CMS_TOKEN environment variable exists; if not, it should be added.
-
-### Account App
-
-- Add the `isOnboardedUser` flag to the previously deployed SSO backend database (applies only to the system’s first user(value `true`)).
+1. Need DB script to get insight board user question showing. ( layernext-docker-image-deploy --> scripts --> 3.21.7 ---> session_user_input_to_insight_board.js)
+2. Make sure has this env variable in layernext-docker-image-deploy --> chat -> docker-compose.yml -> llm_fast_api_backend -> environment -> LAYERNEXT_VERSION with latest release version.
+3. Need to verify whether the CMS_TOKEN environment variable exists; if not, it should be added.
 
 ## Additional Notes
 
