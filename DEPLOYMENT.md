@@ -1,5 +1,44 @@
 # Deployment Notes
 
+## 3.21.8
+
+- **Version**: `v3.21.8`
+- **Beta release date → Dev deployment**: `2025-11-28`
+- **Release date → Prod deployment**: `2025-11-28`
+
+## Beta Release Checklist
+
+
+## Release Checklist
+
+- [ ] check python SDK version 3.21.8b3
+
+
+## Change Log
+
+### Central Server
+
+- After setting up completed then navigated to history page in chat app with ongoing chat id
+
+
+### Account App
+
+
+### Datalake App
+
+- Business Overview update method added
+
+
+### Chat App
+
+
+
+## Additional Notes
+
+- Python sdk is added 3.21.8b3 
+
+
+
 ## 3.21.7
 
 - **Version**: `v3.21.7`
