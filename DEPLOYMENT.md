@@ -30,6 +30,7 @@
 ### Central Server
 
 - After setting up completed then navigated to history page in chat app with ongoing chat id
+- Added new end point to add and update token usage stats for a tenant conversation
 
 ### Account App
 
