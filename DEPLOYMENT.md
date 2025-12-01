@@ -1,5 +1,71 @@
 # Deployment Notes
 
+## 3.21.8
+
+- **Version**: `v3.21.8`
+- **Beta release date → Dev deployment**: `2025-12-01`
+- **Release date → Prod deployment**: `2025-12-01`
+
+## Beta Release Checklist
+
+- [ ] Code merged to `layernext-tenant-dev`
+- [ ] Docker images built and pushed to `layernextai/` docker hub repository
+- [ ] AWS AMI built for development environment
+- [ ] Central server updated for development environment
+- [ ] backward compatibility verified (.env and db changes)
+- [ ] check python SDK version 3.21.8b3
+
+## Release Checklist
+
+- [ ] Code merged to `layernext-tenant`
+- [ ] Docker images built and pushed to `layernextai/` docker hub repository
+- [ ] AWS AMI built for production environment
+- [ ] beta version verified
+- [ ] Central server updated for production environment
+- [ ] backward compatibility verified (.env and db changes)
+- [ ] check python SDK version 3.21.8b3
+
+## Change Log
+
+### Central Server
+
+- After setting up completed then navigated to history page in chat app with ongoing chat id
+- Added new end point to add and update token usage stats for a tenant conversation
+
+### Account App
+
+### Datalake App
+
+- Business Overview update method added
+
+### Chat App
+
+1. Fixed the issue of not properly answering user's clarifications for transactions.
+   - Analyzer system instruction - Instruct to give priority to the given user instruction
+   - Master agent instructions - Enforce it's scope not to answer questions for transactions analyzed by analyzer
+2. Fixed issues with updating and creating entries in QuickBooks.
+   - Accounting API tool crash fix on update flow
+   - Fixed missing of line item tax in purchase updates
+   - Fixed issue with creating new entries such as Customers
+3. Fixed issue of including tax amount in line items by instruction enhancement in transaction analyzer tool.
+4. De-prioritization of knowledge block creation LLM calls - only the user initiated questions will run with priority although IS_OPENAI_PRIORITY_ENABLED environment variable is set to true. (Added is_user_triggered flag to all LLM agent and sub agent classes).
+   5 . Schedule the initial knowledge block creation process between 8 PM to 6 AM in user's timezone.
+5. Re-factored knowledge block initial and run creation / update code by moving all relevant functions to KnowledgeGeneratorAgent class instead of doing it in TransactionAnalyzerAgent.
+6. Metadata finder returns a message to indicate SQL data still not available until the data sync is complete
+
+- The AI should be aware of this and switch to API for data retrieval.
+
+8. Direct user to onboarding conversation at startup and generate the business overview based on it.
+
+- Added mode for Business overview tool to update the business overview (updated system instructions and tool functionality)
+- Business overview in MetaLake should update.
+
+9. Implemented a token usage service to track and collect statistics for LLM calls.
+
+## Additional Notes
+
+- Python sdk is added 3.21.8b3
+
 ## 3.21.7
 
 - **Version**: `v3.21.7`
