@@ -24,11 +24,13 @@
 - [ ] Central server updated for production environment
 - [ ] backward compatibility verified (.env and db changes)
 - [ ] check python SDK version 3.21.8b3
+- [ ] check these env in cms server for cloudflare captcha (CAPTCHA_SECRET_KEY,CAPTCHA_SIGNUP_EXPECTED_ACTION,CAPTCHA_SIGNUP_EXPECTED_HOSTNAME)
 
 ## Change Log
 
 ### Central Server
 
+- Add captcha to sign up form submit. in there have three env variables (CAPTCHA_SECRET_KEY,CAPTCHA_SIGNUP_EXPECTED_ACTION,CAPTCHA_SIGNUP_EXPECTED_HOSTNAME)
 - After setting up completed then navigated to history page in chat app with ongoing chat id
 - Added new end point to add and update token usage stats for a tenant conversation
 
@@ -37,6 +39,7 @@
 ### Datalake App
 
 - Business Overview update method added
+- Added a feature to update Fivetran’s QuickBooks refresh token whenever it is detected to be in an unauthorized state.
 
 ### Chat App
 
