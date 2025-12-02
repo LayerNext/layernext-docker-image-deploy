@@ -30,8 +30,9 @@
 
 ### Central Server
 
-- After setting up completed then navigated to history page in chat app with ongoing chat 
 - Add captcha to sign up form submit. in there have three env variables (CAPTCHA_SECRET_KEY,CAPTCHA_SIGNUP_EXPECTED_ACTION,CAPTCHA_SIGNUP_EXPECTED_HOSTNAME)
+- After setting up completed then navigated to history page in chat app with ongoing chat id
+- Added new end point to add and update token usage stats for a tenant conversation
 
 ### Account App
 
