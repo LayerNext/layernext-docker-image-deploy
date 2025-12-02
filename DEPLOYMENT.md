@@ -36,6 +36,7 @@
 ### Datalake App
 
 - Business Overview update method added
+- fivetran qb refresh token sync periodically
 
 ### Chat App
 
