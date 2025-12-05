@@ -36,8 +36,6 @@
 
 ### Account App
 
-- Add First Name and Last Name fields for invite users
-
 ### Datalake App
 
 - Business Overview update method added
@@ -66,8 +64,6 @@
 - Business overview in MetaLake should update.
 
 9. Implemented a token usage service to track and collect statistics for LLM calls.
-
-10. Integrated FreshChat to chat front end.
 
 ## Additional Notes
 
