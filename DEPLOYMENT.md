@@ -65,6 +65,8 @@
 
 9. Implemented a token usage service to track and collect statistics for LLM calls.
 
+10. Integrated FreshChat to chat front end.
+
 ## Additional Notes
 
 - Python sdk is added 3.21.8b3
