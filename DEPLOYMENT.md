@@ -36,6 +36,8 @@
 
 ### Account App
 
+- Add First Name and Last Name fields for invite users
+
 ### Datalake App
 
 - Business Overview update method added
