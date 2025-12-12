@@ -1,5 +1,56 @@
 # Deployment Notes
 
+## 3.21.9
+
+- **Version**: `v3.21.9`
+- **Beta release date → Dev deployment**: `2025-12-10`
+- **Release date → Prod deployment**: `2025-12-10`
+
+## Beta Release Checklist
+
+- [ ] Code merged to `layernext-tenant-dev`
+- [ ] Docker images built and pushed to `layernextai/` docker hub repository
+- [ ] AWS AMI built for development environment
+- [ ] Central server updated for development environment
+- [ ] backward compatibility verified (.env and db changes)
+
+## Release Checklist
+
+- [ ] Code merged to `layernext-tenant`
+- [ ] Docker images built and pushed to `layernextai/` docker hub repository
+- [ ] AWS AMI built for production environment
+- [ ] beta version verified
+- [ ] Central server updated for production environment
+- [ ] backward compatibility verified (.env and db changes)
+
+## Change Log
+
+### Central Server
+
+### Account App
+
+### Datalake App
+
+### Chat App
+
+1. Added support for class and department when adding and updating bills/expenses
+2. Fixed issue with description getting missed after update (Description and expense category made mandatory fields in line items)
+3. Enabled attachment upload for bill and purchase update operations too
+4. Fixed audit report visibility to Master Agent with new fields added to the audit output (transaction matching info)
+5. Fixed programming issues that lead to analyzer cycle not completing - added prevention for final answer missing and fixed the transaction file names fed to analyzer agent cycle.
+6. Master instruction enhancements to avoid confusions in using Transaction Analyzer tool:
+   - Provided awareness that Tx Analyzer process single transaction at a time.
+   - Prompt refinement to correct the language usage.
+7. Statement expense processing - Encourage to use out of scope tax to avoid rounding issues
+8. Correction to API tool for bill payment posting from credit cards
+9. Fixed instruction confusions in Tx Analyzer (audit) - how to use supporting data; validate error detection before concluding.
+10. Corrected transaction records by removing tax account info when no tax involved - to mitigate possible confusion
+11. Added sign to amount in the accounting data - fix to api tool
+
+# Backward Compatibility Notes
+
+# Additional Notes
+
 ## 3.21.8
 
 - **Version**: `v3.21.8`
