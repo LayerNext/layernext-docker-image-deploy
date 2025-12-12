@@ -43,6 +43,9 @@
    - Prompt refinement to correct the language usage.
 7. Statement expense processing - Encourage to use out of scope tax to avoid rounding issues
 8. Correction to API tool for bill payment posting from credit cards
+9. Fixed instruction confusions in Tx Analyzer (audit) - how to use supporting data; validate error detection before concluding.
+10. Corrected transaction records by removing tax account info when no tax involved - to mitigate possible confusion
+11. Added sign to amount in the accounting data - fix to api tool
 
 # Backward Compatibility Notes
 
