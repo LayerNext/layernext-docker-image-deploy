@@ -1,5 +1,52 @@
 # Deployment Notes
 
+## 3.21.10
+
+- **Version**: `v3.21.10`
+- **Beta release date → Dev deployment**: `2025-12-16`
+- **Release date → Prod deployment**: `2025-12-16`
+
+## Beta Release Checklist
+
+- [ ] Code merged to `layernext-tenant-dev`
+- [ ] Docker images built and pushed to `layernextai/` docker hub repository
+- [ ] AWS AMI built for development environment
+- [ ] Central server updated for development environment
+- [ ] backward compatibility verified (.env and db changes)
+
+## Release Checklist
+
+- [ ] Code merged to `layernext-tenant`
+- [ ] Docker images built and pushed to `layernextai/` docker hub repository
+- [ ] AWS AMI built for production environment
+- [ ] beta version verified
+- [ ] Central server updated for production environment
+- [ ] backward compatibility verified (.env and db changes)
+
+## Change Log
+
+### Central Server
+
+### Account App
+
+### Datalake App
+
+### Chat App
+
+1. Removed duplicate checking and vendor creation (when not exists) from API tool
+
+- Give full authority for the Transaction Analyzer to find and create vendors.
+- Added new mode to 'Accounting Master Data Loader' tool to search for the vendors, customers, accounts, etc.
+
+2. Added function to get remaining transactions from the statement to the Accounting API tool.
+3. Corrected the updating and handling of remaining transactions in the statement - skip the processing of matched remaining transactions.
+4. Re-added the missed api_task 'preprocess_statement' to Accounting API tool in master agent system instruction.
+5. Tx-analyzer is enhanced to do internal audits to ensure that the ledger entries maintain accounting standards.
+
+# Backward Compatibility Notes
+
+# Additional Notes
+
 ## 3.21.9
 
 - **Version**: `v3.21.9`
