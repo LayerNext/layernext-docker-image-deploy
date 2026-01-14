@@ -1,5 +1,84 @@
 # Deployment Notes
 
+## 3.21.12
+
+- **Version**: `v3.21.12`
+- **Beta release date → Dev deployment**: `2026-01-14`
+- **Release date → Prod deployment**: `2026-01-14`
+
+## Beta Release Checklist
+
+- [ ] Code merged to `layernext-tenant-dev`
+- [ ] Docker images built and pushed to `layernextai/` docker hub repository
+- [ ] AWS AMI built for development environment
+- [ ] Central server updated for development environment
+- [ ] backward compatibility verified (.env and db changes)
+
+## Release Checklist
+
+- [ ] Code merged to `layernext-tenant`
+- [ ] Docker images built and pushed to `layernextai/` docker hub repository
+- [ ] AWS AMI built for production environment
+- [ ] beta version verified
+- [ ] Central server updated for production environment
+- [ ] backward compatibility verified (.env and db changes)
+
+## Change Log
+
+### Central Server
+
+### Account App
+
+### Datalake App
+
+### Chat App
+
+1. Tx-analyzer is improved to check validity of input data before adding receipts, bills, invoices.
+2. Improve the user experience of tasks created by transaction analyzer by making it more convenient and informative.
+3. Python code generation model is upgraded to gpt-5.2
+4. For sessions that initiated from emails, the final session results are sent back to the original sender via email as a reply to the original email.
+
+## 3.21.11
+
+- **Version**: `v3.21.11`
+- **Beta release date → Dev deployment**: `2026-01-09`
+- **Release date → Prod deployment**: `2026-01-09`
+
+## Beta Release Checklist
+
+- [ ] Code merged to `layernext-tenant-dev`
+- [ ] Docker images built and pushed to `layernextai/` docker hub repository
+- [ ] AWS AMI built for development environment
+- [ ] Central server updated for development environment
+- [ ] backward compatibility verified (.env and db changes)
+
+## Release Checklist
+
+- [ ] Code merged to `layernext-tenant`
+- [ ] Docker images built and pushed to `layernextai/` docker hub repository
+- [ ] AWS AMI built for production environment
+- [ ] beta version verified
+- [ ] Central server updated for production environment
+- [ ] backward compatibility verified (.env and db changes)
+
+## Change Log
+
+### Central Server
+
+### Account App
+
+### Datalake App
+
+### Chat App
+
+1. Enhanced audit analysis with attachment support
+2. Upgraded Accounting API query capabilities:
+
+- Retrieve attached files for ledger records
+- Query outputs to have full details in JSON format
+
+3. Automatic insights are now generated once the initial data sync completes
+
 ## 3.21.10
 
 - **Version**: `v3.21.10`
