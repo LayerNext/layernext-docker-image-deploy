@@ -146,7 +146,7 @@ services:
       ]
 
   datalake_frontend:
-    image: layernextai/datalake_frontend:3.21.4
+    image: layernextai/datalake_frontend:3.21.12-ng-updated-v20
     restart: always
     networks:
       - layernext_network

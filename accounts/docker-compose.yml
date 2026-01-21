@@ -54,7 +54,7 @@ services:
       - ./.env
 
   sso_frontend:
-    image: layernextai/sso_frontend:3.21.12
+    image: layernextai/sso_frontend:3.21.12-ng-updated-v20
     restart: always
     ports:
       - "8097:8097"
