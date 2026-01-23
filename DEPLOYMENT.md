@@ -1,5 +1,40 @@
 # Deployment Notes
 
+## 3.21.13
+
+- **Version**: `v3.21.13`
+- **Beta release date → Dev deployment**: `2026-01-24`
+- **Release date → Prod deployment**: `2026-01-24`
+
+## Beta Release Checklist
+
+- [ ] Code merged to `layernext-tenant-dev`
+- [ ] Docker images built and pushed to `layernextai/` docker hub repository
+- [ ] AWS AMI built for development environment
+- [ ] Central server updated for development environment
+- [ ] backward compatibility verified (.env and db changes)
+
+## Release Checklist
+
+- [ ] Code merged to `layernext-tenant`
+- [ ] Docker images built and pushed to `layernextai/` docker hub repository
+- [ ] AWS AMI built for production environment
+- [ ] beta version verified
+- [ ] Central server updated for production environment
+- [ ] backward compatibility verified (.env and db changes)
+
+## Change Log
+
+### Central Server
+
+### Account App
+
+### Datalake App
+
+### Chat App
+
+1. Send reply to email initiated conversations
+
 ## 3.21.12
 
 - **Version**: `v3.21.12`
