@@ -20,92 +20,92 @@ db.createUser({
   mechanisms: ["SCRAM-SHA-1"],
 });
 
-var SETUP_CUSTOMER = _getEnv("SETUP_CUSTOMER");
-var DOMAIN_URL = _getEnv("DOMAIN_URL");
-var ACCOUNTS_DOMAIN_URL = _getEnv("ACCOUNTS_DOMAIN_URL");
+// var SETUP_CUSTOMER = _getEnv("SETUP_CUSTOMER");
+// var DOMAIN_URL = _getEnv("DOMAIN_URL");
+// var ACCOUNTS_DOMAIN_URL = _getEnv("ACCOUNTS_DOMAIN_URL");
 
-var adminMail = _getEnv("ADMIN_EMAIL");
-var teamName = `${SETUP_CUSTOMER} team`;
-var imageUrl = `https://${ACCOUNTS_DOMAIN_URL}/api/user/profileImage/6374c47ecb468b7a7a68a117/defaultProfileImage.png?1669197094012`;
-var adminFirstName = _getEnv("ADMIN_FIRST_NAME") || "";
-var adminLastName = _getEnv("ADMIN_LAST_NAME") || "";
-var adminName = `${adminFirstName} ${adminLastName}`.trim();
+// var adminMail = _getEnv("ADMIN_EMAIL");
+// var teamName = `${SETUP_CUSTOMER} team`;
+// var imageUrl = `https://${ACCOUNTS_DOMAIN_URL}/api/user/profileImage/6374c47ecb468b7a7a68a117/defaultProfileImage.png?1669197094012`;
+// var adminFirstName = _getEnv("ADMIN_FIRST_NAME") || "";
+// var adminLastName = _getEnv("ADMIN_LAST_NAME") || "";
+// var adminName = `${adminFirstName} ${adminLastName}`.trim();
 
-//insert default user
-db.getCollection("User").insert({
-  _id: ObjectId("6374c47ecb468b7a7a68a117"),
-  email: adminMail,
-  name: adminName,
-  firstName: adminFirstName,
-  lastName: adminLastName,
-  tenant: _getEnv("SETUP_CUSTOMER"),
-  userType: 3,
-  profileImgUrl: "defaultProfileImage.png",
-  projectList: null,
-  teamId: ObjectId(_getEnv("TEAM_ID")),
-  teamName: teamName,
-  userStatus: 1,
-  isAll: false,
-  inviteUrlCreatedAt: null,
-  isUserDeactivated: false,
-  lastEmailSentTime: null,
-  userStatPending: false,
-  isBillingAdmin: false,
-  annotationStats: null,
-  createdAt: null,
-  imageUrl: imageUrl,
-  offsetTime: null,
-  taskStats: null,
-  timeZoneOffset: null,
-  isOnboardedUser: true,
-});
+// //insert default user
+// db.getCollection("User").insert({
+//   _id: ObjectId("6374c47ecb468b7a7a68a117"),
+//   email: adminMail,
+//   name: adminName,
+//   firstName: adminFirstName,
+//   lastName: adminLastName,
+//   tenant: _getEnv("SETUP_CUSTOMER"),
+//   userType: 3,
+//   profileImgUrl: "defaultProfileImage.png",
+//   projectList: null,
+//   teamId: ObjectId(_getEnv("TEAM_ID")),
+//   teamName: teamName,
+//   userStatus: 1,
+//   isAll: false,
+//   inviteUrlCreatedAt: null,
+//   isUserDeactivated: false,
+//   lastEmailSentTime: null,
+//   userStatPending: false,
+//   isBillingAdmin: false,
+//   annotationStats: null,
+//   createdAt: null,
+//   imageUrl: imageUrl,
+//   offsetTime: null,
+//   taskStats: null,
+//   timeZoneOffset: null,
+//   isOnboardedUser: true,
+// });
 
-function restoreDollars(s) {
-  return s.replace(/__DOLLAR__/g, "$");
-}
+// function restoreDollars(s) {
+//   return s.replace(/__DOLLAR__/g, "$");
+// }
 
-var ADMIN_PASSWORD_RESTORED = restoreDollars(_getEnv("ADMIN_PASSWORD"));
+// var ADMIN_PASSWORD_RESTORED = restoreDollars(_getEnv("ADMIN_PASSWORD"));
 
-//insert default user credentials
-db.getCollection("AppUserCredentials").insert({
-  _id: ObjectId("6374c597cb468b7a7a68a118"),
-  password: ADMIN_PASSWORD_RESTORED,
-  userId: ObjectId("6374c47ecb468b7a7a68a117"),
-  annotationUserId: ObjectId("6374c47ecb468b7a7a68a117"),
-});
+// //insert default user credentials
+// db.getCollection("AppUserCredentials").insert({
+//   _id: ObjectId("6374c597cb468b7a7a68a118"),
+//   password: ADMIN_PASSWORD_RESTORED,
+//   userId: ObjectId("6374c47ecb468b7a7a68a117"),
+//   annotationUserId: ObjectId("6374c47ecb468b7a7a68a117"),
+// });
 
-// insert one time token
-db.getCollection("OneTimeToken").insert({
-  token: _getEnv("ONE_TIME_TOKEN"),
-  createdAt: new Date(),
-  userId: ObjectId("6374c47ecb468b7a7a68a117"),
-  isActive: true,
-});
+// // insert one time token
+// db.getCollection("OneTimeToken").insert({
+//   token: _getEnv("ONE_TIME_TOKEN"),
+//   createdAt: new Date(),
+//   userId: ObjectId("6374c47ecb468b7a7a68a117"),
+//   isActive: true,
+// });
 
-//insert default team
-db.getCollection("AnnotationTeam").insert({
-  _id: ObjectId(_getEnv("TEAM_ID")),
-  teamName: teamName,
-  create_team_folder: true,
-  apiKeyGenerated: true,
-});
+// //insert default team
+// db.getCollection("AnnotationTeam").insert({
+//   _id: ObjectId(_getEnv("TEAM_ID")),
+//   teamName: teamName,
+//   create_team_folder: true,
+//   apiKeyGenerated: true,
+// });
 
-//insert datalake APIKey
-db.getCollection("ApiKey").insert({
-  _id: ObjectId("6374eb51e3ac085579e53447"),
-  name: "Metalake",
-  teamId: ObjectId(_getEnv("TEAM_ID")),
-  key: _getEnv("DATALAKE_KEY"),
-  secret: _getEnv("DATALAKE_SECRET"),
-  type: 2,
-});
+// //insert datalake APIKey
+// db.getCollection("ApiKey").insert({
+//   _id: ObjectId("6374eb51e3ac085579e53447"),
+//   name: "Metalake",
+//   teamId: ObjectId(_getEnv("TEAM_ID")),
+//   key: _getEnv("DATALAKE_KEY"),
+//   secret: _getEnv("DATALAKE_SECRET"),
+//   type: 2,
+// });
 
-//insert chat APIKey
-db.getCollection("ApiKey").insert({
-  _id: ObjectId("6374eb51e3ac085579e53448"),
-  name: "Chat App",
-  teamId: ObjectId(_getEnv("TEAM_ID")),
-  key: _getEnv("CHAT_KEY"),
-  secret: _getEnv("CHAT_SECRET"),
-  type: 2,
-});
+// //insert chat APIKey
+// db.getCollection("ApiKey").insert({
+//   _id: ObjectId("6374eb51e3ac085579e53448"),
+//   name: "Chat App",
+//   teamId: ObjectId(_getEnv("TEAM_ID")),
+//   key: _getEnv("CHAT_KEY"),
+//   secret: _getEnv("CHAT_SECRET"),
+//   type: 2,
+// });
