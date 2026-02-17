@@ -18,25 +18,6 @@ services:
       - DB_PASS
       - DUMP_USER
       - DUMP_USER_PWD
-      - SETUP_CUSTOMER
-      - ADMIN_EMAIL
-      - ADMIN_PASSWORD
-      - TEAM_ID
-      - ANALYTICS_KEY
-      - ANALYTICS_SECRET
-      - STUDIO_KEY
-      - STUDIO_SECRET
-      - DATASET_KEY
-      - DATASET_SECRET
-      - DATALAKE_KEY
-      - DATALAKE_SECRET
-      - CHAT_KEY
-      - CHAT_SECRET
-      - DOMAIN_URL
-      - ACCOUNTS_DOMAIN_URL
-      - ONE_TIME_TOKEN
-      - ADMIN_FIRST_NAME
-      - ADMIN_LAST_NAME
 
   sso_node_backend:
     image: layernextai/sso_node_backend:3.21.12
