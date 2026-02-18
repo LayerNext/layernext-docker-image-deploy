@@ -31,8 +31,8 @@ services:
     volumes:
       - ./sso-layernext-backend/logs:/usr/src/app/logs
       - ./sso-layernext-backend/storage:/usr/src/app/storage
-      - ./sso-layerx-backend/secrets/jwt_private.pem:/usr/src/app/secrets/jwt_private.pem:ro
-      - ./sso-layerx-backend/secrets/jwt_public.pem:/usr/src/app/secrets/jwt_public.pem:ro
+      - ./sso-layernext-backend/secrets/jwt_private.pem:/usr/src/app/secrets/jwt_private.pem:ro
+      - ./sso-layernext-backend/secrets/jwt_public.pem:/usr/src/app/secrets/jwt_public.pem:ro
     env_file:
       - ./.env
 
