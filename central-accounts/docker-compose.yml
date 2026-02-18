@@ -1,0 +1,53 @@
+services:
+  central_sso_mongodb:
+    image: mongo:5.0.13
+    restart: always
+    ports:
+      - 17018:27017
+    volumes:
+      - ./mongoData:/data/db
+      - ./DB_initial_data/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js
+    networks:
+      - layernext_central_accounts_network
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=admin
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGODB_ADMIN_PASSWORD}
+      - MONGO_INITDB_DATABASE=admin
+      - DATABASE
+      - DB_USER
+      - DB_PASS
+      - DUMP_USER
+      - DUMP_USER_PWD
+
+  central_sso_node_backend:
+    image: layernextai/sso_node_backend:3.21.12
+    restart: always
+    ports:
+      - "8889:8888"
+    depends_on:
+      - central_sso_mongodb
+    networks:
+      - layernext_central_accounts_network
+    volumes:
+      - ./sso-layernext-backend/logs:/usr/src/app/logs
+      - ./sso-layernext-backend/storage:/usr/src/app/storage
+    env_file:
+      - ./.env
+
+  central_sso_frontend:
+    image: layernextai/sso_frontend:3.21.12
+    restart: always
+    ports:
+      - "8100:8097"
+    networks:
+      - layernext_central_accounts_network
+    environment:
+      - TZ:utc
+      - LAYERNEXT_ACCOUNTS_SUB_DOMAIN=${ACCOUNTS_DOMAIN_URL}
+      - LAYERNEXT_CHAT_SUB_DOMAIN=${CHAT_DOMAIN_URL}
+      - LAYERNEXT_DATALAKE_SUB_DOMAIN=${DATALAKE_DOMAIN_URL}
+      - LAYERNEXT_API_SUB_DOMAIN=${API_DOMAIN_URL}
+
+networks:
+  layernext_central_accounts_network:
+    external: true
