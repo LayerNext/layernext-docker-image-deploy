@@ -20,7 +20,7 @@ services:
       - DUMP_USER_PWD
 
   central_sso_node_backend:
-    image: layernextai/sso_node_backend:3.23.0
+    image: layernextai/sso_node_backend:3.23.2
     restart: always
     ports:
       - "8889:8888"
@@ -37,7 +37,7 @@ services:
       - ./.env
 
   central_sso_frontend:
-    image: layernextai/sso_frontend:3.23.0
+    image: layernextai/sso_frontend:3.23.2
     restart: always
     ports:
       - "8100:8097"
