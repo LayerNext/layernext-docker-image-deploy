@@ -1,5 +1,61 @@
 # Deployment Notes
 
+## Custom-elt
+
+- **Version**: ``
+- **Beta release date → Dev deployment**: ``
+- **Release date → Prod deployment**: ``
+
+## Beta Release Checklist
+
+- [ ] Code merged to `layernext-tenant-dev`
+- [ ] Docker images built and pushed to `layernextai/` docker hub repository
+- [ ] AWS AMI built for development environment
+- [ ] Central server updated for development environment
+- [ ] backward compatibility verified (.env and db changes)
+
+## Release Checklist
+
+- [ ] Code merged to `layernext-tenant`
+- [ ] Docker images built and pushed to `layernextai/` docker hub repository
+- [ ] AWS AMI built for production environment
+- [ ] beta version verified
+- [ ] Central server updated for production environment
+- [ ] backward compatibility verified (.env and db changes)
+
+## Change Log
+
+### Central Server
+
+- Configure NGINX to handle ELT requests: https://cms.layernext.ai/elt/
+  #### Add environment variables:
+- ELT_BASE_URL (e.g., https://cms.layernext.ai)
+- ELT_API_KEY
+- ELT_API_SECRET
+- QB_CONNECTION_PROVIDER (default: fivetran, set to custom_elt for custom ELT)
+
+### Account App
+
+### Datalake App
+
+#### Switching from Fivetran to Custom ELT
+
+- Set QB_CONNECTION_PROVIDER environment variable to custom_elt
+- Add environment variables:
+  - ELT_BASE_URL (e.g., https://cms.layernext.ai)
+  - ELT_API_KEY
+  - ELT_API_SECRET
+- Set `eltConnectionStatus` to `creation_required` and restart the Docker container.
+- Remove the existing tenant dataset in Google BigQuery (required to avoid errors during initial data sync).
+
+### Chat App
+
+# Backward Compatibility Notes
+
+- Need to verify things in Switching from Fivetran to Custom ELT section in datalake App
+
+# Additional Notes
+
 ## 3.21.10
 
 - **Version**: `v3.21.10`
