@@ -25,7 +25,7 @@
 
 ## Change Log
 
-### Central Server
+### Central Server (branch: custom-etl-dev-test)
 
 - Configure NGINX to handle ELT requests: https://cms.layernext.ai/elt/
   #### Add environment variables:
@@ -36,7 +36,7 @@
 
 ### Account App
 
-### Datalake App
+### Datalake App (branch: ETL-integration-2)
 
 #### Switching from Fivetran to Custom ELT
 
@@ -47,6 +47,10 @@
   - ELT_API_SECRET
 - Set `eltConnectionStatus` to `creation_required` and restart the Docker container.
 - Remove the existing tenant dataset in Google BigQuery (required to avoid errors during initial data sync).
+
+### ELT-CP (branch: queue-handling)
+
+- Need to run this project in production CMS server
 
 ### Chat App
 
