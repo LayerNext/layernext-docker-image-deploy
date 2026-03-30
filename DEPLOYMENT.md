@@ -1,5 +1,40 @@
 # Deployment Notes
 
+## V3.23.4
+
+### Central Server (branch: custom-etl-dev-test)
+
+- Configure NGINX to handle ELT requests: https://cms.layernext.ai/elt/
+  #### Add environment variables:
+- ELT_BASE_URL (e.g., https://cms.layernext.ai)
+- ELT_API_KEY
+- ELT_API_SECRET
+- QB_CONNECTION_PROVIDER (default: fivetran, set to custom_elt for custom ELT)
+
+### Account App
+
+### Datalake App (branch: ETL-integration-2)
+
+#### Switching from Fivetran to Custom ELT
+
+- Set QB_CONNECTION_PROVIDER environment variable to custom_elt
+- Add environment variables:
+  - ELT_BASE_URL (e.g., https://cms.layernext.ai)
+  - ELT_API_KEY
+  - ELT_API_SECRET
+- Set `eltConnectionStatus` to `creation_required` and restart the Docker container.
+- Remove the existing tenant dataset in Google BigQuery (required to avoid errors during initial data sync).
+
+### ELT-CP (branch: queue-handling)
+
+- Need to run this project in production CMS server
+
+### Chat App
+
+# Backward Compatibility Notes
+
+- Need to verify things in Switching from Fivetran to Custom ELT section in datalake App
+
 ## 3.21.13
 
 - **Version**: `v3.21.13`
@@ -113,6 +148,8 @@
 - Query outputs to have full details in JSON format
 
 3. Automatic insights are now generated once the initial data sync completes
+
+# Additional Notes
 
 ## 3.21.10
 
