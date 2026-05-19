@@ -13,7 +13,7 @@ MEMORY_THRESHOLD_PERCENTAGE = int(os.getenv("MEMORY_THRESHOLD_PERCENTAGE"))
 DISK_THRESHOLD_PERCENTAGE = int(os.getenv("DISK_THRESHOLD_PERCENTAGE"))
 LOAD_AVERAGE_THRESHOLD = int(os.getenv("LOAD_AVERAGE_THRESHOLD"))
 PERCENTAGE_90 = int(os.getenv("PERCENTAGE_90"))
-DEFAULT_EMAILS = ["tharinduimalka@zoomi.ca"]
+DEFAULT_EMAILS = os.getenv("DEFAULT_EMAILS").split(",")
 
 
 def get_details():
