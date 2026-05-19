@@ -15,7 +15,6 @@ db.createUser(
 
 2) pip install python-dotenv & pip install boto3 if not generated through docker setup
 
-
 3) example .env file in each app (datalake/.env) if not generated through docker setup
 
 DB_PORT=XXXX
