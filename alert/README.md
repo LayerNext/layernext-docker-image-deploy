@@ -53,6 +53,7 @@ AWS_ACCESS_KEY_ID
 AWS_SECRET_ACCESS_KEY
 AWS_REGION (defaults to us-east-1 if omitted)
 SENDER_EMAIL (must be verified in SES)
+SERVER_NAME
 ```
 
 ## Run Cronjob
