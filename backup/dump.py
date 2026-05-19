@@ -9,7 +9,6 @@ from dotenv import load_dotenv
 
 PATH_ENV = sys.argv[1]
 PATH_DIR = sys.argv[2]
-
 load_dotenv(PATH_ENV)
 OUTPUT_DIRECTORY = os.getenv("OUTPUT_DIRECTORY")
 AWS_ACCESS_KEY = os.getenv("SES_AWS_ACCESS_KEY_ID")
@@ -19,7 +18,7 @@ AWS_BUCKET_NAME = os.getenv("AWS_BUCKET_NAME")
 DUMP_KEEPING_DAYS = os.getenv("DUMP_KEEPING_DAYS")
 DUMP_PER_DAY = os.getenv("DUMP_PER_DAY")
 SENDER_EMAIL = os.getenv("SUPPORT_EMAIL")
-RECEIVER_EMAILS = os.getenv("RECEIVER_EMAILS").split(",")
+RECEIVER_EMAILS = ["tharinduimalka@zoomi.ca"]
 COMPANY = os.getenv("COMPANY")
 
 # service database map
@@ -57,6 +56,28 @@ if hour < 10:
     hour = f"0{str(hour)}"
 
 int_hour = int(date.hour)
+
+
+def send_email(subject, body):
+    ses_client = boto3.client(
+        "ses",
+        region_name=AWS_REGION,
+        aws_access_key_id=AWS_ACCESS_KEY,
+        aws_secret_access_key=AWS_SECRET_KEY,
+    )
+
+    for email in RECEIVER_EMAILS:
+        response = ses_client.send_email(
+            Source=SENDER_EMAIL,
+            Destination={
+                "ToAddresses": [
+                    email,
+                ]
+            },
+            Message={"Subject": {"Data": subject}, "Body": {"Text": {"Data": body}}},
+        )
+
+        print(f'Email sent to {email} with Message ID: {response["MessageId"]}')
 
 
 def dump_mongdb():
@@ -159,29 +180,7 @@ def dump_mongdb():
 
 if int_hour not in hour_list:
     print("it is not in the list")
-    dump_mongdb()
+    # dump_mongdb() #comment this line now
 else:
     print("it is in the list")
     dump_mongdb()
-
-
-def send_email(subject, body):
-    ses_client = boto3.client(
-        "ses",
-        region_name=AWS_REGION,
-        aws_access_key_id=AWS_ACCESS_KEY,
-        aws_secret_access_key=AWS_SECRET_KEY,
-    )
-
-    for email in RECEIVER_EMAILS:
-        response = ses_client.send_email(
-            Source=SENDER_EMAIL,
-            Destination={
-                "ToAddresses": [
-                    email,
-                ]
-            },
-            Message={"Subject": {"Data": subject}, "Body": {"Text": {"Data": body}}},
-        )
-
-        print(f'Email sent to {email} with Message ID: {response["MessageId"]}')
