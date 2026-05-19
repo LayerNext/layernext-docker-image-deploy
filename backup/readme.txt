@@ -28,8 +28,13 @@ AWS_REGION=us-east-1
 AWS_BUCKET_NAME=layernext-datalake-dev
 DUMP_KEEPING_DAYS=30
 DUMP_PER_DAY=4
+SENDER_EMAIL
+RECEIVER_EMAILS = ["tharinduimalka@zoomi.ca"]
+COMPANY
 
 5) crontab setup in each app (datalake/crontab.sh)
 bash crontab.sh after creating all above .env variables
 
+Add a nohup and run,
+python3 dump.py /home/ubuntu/layernext/layernext-docker-image-deploy/chat/.env /home/ubuntu/layernext/layernext-docker-image-deploy
 
