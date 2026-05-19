@@ -22,6 +22,17 @@ SENDER_EMAIL = os.getenv("SUPPORT_EMAIL")
 RECEIVER_EMAILS = os.getenv("RECEIVER_EMAILS").split(",")
 COMPANY = os.getenv("COMPANY")
 
+# service database map
+SERVICE_DB_MAP = {
+    "accounts": {"host": "localhost", "port": "17017"},
+    "chat": {"host": "localhost", "port": "61017"},
+    "datalake": {"host": "localhost", "port": "37017"},
+}
+
+db_config = SERVICE_DB_MAP.get(OUTPUT_DIRECTORY, {"host": "localhost", "port": "27017"})
+DATABASE_HOST = db_config["host"]
+DATABASE_PORT = db_config["port"]
+
 date = datetime.datetime.now()
 hour_gap = math.ceil(24 / int(DUMP_PER_DAY))
 if hour_gap == 0:
@@ -56,7 +67,14 @@ def dump_mongdb():
     print(file_location)
 
     subprocess.call(
-        ["bash", f"{PATH_DIR}/backup/dump.sh", f"{PATH_ENV}", f"{PATH_DIR}"]
+        [
+            "bash",
+            f"{PATH_DIR}/backup/dump.sh",
+            f"{PATH_ENV}",
+            f"{PATH_DIR}",
+            f"{DATABASE_HOST}",
+            f"{DATABASE_PORT}",
+        ]
     )
 
     try:
