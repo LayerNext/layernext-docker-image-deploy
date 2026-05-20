@@ -22,19 +22,15 @@ DATABASE=XXXXX
 DUMP_USER=USER
 DUMP_USER_PWD=PASSWORD
 OUTPUT_DIRECTORY=datalake
-AWS_ACCESS_KEY=XXXXX
-AWS_SECRET_KEY=XXXXX
-AWS_REGION=us-east-1
+SES_AWS_ACCESS_KEY_ID=XXXXX
+SES_AWS_SECRET_ACCESS_KEY=XXXXX
+SES_AWS_REGION=us-east-1
 AWS_BUCKET_NAME=layernext-datalake-dev
 DUMP_KEEPING_DAYS=30
 DUMP_PER_DAY=4
-SENDER_EMAIL
+SUPPORT_EMAIL
 RECEIVER_EMAILS = ["tharinduimalka@zoomi.ca"]
-COMPANY
+SETUP_CUSTOMER
 
 5) crontab setup in each app (datalake/crontab.sh)
 bash crontab.sh after creating all above .env variables
-
-Add a nohup and run,
-python3 dump.py /home/ubuntu/layernext/layernext-docker-image-deploy/chat/.env /home/ubuntu/layernext/layernext-docker-image-deploy
-
