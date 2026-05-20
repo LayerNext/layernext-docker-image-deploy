@@ -30,7 +30,7 @@ DUMP_KEEPING_DAYS=30
 DUMP_PER_DAY=4
 SUPPORT_EMAIL
 RECEIVER_EMAILS = ["tharinduimalka@zoomi.ca"]
-COMPANY
+SETUP_CUSTOMER
 
 5) crontab setup in each app (datalake/crontab.sh)
 bash crontab.sh after creating all above .env variables
