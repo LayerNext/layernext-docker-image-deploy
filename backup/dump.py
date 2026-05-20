@@ -172,15 +172,15 @@ def dump_mongdb():
         os.unlink(file_location)
 
         send_email(
-            subject=f"MongoDB Dump Of {COMPANY} - {date_string}",
-            body=f"The MongoDB dump for {date_string} has been successfully created and uploaded to S3.",
+            subject=f"MongoDB Dump Of {COMPANY} ({OUTPUT_DIRECTORY}) - {date_string}",
+            body=f"The MongoDB dump for {OUTPUT_DIRECTORY} on {date_string} has been successfully created and uploaded to S3.",
         )
 
     except Exception as e:
         print("An error occurred:", str(e))
         send_email(
-            subject=f"MongoDB Dump Failed for {COMPANY} - {date_string}",
-            body=f"An error occurred while creating the MongoDB dump for {date_string}. Error details: {str(e)}",
+            subject=f"MongoDB Dump Failed for {COMPANY} ({OUTPUT_DIRECTORY}) - {date_string}",
+            body=f"An error occurred while creating the MongoDB dump for {OUTPUT_DIRECTORY} on {date_string}. Error details: {str(e)}",
         )
 
 
