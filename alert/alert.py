@@ -37,21 +37,23 @@ def print_with_timestamp(output_message):
 
 
 def send_email(subject, body):
-    sender_email = os.getenv("SENDER_EMAIL")
-    ses = boto3.client(
+    ses_client = boto3.client(
         "ses",
         region_name=os.getenv("AWS_REGION", "us-east-1"),
         aws_access_key_id=os.getenv("AWS_ACCESS_KEY_ID"),
         aws_secret_access_key=os.getenv("AWS_SECRET_ACCESS_KEY"),
     )
-    ses.send_email(
-        Source=sender_email,
-        Destination={"ToAddresses": DEFAULT_EMAILS},
-        Message={
-            "Subject": {"Data": subject},
-            "Body": {"Text": {"Data": body}},
-        },
-    )
+
+    for receiver_email in DEFAULT_EMAILS:
+
+        ses_client.send_email(
+            Source=SENDER_EMAIL,
+            Destination={"ToAddresses": [receiver_email]},
+            Message={
+                "Subject": {"Data": subject},
+                "Body": {"Text": {"Data": body}},
+            },
+        )
 
 
 """
