@@ -28,16 +28,16 @@ pip install boto3
 ## .env file
 
 ```sh
-#email configurations
-EMAIL_PASS=<sender email password>
-SENDER_EMAIL=<sender email address>
-
-#server configurations
-SERVER_NAME=<server name>
-MEMORY_THRESHOLD_PERCENTAGE=70
-DISK_THRESHOLD_PERCENTAGE=90
-LOAD_AVERAGE_THRESHOLD=2
-PERCENTAGE_90=90
+MEMORY_THRESHOLD_PERCENTAGE = 70
+DISK_THRESHOLD_PERCENTAGE = 75
+LOAD_AVERAGE_THRESHOLD = 2
+PERCENTAGE_90 = 90
+DEFAULT_EMAILS = [<email address>]
+AWS_ACCESS_KEY_ID
+AWS_SECRET_ACCESS_KEY
+AWS_REGION (defaults to us-east-1 if omitted)
+SENDER_EMAIL (must be verified in SES)
+SERVER_NAME
 ```
 
 ## Configurations
