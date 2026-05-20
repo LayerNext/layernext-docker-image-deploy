@@ -10,12 +10,12 @@ from dotenv import load_dotenv
 PATH_ENV = sys.argv[1]
 PATH_DIR = sys.argv[2]
 
+load_dotenv(PATH_ENV)
 # PATH_ENV = "/home/ubuntu/layernext/layernext-docker-image-deploy/chat/.env"
 # PATH_ENV = "/home/ubuntu/layernext/layernext-docker-image-deploy/datalake/.env"
 # PATH_ENV = "/home/ubuntu/layernext/layernext-docker-image-deploy/accounts/.env"
 # PATH_DIR = "/home/ubuntu/layernext/layernext-docker-image-deploy"
 
-load_dotenv(PATH_ENV)
 OUTPUT_DIRECTORY = os.getenv("OUTPUT_DIRECTORY")
 AWS_ACCESS_KEY = os.getenv("SES_AWS_ACCESS_KEY_ID")
 AWS_SECRET_KEY = os.getenv("SES_AWS_SECRET_ACCESS_KEY")
