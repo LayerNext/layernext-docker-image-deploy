@@ -24,8 +24,8 @@ AWS_BUCKET_NAME = os.getenv("AWS_BUCKET_NAME")
 DUMP_KEEPING_DAYS = os.getenv("DUMP_KEEPING_DAYS")
 DUMP_PER_DAY = os.getenv("DUMP_PER_DAY")
 SENDER_EMAIL = os.getenv("SUPPORT_EMAIL")
-RECEIVER_EMAILS = ["tharinduimalka@zoomi.ca"]
-COMPANY = os.getenv("COMPANY")
+RECEIVER_EMAILS = [e.strip() for e in os.getenv("RECEIVER_EMAILS").split(",")]
+COMPANY = os.getenv("SETUP_CUSTOMER")
 
 # service database map
 SERVICE_DB_MAP = {
