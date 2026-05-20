@@ -56,6 +56,8 @@ def send_email(subject, body):
             },
         )
 
+        print_with_timestamp(f"Email sent to {receiver_email}")
+
 
 """
     This function is used to display the disk usage details
