@@ -3,6 +3,22 @@
 export $(grep -v '^#' .env | xargs -d '\n')
 JWT_SECRET=$(openssl rand -hex 32)
 
+# JWT RS256 key pair.
+# The SSO/accounts backend signs session tokens with the PRIVATE key (mounted at
+# /usr/src/app/secrets/jwt_private.pem via accounts/docker-compose.yml). The
+# verifiers (datalake, chat) receive the PUBLIC key as their JWT_SECRET.
+# A fresh key pair is generated per install (per-tenant). Reused on re-run.
+JWT_KEY_DIR="./accounts/sso-layernext-backend/secrets"
+mkdir -p "$JWT_KEY_DIR"
+if [ ! -f "$JWT_KEY_DIR/jwt_private.pem" ]; then
+  openssl genrsa -out "$JWT_KEY_DIR/jwt_private.pem" 2048
+  openssl rsa -in "$JWT_KEY_DIR/jwt_private.pem" -pubout -out "$JWT_KEY_DIR/jwt_public.pem"
+  echo "Generated JWT RS256 key pair in $JWT_KEY_DIR"
+else
+  echo "Existing JWT key pair found in $JWT_KEY_DIR, reusing."
+fi
+JWT_PUBLIC_KEY=$(cat "$JWT_KEY_DIR/jwt_public.pem")
+
 # Generating random keys
 DATALAKE_KEY=key_$(openssl rand -base64 60 | tr -dc 'a-z0-9' | head -c 32)
 DATALAKE_SECRET=$(openssl rand -base64 45 | tr -dc 'a-z0-9' | head -c 20)
@@ -100,6 +116,21 @@ API_DOMAIN_URL=$API_DOMAIN_URL
 CMS_DOMAIN_URL=$CMS_DOMAIN_URL
 
 AWS_BUCKET_NAME=$AWS_BUCKET_NAME
+
+# Session JWT (RS256). The SSO backend signs session tokens with the private
+# key mounted at JWT_PRIVATE_KEY_PATH; verifiers use the public key.
+NODE_ENV=
+JWT_ALG=RS256
+JWT_ISSUER=https://$ACCOUNTS_DOMAIN_URL
+JWT_AUDIENCE=layernext-services
+JWT_KID=
+JWT_PRIVATE_KEY_PATH=/usr/src/app/secrets/jwt_private.pem
+JWT_PUBLIC_KEY_PATH=/usr/src/app/secrets/jwt_public.pem
+SESSION_TOKEN_EXPIRES_IN=86400
+REFRESH_TOKEN_EXPIRES_IN=604800
+ONBOARDING_GRANT_TTL_SECONDS=900
+ONE_TIME_TOKEN_EXPIRES=3
+CMS_URL=$CMS_DOMAIN_URL
 EOL
 
 # generate datalake env
@@ -148,8 +179,13 @@ INSTANCE_TYPE=master
 #env
 PORT=3000
 TEAM_ID=$TEAM_ID
+GROUP_ID=$GROUP_ID
 
-JWT_SECRET=$JWT_SECRET
+# Session JWT verification (RS256): JWT_SECRET holds the RSA PUBLIC key (checked
+# before JWT_PUBLIC_KEY by keys.ts).
+JWT_SECRET="$JWT_PUBLIC_KEY"
+JWT_PUBLIC_KEY="$JWT_PUBLIC_KEY"
+JWT_VERIFY_ALGORITHM=RS256
 
 # Auth
 SSO_INTERNAL_SERVER=http://sso_node_backend:8888
@@ -294,6 +330,30 @@ FIVETRAN_API_SECRET=$FIVETRAN_API_SECRET
 FIVETRAN_GROUP_ID=$FIVETRAN_GROUP_ID
 
 AWS_BUCKET_NAME=$AWS_BUCKET_NAME
+
+# QuickBooks connection provider (fivetran | custom_elt)
+QB_CONNECTION_PROVIDER=$QB_CONNECTION_PROVIDER
+
+# Custom ELT (used when QB_CONNECTION_PROVIDER=custom_elt)
+ELT_API_KEY=$ELT_API_KEY
+ELT_API_SECRET=$ELT_API_SECRET
+ELT_BASE_URL=$ELT_BASE_URL
+
+# Transaction sync
+TRANSACTION_SYNC_API_KEY=$TRANSACTION_SYNC_API_KEY
+TRANSACTION_SYNC_API_SECRET=$TRANSACTION_SYNC_API_SECRET
+TRANSACTION_SYNC_BASE_URL=$TRANSACTION_SYNC_BASE_URL
+
+# Plaid
+PLAID_CLIENT_ID=$PLAID_CLIENT_ID
+PLAID_SECRET=$PLAID_SECRET
+PLAID_ENV=$PLAID_ENV
+
+# Flask API mode (enabled | disabled)
+FLASK_API_MODE=$FLASK_API_MODE
+
+# Node reads OTHER_BUCKETS (ALL_BUCKETS kept above for compatibility)
+OTHER_BUCKETS=$ALL_BUCKETS
 EOL
 
 # generate chat env
@@ -327,7 +387,8 @@ MONGODB_ADMIN_PASSWORD=$(openssl rand -hex 20)
 DB_CPU_LIMIT=$CPU_LIMIT
 DB_MEMORY_LIMIT=$MEMORY_LIMIT
 
-JWT_SECRET = $JWT_SECRET
+# Session JWT verification: JWT_SECRET holds the RSA PUBLIC key.
+JWT_SECRET="$JWT_PUBLIC_KEY"
 
 #LLM FAST-API
 LLM_TYPE=openai
@@ -336,32 +397,41 @@ AZURE_OPENAI_ENDPOINT=$AZURE_OPENAI_ENDPOINT
 LLM_API_PROVIDER=openai
 LLM_API_KEY=$AZURE_OPENAI_API_KEY
 OPENAI_API_KEY=$TENANT_OPENAI_API_KEY
+GEMINI_API_KEY=$GEMINI_API_KEY
+ANTHROPIC_API_KEY=$ANTHROPIC_API_KEY
 AZURE_OPENAI_API_VERSION=2024-08-01-preview
 TEMPERATURE=0.7
 IS_OPENAI_PRIORITY_ENABLED=True
 CODE_REVIEW_OFF=True
 
+# Models aligned to the working 3.25.0 enterprise config (gnk reference).
+# TX/complex/document analysis run on o3 (OpenAI); Gemini is used for
+# unstructured/PDF/web-search. Anthropic is NOT used by default (ANTHROPIC_API_KEY
+# may be left blank). To switch these three to Claude, set them to
+# anthropic/claude-sonnet-4-5-20250929 and supply ANTHROPIC_API_KEY.
 MODEL=gpt-4.1
 MODEL_SQL_GENERATION=gpt-4.1
-MODEL_PYTHON_CODING=gpt-4.1
+MODEL_PYTHON_CODING=gpt-5.4-mini
 MODEL_DATA_LOCATE=gpt-4.1
 MODEL_HYPOTHESIS=gpt-4o
 MODEL_INSIGHT=gpt-4.1
 MODEL_REPORT_GENERATOR=gpt-4.1
 MODEL_JSON_OUTPUT=gpt-4.1
-MODEL_DATA_REVIEWER=o3-mini
+MODEL_DATA_REVIEWER=gpt-4.1
 MODEL_DATA_GENERATOR=gpt-4.1
-MODEL_UNSTRUCTURED_PROCESSING=o3-mini
+MODEL_UNSTRUCTURED_PROCESSING=gemini-3-flash-preview
 MODEL_UNSTRUCTURED_LABEL_IDENTIFICATION=o3-mini
 MODEL_VISUAL_REVIEWER=gpt-4o
 CODE_REVIEW_MODEL=gpt-4.1
-MODEL_DATA_REVIEWER=gpt-4.1
 MODEL_VISUAL_RENDER=gpt-4.1
 MODEL_COMPLEX_ANALYSIS=o3
 MODEL_EXCEL_UPDATER=o3
 MODEL_KNOWLEDGE_GENERATION=o3
 MODEL_TX_ANALYZER=o3
 MODEL_DOCUMENT_DATA_QUERY=o3
+MODEL_WEB_SEARCH=gemini-3-flash-preview
+MODEL_PDF_EXTRACTOR_REVIEW=gemini-3-flash-preview
+MODEL_PDF_VISUAL_EXTRACTOR=gemini-3-flash-preview
 
 URL=http://datalake_node_backend:3000
 
@@ -412,6 +482,23 @@ CMS_DOMAIN_URL=$CMS_DOMAIN_URL
 CMS_TOKEN=$CMS_TOKEN
 ADMIN_FIRST_NAME=$ADMIN_FIRST_NAME
 ADMIN_LAST_NAME=$ADMIN_LAST_NAME
+
+# Tenant identity (GROUP_ID required for admin login; SUPER_ADMIN_ID optional)
+GROUP_ID=$GROUP_ID
+SUPER_ADMIN_ID=$SUPER_ADMIN_ID
+# Seeded admin User _id (fixed constant from accounts mongo-init.js)
+ONBOARDED_USER_ID=6374c47ecb468b7a7a68a117
+
+# LogoDev (institution logo enrichment)
+LOGO_DEV_TOKEN=$LOGO_DEV_TOKEN
+LOGO_DEV_SECRET_KEY=$LOGO_DEV_SECRET_KEY
+
+# Transaction sync
+TRANSACTION_SYNC_API_KEY=$TRANSACTION_SYNC_API_KEY
+TRANSACTION_SYNC_API_SECRET=$TRANSACTION_SYNC_API_SECRET
+TRANSACTION_SYNC_BASE_URL=$TRANSACTION_SYNC_BASE_URL
+
+LOGGER_TTL_MINUTES=120
 
 OUTPUT_DIRECTORY=chat
 AWS_BUCKET_NAME=$AWS_BUCKET_NAME
