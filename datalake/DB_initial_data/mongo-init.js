@@ -427,6 +427,13 @@ db.TextChunkEmbedding.createIndex(
 
 var adminName = `${_getEnv("ADMIN_FIRST_NAME")} ${_getEnv("ADMIN_LAST_NAME")}`;
 
+// The admin user is owned by whichever system authenticates this tenant.
+// With a central SSO that id is generated there and supplied per-tenant; a
+// dedicated install seeds the user locally under the historical fixed id, so
+// fall back to it rather than letting ObjectId() mint an unrelated one.
+var ONBOARDED_USER_ID =
+  _getEnv("ONBOARDED_USER_ID") || "6374c47ecb468b7a7a68a117";
+
 ////////////////////////////////////////////////////////////////////////
 ///////////////////      Insert ModelProvider      /////////////////////
 ////////////////////////////////////////////////////////////////////////
@@ -438,7 +445,7 @@ db.getCollection('ModelProvider').insert({
   createdBy: adminName,
   updatedAt: new Date(),
   updatedBy: adminName,
-  userId: ObjectId("6374c47ecb468b7a7a68a117"),
+  userId: ObjectId(ONBOARDED_USER_ID),
   teamId: ObjectId(_getEnv("TEAM_ID")),
 });
 
@@ -446,17 +453,30 @@ db.getCollection('ModelProvider').insert({
 /////////      InsertQuickBooks DataSourceAuthorization     ////////////
 ////////////////////////////////////////////////////////////////////////
 
-db.getCollection('DataSourceAuthorization').insert({
-  teamId: ObjectId(_getEnv("TEAM_ID")),
-  sourceType: "QuickBooks",
-  companyId: _getEnv("QB_REALM_ID"),
-  authStatus: "active",
-  createdAt: new Date(),
-  updatedAt: new Date(),
-  authTokens: {
-    accessToken: _getEnv("QB_AT"),
-    refreshToken: _getEnv("QB_RT"),
-  },
-  fivetranConnectionStatus: "creation_required",
-  tenant: _getEnv("SETUP_CUSTOMER"),
-})
+// Only seed a QuickBooks connection when one was actually supplied.
+//
+// Not every tenant has an accounting source at signup; an enterprise customer
+// may connect one from their own deployment later, or never. Seeding an
+// "active" authorization with empty tokens does not fail the boot -- it fails
+// the first sync instead, which is a far harder failure to trace back to here.
+var QB_ACCESS_TOKEN = _getEnv("QB_AT");
+var QB_REFRESH_TOKEN = _getEnv("QB_RT");
+
+if (QB_ACCESS_TOKEN && QB_REFRESH_TOKEN) {
+  db.getCollection('DataSourceAuthorization').insert({
+    teamId: ObjectId(_getEnv("TEAM_ID")),
+    sourceType: "QuickBooks",
+    companyId: _getEnv("QB_REALM_ID"),
+    authStatus: "active",
+    createdAt: new Date(),
+    updatedAt: new Date(),
+    authTokens: {
+      accessToken: QB_ACCESS_TOKEN,
+      refreshToken: QB_REFRESH_TOKEN,
+    },
+    fivetranConnectionStatus: "creation_required",
+    tenant: _getEnv("SETUP_CUSTOMER"),
+  });
+} else {
+  print("No QuickBooks credentials supplied - skipping DataSourceAuthorization seed.");
+}

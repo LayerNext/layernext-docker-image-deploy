@@ -19,6 +19,8 @@ services:
       - AWS_BUCKET_NAME
       - SETUP_CUSTOMER
       - TEAM_ID
+      - GROUP_ID
+      - ONBOARDED_USER_ID
       - ADMIN_FIRST_NAME
       - ADMIN_LAST_NAME
       - QB_AT

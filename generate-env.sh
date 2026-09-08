@@ -3,27 +3,72 @@
 export $(grep -v '^#' .env | xargs -d '\n')
 JWT_SECRET=$(openssl rand -hex 32)
 
-# JWT RS256 key pair.
-# The SSO/accounts backend signs session tokens with the PRIVATE key (mounted at
-# /usr/src/app/secrets/jwt_private.pem via accounts/docker-compose.yml). The
-# verifiers (datalake, chat) receive the PUBLIC key as their JWT_SECRET.
-# A fresh key pair is generated per install (per-tenant). Reused on re-run.
-JWT_KEY_DIR="./accounts/sso-layernext-backend/secrets"
-mkdir -p "$JWT_KEY_DIR"
-if [ ! -f "$JWT_KEY_DIR/jwt_private.pem" ]; then
-  openssl genrsa -out "$JWT_KEY_DIR/jwt_private.pem" 2048
-  openssl rsa -in "$JWT_KEY_DIR/jwt_private.pem" -pubout -out "$JWT_KEY_DIR/jwt_public.pem"
-  echo "Generated JWT RS256 key pair in $JWT_KEY_DIR"
-else
-  echo "Existing JWT key pair found in $JWT_KEY_DIR, reusing."
-fi
-JWT_PUBLIC_KEY=$(cat "$JWT_KEY_DIR/jwt_public.pem")
+# Two identity modes.
+#
+#   CENTRAL_SSO=false (default) - this box runs its own accounts stack. It mints
+#   its own RSA key pair and its own app key/secret pairs, and is self-contained.
+#
+#   CENTRAL_SSO=true - identity lives in the shared central SSO. This box never
+#   signs a token, only verifies, so it takes the central PUBLIC key and the app
+#   key/secret pairs the central SSO already stores for this tenant. Generating
+#   either one here would produce a box that boots cleanly and then rejects every
+#   request, which is a much harder failure to read than an abort.
+CENTRAL_SSO="${CENTRAL_SSO:-false}"
 
-# Generating random keys
-DATALAKE_KEY=key_$(openssl rand -base64 60 | tr -dc 'a-z0-9' | head -c 32)
-DATALAKE_SECRET=$(openssl rand -base64 45 | tr -dc 'a-z0-9' | head -c 20)
-CHAT_KEY=key_$(openssl rand -base64 60 | tr -dc 'a-z0-9' | head -c 32)
-CHAT_SECRET=$(openssl rand -base64 45 | tr -dc 'a-z0-9' | head -c 20)
+# The admin User _id. Owned by the central SSO when there is one, and supplied
+# per-tenant; otherwise the fixed constant accounts/mongo-init.js seeds locally.
+ONBOARDED_USER_ID="${ONBOARDED_USER_ID:-6374c47ecb468b7a7a68a117}"
+
+if [ "$CENTRAL_SSO" = "true" ]; then
+  # A PEM has newlines, and the export above splits on newlines, so the key
+  # travels through the root .env base64-encoded on a single line.
+  if [ -n "$CENTRAL_JWT_PUBLIC_KEY_B64" ]; then
+    CENTRAL_JWT_PUBLIC_KEY=$(printf '%s' "$CENTRAL_JWT_PUBLIC_KEY_B64" | base64 -d)
+  fi
+
+  if [ -z "$CENTRAL_JWT_PUBLIC_KEY" ]; then
+    echo "CENTRAL_SSO=true but no central public key was supplied." >&2
+    echo "Set CENTRAL_JWT_PUBLIC_KEY_B64 in .env. Refusing to continue: without it" >&2
+    echo "this box would trust no token the central SSO issues." >&2
+    exit 1
+  fi
+
+  for required_key in DATALAKE_KEY DATALAKE_SECRET CHAT_KEY CHAT_SECRET; do
+    if [ -z "${!required_key}" ]; then
+      echo "CENTRAL_SSO=true requires $required_key to come from the central SSO." >&2
+      echo "Refusing to generate one: it would not match the ApiKey record there." >&2
+      exit 1
+    fi
+  done
+
+  JWT_PUBLIC_KEY="$CENTRAL_JWT_PUBLIC_KEY"
+  SSO_INTERNAL_SERVER_URL="${SSO_URL:-https://accounts.layernext.ai}"
+  echo "Central SSO mode: using the central public key; no local key pair, no accounts stack."
+else
+  # JWT RS256 key pair.
+  # The SSO/accounts backend signs session tokens with the PRIVATE key (mounted at
+  # /usr/src/app/secrets/jwt_private.pem via accounts/docker-compose.yml). The
+  # verifiers (datalake, chat) receive the PUBLIC key as their JWT_SECRET.
+  # A fresh key pair is generated per install (per-tenant). Reused on re-run.
+  JWT_KEY_DIR="./accounts/sso-layernext-backend/secrets"
+  mkdir -p "$JWT_KEY_DIR"
+  if [ ! -f "$JWT_KEY_DIR/jwt_private.pem" ]; then
+    openssl genrsa -out "$JWT_KEY_DIR/jwt_private.pem" 2048
+    openssl rsa -in "$JWT_KEY_DIR/jwt_private.pem" -pubout -out "$JWT_KEY_DIR/jwt_public.pem"
+    echo "Generated JWT RS256 key pair in $JWT_KEY_DIR"
+  else
+    echo "Existing JWT key pair found in $JWT_KEY_DIR, reusing."
+  fi
+  JWT_PUBLIC_KEY=$(cat "$JWT_KEY_DIR/jwt_public.pem")
+
+  # Generating random keys
+  DATALAKE_KEY=key_$(openssl rand -base64 60 | tr -dc 'a-z0-9' | head -c 32)
+  DATALAKE_SECRET=$(openssl rand -base64 45 | tr -dc 'a-z0-9' | head -c 20)
+  CHAT_KEY=key_$(openssl rand -base64 60 | tr -dc 'a-z0-9' | head -c 32)
+  CHAT_SECRET=$(openssl rand -base64 45 | tr -dc 'a-z0-9' | head -c 20)
+
+  SSO_INTERNAL_SERVER_URL="http://sso_node_backend:8888"
+fi
 GRAFANA_PASSWORD=$(openssl rand -base64 32 | tr -dc 'a-z0-9' | head -c 20)
 
 # generate accounts env
@@ -180,6 +225,7 @@ INSTANCE_TYPE=master
 PORT=3000
 TEAM_ID=$TEAM_ID
 GROUP_ID=$GROUP_ID
+ONBOARDED_USER_ID=$ONBOARDED_USER_ID
 
 # Session JWT verification (RS256): JWT_SECRET holds the RSA PUBLIC key (checked
 # before JWT_PUBLIC_KEY by keys.ts).
@@ -188,7 +234,7 @@ JWT_PUBLIC_KEY="$JWT_PUBLIC_KEY"
 JWT_VERIFY_ALGORITHM=RS256
 
 # Auth
-SSO_INTERNAL_SERVER=http://sso_node_backend:8888
+SSO_INTERNAL_SERVER=$SSO_INTERNAL_SERVER_URL
 
 # storage
 STORAGE_TYPE=$STORAGE_TYPE
@@ -436,7 +482,7 @@ MODEL_PDF_VISUAL_EXTRACTOR=gemini-3-flash-preview
 URL=http://datalake_node_backend:3000
 
 # Auth
-SSO_INTERNAL_SERVER=http://sso_node_backend:8888
+SSO_INTERNAL_SERVER=$SSO_INTERNAL_SERVER_URL
 
 APP_PORT=5082
 DEBUG=False
@@ -486,8 +532,9 @@ ADMIN_LAST_NAME=$ADMIN_LAST_NAME
 # Tenant identity (GROUP_ID required for admin login; SUPER_ADMIN_ID optional)
 GROUP_ID=$GROUP_ID
 SUPER_ADMIN_ID=$SUPER_ADMIN_ID
-# Seeded admin User _id (fixed constant from accounts mongo-init.js)
-ONBOARDED_USER_ID=6374c47ecb468b7a7a68a117
+# Seeded admin User _id. Central SSO supplies it per-tenant; falls back to the
+# historical constant for a self-contained install.
+ONBOARDED_USER_ID=$ONBOARDED_USER_ID
 
 # LogoDev (institution logo enrichment)
 LOGO_DEV_TOKEN=$LOGO_DEV_TOKEN
