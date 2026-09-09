@@ -85,7 +85,7 @@ services:
   #         memory: ${DB_MEMORY_LIMIT}
 
   datalake_node_backend:
-    image: layernextai/datalake_node_backend:3.25.0-athena
+    image: layernextai/datalake_node_backend:3.28.6
     restart: always
     ports:
       - "3000:3000"
