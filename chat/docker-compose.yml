@@ -23,6 +23,11 @@ services:
       - OPENAI_API_KEY
       - ADMIN_FIRST_NAME
       - ADMIN_LAST_NAME
+      # Enterprise tenants only. BILLING_PLAN empty -- every ordinary install --
+      # and the seed writes no billing record and leaves onboarding alone.
+      - BILLING_PLAN
+      - BILLING_CURRENCY
+      - COMPANY_TIMEZONE
     deploy:
       resources:
         limits:

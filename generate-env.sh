@@ -19,6 +19,16 @@ CENTRAL_SSO="${CENTRAL_SSO:-false}"
 # per-tenant; otherwise the fixed constant accounts/mongo-init.js seeds locally.
 ONBOARDED_USER_ID="${ONBOARDED_USER_ID:-6374c47ecb468b7a7a68a117}"
 
+# Enterprise tenants. BILLING_PLAN is the switch: empty -- which is every
+# ordinary install -- and the chat seed writes no billing record and leaves
+# onboarding to run from the beginning. Set, and the tenant is seeded with an
+# entitlement for that plan and onboarding already marked complete, because an
+# enterprise tenant has no Stripe subscription and no QuickBooks connection to
+# derive either from.
+BILLING_PLAN="${BILLING_PLAN:-}"
+BILLING_CURRENCY="${BILLING_CURRENCY:-USD}"
+COMPANY_TIMEZONE="${COMPANY_TIMEZONE:-America/Winnipeg}"
+
 if [ "$CENTRAL_SSO" = "true" ]; then
   # A PEM has newlines, and the export above splits on newlines, so the key
   # travels through the root .env base64-encoded on a single line.
@@ -425,6 +435,11 @@ DUMP_KEEPING_DAYS=30
 DUMP_PER_DAY=4
 
 TEAM_ID=$TEAM_ID
+
+# Enterprise tenant seeding. Read by chat/DB_initial_data/mongo-init.js.
+BILLING_PLAN=$BILLING_PLAN
+BILLING_CURRENCY=$BILLING_CURRENCY
+COMPANY_TIMEZONE=$COMPANY_TIMEZONE
 
 # Build time
 SETUP_CUSTOMER=$SETUP_CUSTOMER
