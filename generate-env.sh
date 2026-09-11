@@ -25,6 +25,12 @@ ONBOARDED_USER_ID="${ONBOARDED_USER_ID:-6374c47ecb468b7a7a68a117}"
 # entitlement for that plan and onboarding already marked complete, because an
 # enterprise tenant has no Stripe subscription and no QuickBooks connection to
 # derive either from.
+# Chat model access. OPENROUTER_API_URL has a working default; the two keys are
+# per-tenant and arrive from the bundle.
+OPENROUTER_API_KEY="${OPENROUTER_API_KEY:-}"
+OPENROUTER_API_URL="${OPENROUTER_API_URL:-https://openrouter.ai/api/v1}"
+SONIOX_API_KEY="${SONIOX_API_KEY:-}"
+
 BILLING_PLAN="${BILLING_PLAN:-}"
 BILLING_CURRENCY="${BILLING_CURRENCY:-USD}"
 COMPANY_TIMEZONE="${COMPANY_TIMEZONE:-America/Winnipeg}"
@@ -236,6 +242,12 @@ PORT=3000
 TEAM_ID=$TEAM_ID
 GROUP_ID=$GROUP_ID
 ONBOARDED_USER_ID=$ONBOARDED_USER_ID
+
+# The chat application's key pair. Written to accounts and chat already; the
+# datalake needs the same pair to call chat, and without it that call is
+# unauthenticated rather than obviously broken.
+CHAT_KEY=$CHAT_KEY
+CHAT_SECRET=$CHAT_SECRET
 
 # Session JWT verification (RS256): JWT_SECRET holds the RSA PUBLIC key (checked
 # before JWT_PUBLIC_KEY by keys.ts).
@@ -460,6 +472,13 @@ LLM_API_KEY=$AZURE_OPENAI_API_KEY
 OPENAI_API_KEY=$TENANT_OPENAI_API_KEY
 GEMINI_API_KEY=$GEMINI_API_KEY
 ANTHROPIC_API_KEY=$ANTHROPIC_API_KEY
+
+# OpenRouter, read by services/glm_client.py for the GLM models.
+OPENROUTER_API_KEY=$OPENROUTER_API_KEY
+OPENROUTER_API_URL=$OPENROUTER_API_URL
+
+# Speech to text, read by services/soniox_service.py.
+SONIOX_API_KEY=$SONIOX_API_KEY
 AZURE_OPENAI_API_VERSION=2024-08-01-preview
 TEMPERATURE=0.7
 IS_OPENAI_PRIORITY_ENABLED=True
@@ -481,15 +500,15 @@ MODEL_JSON_OUTPUT=gpt-4.1
 MODEL_DATA_REVIEWER=gpt-4.1
 MODEL_DATA_GENERATOR=gpt-4.1
 MODEL_UNSTRUCTURED_PROCESSING=gemini-3-flash-preview
-MODEL_UNSTRUCTURED_LABEL_IDENTIFICATION=o3-mini
+MODEL_UNSTRUCTURED_LABEL_IDENTIFICATION=glm/z-ai/glm-5.2
 MODEL_VISUAL_REVIEWER=gpt-4o
 CODE_REVIEW_MODEL=gpt-4.1
 MODEL_VISUAL_RENDER=gpt-4.1
-MODEL_COMPLEX_ANALYSIS=o3
-MODEL_EXCEL_UPDATER=o3
-MODEL_KNOWLEDGE_GENERATION=o3
-MODEL_TX_ANALYZER=o3
-MODEL_DOCUMENT_DATA_QUERY=o3
+MODEL_COMPLEX_ANALYSIS=glm/z-ai/glm-5.2
+MODEL_EXCEL_UPDATER=glm/z-ai/glm-5.2
+MODEL_KNOWLEDGE_GENERATION=glm/z-ai/glm-5.2
+MODEL_TX_ANALYZER=glm/z-ai/glm-5.2
+MODEL_DOCUMENT_DATA_QUERY=glm/z-ai/glm-5.2
 MODEL_WEB_SEARCH=gemini-3-flash-preview
 MODEL_PDF_EXTRACTOR_REVIEW=gemini-3-flash-preview
 MODEL_PDF_VISUAL_EXTRACTOR=gemini-3-flash-preview
