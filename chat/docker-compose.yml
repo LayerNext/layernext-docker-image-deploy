@@ -35,8 +35,13 @@ services:
           memory: ${DB_MEMORY_LIMIT}
 
   chat_frontend:
-    image: layernextai/chat_frontend:3.28.2
+    image: layernextai/chat_frontend:3.28.8
     restart: always
+    ulimits:
+      nofile:
+        soft: 65535
+        hard: 65535
+
     networks:
       - layernext_network
     ports:
@@ -67,6 +72,7 @@ services:
       - ./LLM-integration/storage/public:/app/storage/public
       - ./LLM-integration/memory_dumps:/app/memory_dumps
       - ./LLM-integration/data:/app/data
+      - /home/ubuntu/layernext/layernext-knowledge/${SETUP_CUSTOMER}:/app/knowledge:ro
     depends_on:
       - chat_mongodb
     deploy:
