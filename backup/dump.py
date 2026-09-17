@@ -28,10 +28,13 @@ RECEIVER_EMAILS = [e.strip() for e in os.getenv("RECEIVER_EMAILS").split(",")]
 COMPANY = os.getenv("SETUP_CUSTOMER")
 
 # service database map
+# The host port each stack's mongo is published on. The stack's .env names it
+# when this install shares its server with other tenants, each on its own
+# ports; otherwise the stock port applies.
 SERVICE_DB_MAP = {
-    "accounts": {"host": "localhost", "port": "17017"},
-    "chat": {"host": "localhost", "port": "61017"},
-    "datalake": {"host": "localhost", "port": "37017"},
+    "accounts": {"host": "localhost", "port": os.getenv("SSO_MONGO_HOST_PORT") or "17017"},
+    "chat": {"host": "localhost", "port": os.getenv("CHAT_MONGO_HOST_PORT") or "61017"},
+    "datalake": {"host": "localhost", "port": os.getenv("DATALAKE_MONGO_HOST_PORT") or "37017"},
 }
 
 db_config = SERVICE_DB_MAP.get(OUTPUT_DIRECTORY, {"host": "localhost", "port": "27017"})

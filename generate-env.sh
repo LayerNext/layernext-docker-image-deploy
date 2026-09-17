@@ -721,3 +721,28 @@ REFRESH_TOKEN_EXPIRES_IN=604800
 ONBOARDING_GRANT_TTL_SECONDS=900
 ONE_TIME_TOKEN_EXPIRES=3
 EOL
+
+# --- a tenant sharing a server with others -------------------------------------
+# Set in the root .env only for a tenant installed beside others
+# (enterprise-tenant-setup, shared mode). Each compose file reads them from its
+# stack's .env; left unset, the stock ports and network apply, so an ordinary
+# install is unchanged.
+#
+# COMPOSE_PROJECT_NAME also makes a plain `docker compose ...` in a stack folder
+# address this tenant's containers, not the ordinary install's.
+#
+# Only set values are written: an empty COMPOSE_PROJECT_NAME is an error to
+# docker compose, not a default.
+append_shared_settings() {
+  local file=$1
+  shift
+  local name
+  for name in COMPOSE_PROJECT_NAME LAYERNEXT_NETWORK LAYERNEXT_KNOWLEDGE_DIR "$@"; do
+    if [ -n "${!name:-}" ]; then
+      echo "${name}=${!name}" >> "$file"
+    fi
+  done
+}
+append_shared_settings "$accounts_env" SSO_MONGO_HOST_PORT SSO_BACKEND_HOST_PORT SSO_FRONTEND_HOST_PORT ROUTER_HOST_PORT
+append_shared_settings "$datalake_env" DATALAKE_MONGO_HOST_PORT DATALAKE_BACKEND_HOST_PORT DATALAKE_FRONTEND_HOST_PORT
+append_shared_settings "$source_env" CHAT_MONGO_HOST_PORT CHAT_FRONTEND_HOST_PORT CHAT_BACKEND_HOST_PORT

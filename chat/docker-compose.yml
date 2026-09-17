@@ -3,7 +3,7 @@ services:
     image: mongo:5.0.13
     restart: always
     ports:
-      - 61017:27017
+      - "${CHAT_MONGO_HOST_PORT:-61017}:27017"
     volumes:
       - ./mongoData:/data/db
       - ./DB_initial_data/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js
@@ -45,7 +45,7 @@ services:
     networks:
       - layernext_network
     ports:
-      - "8099:8099"
+      - "${CHAT_FRONTEND_HOST_PORT:-8099}:8099"
     environment:
       - TZ:utc
       - LAYERNEXT_ACCOUNTS_SUB_DOMAIN=${ACCOUNTS_DOMAIN_URL}
@@ -61,7 +61,7 @@ services:
     networks:
       - layernext_network
     ports:
-      - "5082:5082"
+      - "${CHAT_BACKEND_HOST_PORT:-5082}:5082"
     volumes:
       - ./LLM-integration/logs:/app/logs
       - ../datalake/datalake-flask/logs:/app/logs/metalake_logs
@@ -72,7 +72,7 @@ services:
       - ./LLM-integration/storage/public:/app/storage/public
       - ./LLM-integration/memory_dumps:/app/memory_dumps
       - ./LLM-integration/data:/app/data
-      - /home/ubuntu/layernext/layernext-knowledge/${SETUP_CUSTOMER}:/app/knowledge:ro
+      - ${LAYERNEXT_KNOWLEDGE_DIR:-/home/ubuntu/layernext/layernext-knowledge}/${SETUP_CUSTOMER}:/app/knowledge:ro
     depends_on:
       - chat_mongodb
     deploy:
@@ -85,4 +85,7 @@ services:
 
 networks:
   layernext_network:
+    # The key is what the services above name; LAYERNEXT_NETWORK is the
+    # docker network it stands for. A tenant on a shared server has its own.
+    name: ${LAYERNEXT_NETWORK:-layernext_network}
     external: true

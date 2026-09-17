@@ -3,7 +3,7 @@ services:
     image: mongo:5.0.13
     restart: always
     ports:
-      - 37017:27017
+      - "${DATALAKE_MONGO_HOST_PORT:-37017}:27017"
     volumes:
       - ./mongoData:/data/db
       - ./DB_initial_data/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js
@@ -40,7 +40,7 @@ services:
     image: layernextai/datalake_node_backend:3.28.8
     restart: always
     ports:
-      - "3000:3000"
+      - "${DATALAKE_BACKEND_HOST_PORT:-3000}:3000"
     depends_on:
       - datalake_mongodb
     networks:
@@ -59,7 +59,7 @@ services:
       - ./datalake-nodejs/config:/app/config/
       - /etc/krb5.conf:/app/config/host_krb5/krb5.conf
       - ./entrypoint.sh:/app/entrypoint.sh
-      - /home/ubuntu/layernext/layernext-knowledge/${SETUP_CUSTOMER}:/usr/src/app/datalake-nodejs/dist/metadata:ro
+      - ${LAYERNEXT_KNOWLEDGE_DIR:-/home/ubuntu/layernext/layernext-knowledge}/${SETUP_CUSTOMER}:/usr/src/app/datalake-nodejs/dist/metadata:ro
     env_file:
       - ./.env
     entrypoint:
@@ -75,7 +75,7 @@ services:
     networks:
       - layernext_network
     ports:
-      - "8095:8095"
+      - "${DATALAKE_FRONTEND_HOST_PORT:-8095}:8095"
     environment:
       - TZ:utc
       - LAYERNEXT_ACCOUNTS_SUB_DOMAIN=${ACCOUNTS_DOMAIN_URL}
@@ -85,4 +85,7 @@ services:
 
 networks:
   layernext_network:
+    # The key is what the services above name; LAYERNEXT_NETWORK is the
+    # docker network it stands for. A tenant on a shared server has its own.
+    name: ${LAYERNEXT_NETWORK:-layernext_network}
     external: true
