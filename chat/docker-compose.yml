@@ -72,7 +72,7 @@ services:
       - ./LLM-integration/storage/public:/app/storage/public
       - ./LLM-integration/memory_dumps:/app/memory_dumps
       - ./LLM-integration/data:/app/data
-      - ${LAYERNEXT_KNOWLEDGE_DIR:-/home/ubuntu/layernext/layernext-knowledge}/${SETUP_CUSTOMER}:/app/knowledge:ro
+      - ${LAYERNEXT_KNOWLEDGE_DIR:-/srv/tenants/tjhdev/layernext-knowledge}/${SETUP_CUSTOMER}:/app/knowledge:ro
     depends_on:
       - chat_mongodb
     deploy:
