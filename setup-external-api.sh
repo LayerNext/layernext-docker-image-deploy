@@ -1,29 +1,48 @@
 #!/bin/bash
 #
-# Provision the two external API credentials for this tenant.
+# Provision this tenant's external API credential.
 #
 #   ./setup-external-api.sh "ERP integration"
 #
 # Run from the deploy repo root, after the stacks are up.
 #
+# ONE credential, valid on both APIs: one apiKeyId (ext_...) and one secret,
+# stored in both databases, each as that backend's own hash of the secret:
+#
+#   chat      chatDB.ExternalAPIUsers    secretHash = PBKDF2-SHA256(secret)
+#   datalake  datalakeDB.ApiKey          secretHash = scrypt(secret)
+#
+# The caller sends the same header to either:
+#
+#   Authorization: Basic base64(<apiKeyId>:<apiSecret>)
+#
+# Only the hashes are stored. The secret is printed once, here, and cannot be
+# read back afterwards -- only replaced.
+#
 # ---------------------------------------------------------------------------
 # Why this is a wrapper and not a script of its own
 #
-# Both provisioners already exist, and both already live inside the images this
-# box is running:
+# Both hashing schemes already exist, inside the images this box is running:
 #
-#   datalake_node_backend   scripts/provision-external-bot-api-key.js
 #   llm_fast_api_backend    scripts/print_external_api_user_doc.py
+#   datalake_node_backend   scripts/provision-external-bot-api-key.js
 #
-# Copying them here would mean copying their dependencies too -- the mongodb
-# driver for one, utils/constant.py for the other -- and then maintaining a
-# second copy of a document format whose only real specification is the code
-# that verifies it. When that drifts, nothing fails loudly: the record is
-# written, the install looks fine, and authentication refuses every call.
+# Copying them here would mean maintaining a second copy of a format whose only
+# real specification is the code that verifies it. When that drifts, nothing
+# fails loudly: the record is written, and authentication refuses every call.
+# So each container hashes the secret with its own code, against its own
+# database, using the connection already in its own .env. This file generates
+# the pair once, hands it to both, and prints it.
 #
-# So nothing is copied. Each container runs its own script, against its own
-# database, using the credentials already in its own .env. This file only says
-# which, and collects what they print.
+# Order, and why:
+#   1. chat: refuse if this team already has an active credential. Its secret
+#      cannot be read back, so it cannot be reused for datalake, and a second
+#      one would leave two in use.
+#   2. chat: generate the key and secret.
+#   3. chat: insert, with chat's hash.
+#   4. datalake: insert the same key and secret, with datalake's hash.
+#   5. if 4 fails, remove what 3 inserted -- a credential that works on one
+#      API only could never be completed, because the secret is gone.
 # ---------------------------------------------------------------------------
 
 set -u
@@ -38,108 +57,191 @@ if [ ! -f "$DATALAKE_COMPOSE" ] || [ ! -f "$CHAT_COMPOSE" ]; then
     exit 1
 fi
 
-echo ""
-echo "Provisioning external API credentials for: $CALLER_NAME"
+# Python in the chat backend, reading its program from stdin. Values that must
+# stay out of the process list go in on stdin too, never as arguments. Both
+# streams are kept, so a failure -- a container that is not running -- says why.
+chat_python() {
+    docker compose -f "$CHAT_COMPOSE" exec -T \
+        -e EXTERNAL_API_CALLER_NAME="$CALLER_NAME" \
+        llm_fast_api_backend python3 - 2>&1
+}
 
-# --- datalake ---------------------------------------------------------------
-#
-# The shipped provisioner hashes the secret, inserts the ApiKey document and
-# prints the pair. It refuses a duplicate rather than writing a second one, so
-# re-running an install is safe -- and that refusal is not a reason to stop,
-# which is why the exit code is reported rather than obeyed.
-echo ""
-echo "--- datalake -------------------------------------------------------"
-docker compose -f "$DATALAKE_COMPOSE" exec -T datalake_node_backend \
-    node scripts/provision-external-bot-api-key.js --name "$CALLER_NAME" \
-    || echo "  (datalake credential not created -- see the message above)"
+# The chat backend logs to stdout, so each step reports on a line of its own,
+# prefixed RESULT=, and only that line is read.
+result_of() {
+    printf '%s\n' "$1" | sed -n 's/^RESULT=//p' | tail -n 1
+}
 
-# --- chat -------------------------------------------------------------------
-#
-# The chat script only prints a document; there is no inserter beside it. So
-# the document is built here and written with the backend's own mongo manager,
-# which finds its connection the same way the application does.
-#
-# The hashing is imported from the shipped script rather than reimplemented:
-# the format has to match what external_api_auth_service verifies, and the one
-# place that is guaranteed to stay in step with the verifier is the file that
-# ships beside it.
 echo ""
-echo "--- chat -----------------------------------------------------------"
-docker compose -f "$CHAT_COMPOSE" exec -T \
-    -e EXTERNAL_API_CALLER_NAME="$CALLER_NAME" \
-    llm_fast_api_backend python3 - <<'PY'
-import importlib.util
+echo "Provisioning the external API credential for: $CALLER_NAME"
+
+# --- 1 and 2: check chat, and generate the pair -----------------------------------
+CHECK_OUTPUT=$(chat_python <<'PY'
 import os
 import secrets
 import sys
-from datetime import datetime, timezone
 
 sys.path.insert(0, "/app")
-
-SCRIPT = "/app/scripts/print_external_api_user_doc.py"
-if not os.path.isfile(SCRIPT):
-    print(f"  {SCRIPT} is not in this image -- nothing to do.")
+if not os.path.isfile("/app/scripts/print_external_api_user_doc.py"):
+    print("RESULT=NO-SCRIPT")
     raise SystemExit(0)
-
-# Loaded by path: scripts/ is not a package, so a plain import would not find
-# it even with /app on the path.
-spec = importlib.util.spec_from_file_location("ext_api_doc", SCRIPT)
-module = importlib.util.module_from_spec(spec)
-spec.loader.exec_module(module)
 
 from databases.mongo_manager import MongoDBmanager
 
 team_id = os.getenv("TEAM_ID", "").strip()
 user_id = (os.getenv("ONBOARDED_USER_ID") or os.getenv("SUPER_ADMIN_ID") or "").strip()
-name = os.getenv("EXTERNAL_API_CALLER_NAME", "External integration")
-
 if not team_id or not user_id:
-    print("  TEAM_ID or ONBOARDED_USER_ID is missing from this container.")
-    raise SystemExit(1)
+    print("RESULT=NO-IDS")
+    raise SystemExit(0)
 
-collection = MongoDBmanager("ExternalAPIUsers")
-
-# One active credential per tenant is what an install should leave behind.
-# Re-running must not quietly add a second, because both would then work and
-# only one would ever be revoked.
-existing = collection.get_one_document(
+existing = MongoDBmanager("ExternalAPIUsers").get_one_document(
     {"boundUser.teamId": team_id, "isActive": True}
 )
 if existing:
-    print(f"  An active ExternalAPIUsers record already exists "
-          f"(apiKeyId {existing.get('apiKeyId')}). Not creating another.")
+    print(f"RESULT=EXISTS {existing.get('apiKeyId')}")
     raise SystemExit(0)
 
-api_key_id = "ext_" + secrets.token_urlsafe(16)
-api_secret = secrets.token_urlsafe(32)
-now = datetime.now(timezone.utc).isoformat()
+# Neither contains ':' -- the separator in Basic base64(apiKeyId:apiSecret).
+print(f"RESULT=OK ext_{secrets.token_urlsafe(16)} {secrets.token_urlsafe(32)}")
+PY
+)
+CHECK=$(result_of "$CHECK_OUTPUT")
 
-collection.insert_one({
-    "apiKeyId": api_key_id,
-    "secretHash": module.build_secret_hash(api_secret),
+case "$CHECK" in
+    OK\ *)
+        read -r _ API_KEY_ID API_SECRET <<<"$CHECK"
+        ;;
+    EXISTS\ *)
+        echo ""
+        echo "  This tenant already has an active credential (apiKeyId ${CHECK#EXISTS })."
+        echo "  Nothing was created. Its secret cannot be read back; to replace it, set"
+        echo "  isActive to false on it in chat (ExternalAPIUsers) and in datalake (ApiKey),"
+        echo "  then run this again."
+        exit 0
+        ;;
+    NO-IDS)
+        echo "  TEAM_ID or ONBOARDED_USER_ID is missing from the chat container. Nothing was created."
+        exit 1
+        ;;
+    NO-SCRIPT)
+        echo "  scripts/print_external_api_user_doc.py is not in the chat image. Nothing was created."
+        exit 1
+        ;;
+    *)
+        echo "  Could not check the chat database. Nothing was created."
+        printf '%s\n' "$CHECK_OUTPUT" | sed 's/^/    /'
+        exit 1
+        ;;
+esac
+
+# Both go into python source and onto a command line below. Checked, not trusted.
+case "$API_KEY_ID$API_SECRET" in
+    *[!A-Za-z0-9_-]*|"")
+        echo "  The generated credential has unexpected characters. Nothing was created."
+        exit 1
+        ;;
+esac
+
+# --- 3: chat, with chat's hash ------------------------------------------------------
+INSERT_OUTPUT=$(
+    {
+        printf 'API_KEY_ID = "%s"\nAPI_SECRET = "%s"\n' "$API_KEY_ID" "$API_SECRET"
+        cat <<'PY'
+import importlib.util
+import os
+import sys
+from datetime import datetime, timezone
+
+sys.path.insert(0, "/app")
+
+# Loaded by path: scripts/ is not a package. Its hash is the format
+# external_api_auth_service verifies, so it is used, not reimplemented.
+spec = importlib.util.spec_from_file_location("ext_api_doc", "/app/scripts/print_external_api_user_doc.py")
+module = importlib.util.module_from_spec(spec)
+spec.loader.exec_module(module)
+
+from databases.mongo_manager import MongoDBmanager
+
+now = datetime.now(timezone.utc).isoformat()
+MongoDBmanager("ExternalAPIUsers").insert_one({
+    "apiKeyId": API_KEY_ID,
+    "secretHash": module.build_secret_hash(API_SECRET),
     "isActive": True,
     "revokedAt": None,
     "allowedScopes": [module.DEFAULT_SCOPE],
     "boundUser": {
-        "id": user_id,
-        "name": name,
+        "id": (os.getenv("ONBOARDED_USER_ID") or os.getenv("SUPER_ADMIN_ID") or "").strip(),
+        "name": os.getenv("EXTERNAL_API_CALLER_NAME", "External integration"),
         "email": os.getenv("ADMIN_EMAIL", ""),
         # 2 is SUPER_ADMIN, matching the user this tenant was provisioned with.
         "userType": 2,
-        "teamId": team_id,
+        "teamId": os.getenv("TEAM_ID", "").strip(),
     },
     "createdAt": now,
     "updatedAt": now,
     "lastUsedAt": None,
 })
-
-print(f"  apiKeyId:  {api_key_id}")
-print(f"  apiSecret: {api_secret}")
+print("RESULT=INSERTED")
 PY
+    } | chat_python
+)
+if [ "$(result_of "$INSERT_OUTPUT")" != INSERTED ]; then
+    echo "  The chat record could not be written. Nothing was created."
+    printf '%s\n' "$INSERT_OUTPUT" | sed 's/^/    /'
+    exit 1
+fi
+echo "  chat:     ExternalAPIUsers record written"
+
+# --- 4: datalake, the same pair with datalake's hash ----------------------------------
+# The shipped provisioner takes the pair as arguments; it refuses a key that is
+# already there, so a repeat cannot write a second record. Its own output
+# repeats the secret, so it is kept, not printed, unless something goes wrong.
+DATALAKE_OUTPUT=$(docker compose -f "$DATALAKE_COMPOSE" exec -T datalake_node_backend \
+    node scripts/provision-external-bot-api-key.js \
+    --name "$CALLER_NAME" --key "$API_KEY_ID" --secret "$API_SECRET" 2>&1)
+DATALAKE_STATUS=$?
+
+if [ "$DATALAKE_STATUS" -ne 0 ] || ! printf '%s\n' "$DATALAKE_OUTPUT" | grep -q "Inserted ApiKey document"; then
+    echo "  datalake: the ApiKey record could not be written:"
+    printf '%s\n' "$DATALAKE_OUTPUT" | grep -v -e "$API_SECRET" | sed 's/^/    /'
+
+    # --- 5: undo 3 ---------------------------------------------------------------------
+    UNDO_OUTPUT=$(
+        {
+            printf 'API_KEY_ID = "%s"\n' "$API_KEY_ID"
+            cat <<'PY'
+import sys
+sys.path.insert(0, "/app")
+from databases.mongo_manager import MongoDBmanager
+MongoDBmanager("ExternalAPIUsers").remove_many({"apiKeyId": API_KEY_ID})
+print("RESULT=REMOVED")
+PY
+        } | chat_python
+    )
+    if [ "$(result_of "$UNDO_OUTPUT")" = REMOVED ]; then
+        echo "  chat:     the record written above was removed again. Nothing was created."
+    else
+        echo "  chat:     could NOT remove the record written above -- remove it by hand:"
+        echo "            db.ExternalAPIUsers.deleteOne({apiKeyId: \"$API_KEY_ID\"})"
+    fi
+    exit 1
+fi
+DATALAKE_ID=$(printf '%s\n' "$DATALAKE_OUTPUT" | sed -n 's/^Inserted ApiKey document _id=//p')
+echo "  datalake: ApiKey record written (_id $DATALAKE_ID)"
+
+# --- 6: the credential, once ---------------------------------------------------------
+AUTH_HEADER="Basic $(printf '%s:%s' "$API_KEY_ID" "$API_SECRET" | base64 | tr -d '\n')"
 
 echo ""
+echo "--- credential (chat + datalake) -----------------------------------"
+echo "  apiKeyId:            $API_KEY_ID"
+echo "  apiSecret:           $API_SECRET"
+echo "  authorizationHeader: $AUTH_HEADER"
+echo ""
+echo "  Valid on the chat conversation API and the datalake master-data-sync API."
+echo ""
 echo "===================================================================="
-echo "  Save the credentials above now. The secrets are hashed in the"
-echo "  database and cannot be read back -- only replaced."
+echo "  Save the credential above now. The secret is hashed in both"
+echo "  databases and cannot be read back -- only replaced."
 echo "===================================================================="
 echo ""
