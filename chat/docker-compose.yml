@@ -54,7 +54,7 @@ services:
       - LAYERNEXT_API_SUB_DOMAIN=${API_DOMAIN_URL}
 
   llm_fast_api_backend:
-    image: layernextai/llm_fast_api_backend:3.28.7
+    image: layernextai/llm_fast_api_backend:3.28.8
     restart: always
     environment:
       - LAYERNEXT_VERSION=3.21.14
@@ -72,7 +72,7 @@ services:
       - ./LLM-integration/storage/public:/app/storage/public
       - ./LLM-integration/memory_dumps:/app/memory_dumps
       - ./LLM-integration/data:/app/data
-      - ${LAYERNEXT_KNOWLEDGE_DIR:-/srv/tenants/tjhdev/layernext-knowledge}/${SETUP_CUSTOMER}:/app/knowledge:ro
+      - ${LAYERNEXT_KNOWLEDGE_DIR}:/app/knowledge:ro
     depends_on:
       - chat_mongodb
     deploy:
