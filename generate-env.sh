@@ -35,6 +35,14 @@ BILLING_PLAN="${BILLING_PLAN:-}"
 BILLING_CURRENCY="${BILLING_CURRENCY:-USD}"
 COMPANY_TIMEZONE="${COMPANY_TIMEZONE:-America/Winnipeg}"
 
+# Which BigQuery connection in the datalake's own Connection collection holds
+# master data -- matched on sourceName. Required by the datalake since
+# LN-V3.27.0: unset, the stack starts and looks healthy, and then every
+# /api/master-data-sync call returns 500. A default rather than an empty
+# passthrough for that reason; override it only for a tenant whose BigQuery
+# connection is named something else.
+MASTER_DATA_SYNC_SOURCE_NAME="${MASTER_DATA_SYNC_SOURCE_NAME:-Enterprise_Warehouse}"
+
 if [ "$CENTRAL_SSO" = "true" ]; then
   # A PEM has newlines, and the export above splits on newlines, so the key
   # travels through the root .env base64-encoded on a single line.
@@ -419,6 +427,10 @@ PLAID_ENV=$PLAID_ENV
 
 # Flask API mode (enabled | disabled)
 FLASK_API_MODE=$FLASK_API_MODE
+
+# Master data sync: the sourceName of the BigQuery connection in this tenant's
+# Connection collection. Required -- see the note beside its default above.
+MASTER_DATA_SYNC_SOURCE_NAME=$MASTER_DATA_SYNC_SOURCE_NAME
 
 # Node reads OTHER_BUCKETS (ALL_BUCKETS kept above for compatibility)
 OTHER_BUCKETS=$ALL_BUCKETS
