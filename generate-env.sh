@@ -43,6 +43,24 @@ COMPANY_TIMEZONE="${COMPANY_TIMEZONE:-America/Winnipeg}"
 # connection is named something else.
 MASTER_DATA_SYNC_SOURCE_NAME="${MASTER_DATA_SYNC_SOURCE_NAME:-Enterprise_Warehouse}"
 
+# The knowledge checkout holds one folder per customer, and a stack must be
+# given its own folder -- not the checkout, which would mount every other
+# customer's knowledge into this tenant's containers.
+#
+# Two halves, from two places. shared_box.py writes the checkout's path into
+# the root .env for a tenant sharing a server; a box with one tenant has the
+# ordinary path below. The customer folder is SETUP_CUSTOMER, which is the
+# COMPANY_SHORT_NAME the installer wrote above -- not the tenant key, which can
+# differ (tenant tjhdev, folder tjh). It is joined here because this is where
+# both halves are known.
+LAYERNEXT_KNOWLEDGE_DIR="${LAYERNEXT_KNOWLEDGE_DIR:-/home/ubuntu/layernext/layernext-knowledge}"
+if [ -z "${SETUP_CUSTOMER:-}" ]; then
+  echo "SETUP_CUSTOMER is empty: LAYERNEXT_KNOWLEDGE_DIR would be the whole"
+  echo "knowledge checkout, giving this tenant every other customer's files."
+  exit 1
+fi
+LAYERNEXT_KNOWLEDGE_DIR="${LAYERNEXT_KNOWLEDGE_DIR%/}/${SETUP_CUSTOMER}"
+
 if [ "$CENTRAL_SSO" = "true" ]; then
   # A PEM has newlines, and the export above splits on newlines, so the key
   # travels through the root .env base64-encoded on a single line.

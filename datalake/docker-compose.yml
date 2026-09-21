@@ -59,7 +59,7 @@ services:
       - ./datalake-nodejs/config:/app/config/
       - /etc/krb5.conf:/app/config/host_krb5/krb5.conf
       - ./entrypoint.sh:/app/entrypoint.sh
-      - ${LAYERNEXT_KNOWLEDGE_DIR}/${SETUP_CUSTOMER}:/usr/src/app/datalake-nodejs/dist/metadata:ro
+      - ${LAYERNEXT_KNOWLEDGE_DIR}:/usr/src/app/datalake-nodejs/dist/metadata:ro
     env_file:
       - ./.env
     entrypoint:
