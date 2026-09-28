@@ -1,8 +1,14 @@
 
 PATH_ENV=$1
 PATH_DIR=$2
+DATABASE_HOST=$3
+DATABASE_PORT=$4
 
 export $(grep -v '^#' $PATH_ENV | xargs -d '\n')
+
+# override with the mapped localhost ports passed from dump.py
+DATABASE_HOST=$3
+DATABASE_PORT=$4
 
 function initStaticParams
 {
@@ -36,9 +42,9 @@ echo "`date +'%Y-%m-%dT%H:%M:%S.%3N'` dump start" >> $LOG_FILE
 # }
 # log $LOG_MESSAGE_INFO "[INFO] starting backup of datalake"
 
-echo --port=$DB_PORT --authenticationDatabase=admin --username=$DUMP_USER --password=$DUMP_USER_PWD --db=$DATABASE --archive=${PATH_DIR}/backup/${OUTPUT_DIRECTORY}/dump/${OUTPUT_DIRECTORY}_`date +%Y-%m-%dT%H`.gz >> $LOG_FILE
+echo --host=$DATABASE_HOST --port=$DATABASE_PORT --authenticationDatabase=admin --username=$DUMP_USER --password=$DUMP_USER_PWD --db=$DATABASE --archive=${PATH_DIR}/backup/${OUTPUT_DIRECTORY}/dump/${OUTPUT_DIRECTORY}_`date +%Y-%m-%dT%H`.gz >> $LOG_FILE
 
-mongodump --port=$DB_PORT --authenticationDatabase=admin --username=$DUMP_USER --password=$DUMP_USER_PWD --db=$DATABASE --archive=${PATH_DIR}/backup/${OUTPUT_DIRECTORY}/dump/${OUTPUT_DIRECTORY}_`date +%Y-%m-%dT%H`.gz --gzip  2>> $LOG_FILE
+mongodump --host=$DATABASE_HOST --port=$DATABASE_PORT --authenticationDatabase=admin --username=$DUMP_USER --password=$DUMP_USER_PWD --db=$DATABASE --archive=${PATH_DIR}/backup/${OUTPUT_DIRECTORY}/dump/${OUTPUT_DIRECTORY}_`date +%Y-%m-%dT%H`.gz --gzip  2>> $LOG_FILE
 # RET_CODE=$?
 
 

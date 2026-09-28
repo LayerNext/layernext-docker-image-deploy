@@ -3,7 +3,7 @@ services:
     image: mongo:5.0.13
     restart: always
     ports:
-      - 17017:27017
+      - "${SSO_MONGO_HOST_PORT:-17017}:27017"
     volumes:
       - ./mongoData:/data/db
       - ./DB_initial_data/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js
@@ -33,12 +33,16 @@ services:
       - CHAT_KEY
       - CHAT_SECRET
       - DOMAIN_URL
+      - ACCOUNTS_DOMAIN_URL
+      - ONE_TIME_TOKEN
+      - ADMIN_FIRST_NAME
+      - ADMIN_LAST_NAME
 
   sso_node_backend:
-    image: layernextai/sso_node_backend:3.20.3
+    image: layernextai/sso_node_backend:3.24.0
     restart: always
     ports:
-      - "8888:8888"
+      - "${SSO_BACKEND_HOST_PORT:-8888}:8888"
     depends_on:
       - sso_mongodb
     networks:
@@ -46,19 +50,24 @@ services:
     volumes:
       - ./sso-layernext-backend/logs:/usr/src/app/logs
       - ./sso-layernext-backend/storage:/usr/src/app/storage
+      - ./sso-layernext-backend/secrets/jwt_private.pem:/usr/src/app/secrets/jwt_private.pem:ro
+      - ./sso-layernext-backend/secrets/jwt_public.pem:/usr/src/app/secrets/jwt_public.pem:ro
     env_file:
       - ./.env
 
   sso_frontend:
-    image: layernextai/sso_frontend:3.20.3
+    image: layernextai/sso_frontend:3.24.5
     restart: always
     ports:
-      - "8097:8097"
+      - "${SSO_FRONTEND_HOST_PORT:-8097}:8097"
     networks:
       - layernext_network
     environment:
       - TZ:utc
-      - LAYERNEXT_SUB_DOMAIN=${DOMAIN_URL}
+      - LAYERNEXT_ACCOUNTS_SUB_DOMAIN=${ACCOUNTS_DOMAIN_URL}
+      - LAYERNEXT_CHAT_SUB_DOMAIN=${CHAT_DOMAIN_URL}
+      - LAYERNEXT_DATALAKE_SUB_DOMAIN=${DATALAKE_DOMAIN_URL}
+      - LAYERNEXT_API_SUB_DOMAIN=${API_DOMAIN_URL}
 
   layernext_nginx:
     image: nginx
@@ -68,7 +77,7 @@ services:
     networks:
       - layernext_network
     ports:
-      - "81:80"
+      - "${ROUTER_HOST_PORT:-81}:80"
     environment:
       - NGINX_PORT=80
       - SSO_BACKEND_PORT=8888
@@ -83,7 +92,14 @@ services:
       - CHAT_FRONTEND_PORT=8099
       - CHAT_BACKEND_PORT=5082
       - DOMAIN_URL
+      - ACCOUNTS_DOMAIN_URL
+      - CHAT_DOMAIN_URL
+      - DATALAKE_DOMAIN_URL
+      - API_DOMAIN_URL
 
 networks:
   layernext_network:
+    # The key is what the services above name; LAYERNEXT_NETWORK is the
+    # docker network it stands for. A tenant on a shared server has its own.
+    name: ${LAYERNEXT_NETWORK:-layernext_network}
     external: true

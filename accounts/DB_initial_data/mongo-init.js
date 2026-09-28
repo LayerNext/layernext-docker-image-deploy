@@ -22,17 +22,24 @@ db.createUser({
 
 var SETUP_CUSTOMER = _getEnv("SETUP_CUSTOMER");
 var DOMAIN_URL = _getEnv("DOMAIN_URL");
+var ACCOUNTS_DOMAIN_URL = _getEnv("ACCOUNTS_DOMAIN_URL");
 
 var adminMail = _getEnv("ADMIN_EMAIL");
 var teamName = `${SETUP_CUSTOMER} team`;
-var imageUrl = `https://accounts.${DOMAIN_URL}/api/user/profileImage/6374c47ecb468b7a7a68a117/defaultProfileImage.png?1669197094012`;
+var imageUrl = `https://${ACCOUNTS_DOMAIN_URL}/api/user/profileImage/6374c47ecb468b7a7a68a117/defaultProfileImage.png?1669197094012`;
+var adminFirstName = _getEnv("ADMIN_FIRST_NAME") || "";
+var adminLastName = _getEnv("ADMIN_LAST_NAME") || "";
+var adminName = `${adminFirstName} ${adminLastName}`.trim();
 
 //insert default user
 db.getCollection("User").insert({
   _id: ObjectId("6374c47ecb468b7a7a68a117"),
   email: adminMail,
-  name: "LayerNext Admin",
-  userType: 2,
+  name: adminName,
+  firstName: adminFirstName,
+  lastName: adminLastName,
+  tenant: _getEnv("SETUP_CUSTOMER"),
+  userType: 3,
   profileImgUrl: "defaultProfileImage.png",
   projectList: null,
   teamId: ObjectId(_getEnv("TEAM_ID")),
@@ -50,13 +57,29 @@ db.getCollection("User").insert({
   offsetTime: null,
   taskStats: null,
   timeZoneOffset: null,
+  isOnboardedUser: true,
 });
+
+function restoreDollars(s) {
+  return s.replace(/__DOLLAR__/g, "$");
+}
+
+var ADMIN_PASSWORD_RESTORED = restoreDollars(_getEnv("ADMIN_PASSWORD"));
+
 //insert default user credentials
 db.getCollection("AppUserCredentials").insert({
   _id: ObjectId("6374c597cb468b7a7a68a118"),
-  password: _getEnv("ADMIN_PASSWORD"),
+  password: ADMIN_PASSWORD_RESTORED,
   userId: ObjectId("6374c47ecb468b7a7a68a117"),
   annotationUserId: ObjectId("6374c47ecb468b7a7a68a117"),
+});
+
+// insert one time token
+db.getCollection("OneTimeToken").insert({
+  token: _getEnv("ONE_TIME_TOKEN"),
+  createdAt: new Date(),
+  userId: ObjectId("6374c47ecb468b7a7a68a117"),
+  isActive: true,
 });
 
 //insert default team

@@ -24,6 +24,7 @@ db.createUser({
 db.getCollection("SystemData").insert({
   _id: ObjectId("62c68556ebeb17f23b74823d"),
   teamId: ObjectId(_getEnv("TEAM_ID")),
+  tenant: _getEnv("SETUP_CUSTOMER"),
   apiConfigs: {
     maxSyncInterval: 50000.0,
   },
@@ -83,7 +84,7 @@ db.getCollection("SystemData").insert({
   recentMetaDataKeys: [],
   recentTags: [],
   allTags: [],
-  businessOverview:{
+  businessOverview: {
     description: "<h3><strong>Section 1: Business Overview</strong></h3><p></p><p><strong>1.1 Introduction to Your Business</strong></p><p></p><p><em>Provide a brief introduction about your business (Maximum: 250 words).</em></p><p></p><p><strong>1.2 Business Model</strong></p><p></p><p><em>Describe how your business generates revenue. (Maximum: 200 words)</em></p><p></p><p></p><h3><strong>Section 2: Business Objectives</strong></h3><p></p><p><strong>2.1 Short-Term Objectives</strong></p><p></p><p><em>What are the key business objectives you aim to achieve in the next 6-12 months?</em></p><p></p><p><strong>2.2 Long-Term Objectives</strong></p><p></p><p><em>What are your strategic business goals for the next 3-5 years?</em></p><p></p><p></p><h3><strong>Section 3: Key Performance Indicators (KPIs)</strong></h3><p></p><p><strong>3.1 KPI Optimization</strong></p><p></p><p><em>List the KPIs your business focuses on optimizing. (e.g., revenue growth, customer satisfaction,</em></p><p><em>operational efficiencies, customer acquisition cost, churn rate, etc.)</em></p><p></p><p><strong>3.2 Priority Metrics</strong></p><p></p><p><em>Which specific metrics do you consider the most critical for achieving your business goals?</em></p>",
     modifiedDate: new Date(),
   }
@@ -396,7 +397,10 @@ db.getCollection('MetaData').createIndex(
 db.MetaData.createIndex({ nameInLowerCase: 1, _id: 1 }, { name: 'nameInLowerCase_1 _id_1' });
 
 
-//insert default Embedding Model
+////////////////////////////////////////////////////////////////////////
+//////////////      Insert default Embedding Model      ////////////////
+////////////////////////////////////////////////////////////////////////
+
 db.getCollection('EmbeddingModel').insert({
   "embeddingModelName": "Resnet50",
   "embeddingDimension": [2048],
@@ -420,3 +424,59 @@ db.TextChunkEmbedding.createIndex(
   { "id": 1 },
   { name: "id_field", unique: true }
 )
+
+var adminName = `${_getEnv("ADMIN_FIRST_NAME")} ${_getEnv("ADMIN_LAST_NAME")}`;
+
+// The admin user is owned by whichever system authenticates this tenant.
+// With a central SSO that id is generated there and supplied per-tenant; a
+// dedicated install seeds the user locally under the historical fixed id, so
+// fall back to it rather than letting ObjectId() mint an unrelated one.
+var ONBOARDED_USER_ID =
+  _getEnv("ONBOARDED_USER_ID") || "6374c47ecb468b7a7a68a117";
+
+////////////////////////////////////////////////////////////////////////
+///////////////////      Insert ModelProvider      /////////////////////
+////////////////////////////////////////////////////////////////////////
+
+db.getCollection('ModelProvider').insert({
+  provider: "openai",
+  apiKey: _getEnv("TENANT_OPENAI_API_KEY"),
+  createdAt: new Date(),
+  createdBy: adminName,
+  updatedAt: new Date(),
+  updatedBy: adminName,
+  userId: ObjectId(ONBOARDED_USER_ID),
+  teamId: ObjectId(_getEnv("TEAM_ID")),
+});
+
+////////////////////////////////////////////////////////////////////////
+/////////      InsertQuickBooks DataSourceAuthorization     ////////////
+////////////////////////////////////////////////////////////////////////
+
+// Only seed a QuickBooks connection when one was actually supplied.
+//
+// Not every tenant has an accounting source at signup; an enterprise customer
+// may connect one from their own deployment later, or never. Seeding an
+// "active" authorization with empty tokens does not fail the boot -- it fails
+// the first sync instead, which is a far harder failure to trace back to here.
+var QB_ACCESS_TOKEN = _getEnv("QB_AT");
+var QB_REFRESH_TOKEN = _getEnv("QB_RT");
+
+if (QB_ACCESS_TOKEN && QB_REFRESH_TOKEN) {
+  db.getCollection('DataSourceAuthorization').insert({
+    teamId: ObjectId(_getEnv("TEAM_ID")),
+    sourceType: "QuickBooks",
+    companyId: _getEnv("QB_REALM_ID"),
+    authStatus: "active",
+    createdAt: new Date(),
+    updatedAt: new Date(),
+    authTokens: {
+      accessToken: QB_ACCESS_TOKEN,
+      refreshToken: QB_REFRESH_TOKEN,
+    },
+    fivetranConnectionStatus: "creation_required",
+    tenant: _getEnv("SETUP_CUSTOMER"),
+  });
+} else {
+  print("No QuickBooks credentials supplied - skipping DataSourceAuthorization seed.");
+}
