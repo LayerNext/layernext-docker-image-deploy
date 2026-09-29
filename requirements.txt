@@ -1,0 +1,4 @@
+#requirements for the alert and monitoring this is placed here since we are creating the venv in root
+boto3
+python-dotenv
+psutil
