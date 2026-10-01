@@ -26,6 +26,8 @@ DUMP_PER_DAY = os.getenv("DUMP_PER_DAY")
 SENDER_EMAIL = os.getenv("SUPPORT_EMAIL")
 RECEIVER_EMAILS = [e.strip() for e in os.getenv("RECEIVER_EMAILS").split(",")]
 COMPANY = os.getenv("SETUP_CUSTOMER")
+# email only when a dump fails, unless the env sets FAIL_EMAIL_ONLY=false
+FAIL_EMAIL_ONLY = (os.getenv("FAIL_EMAIL_ONLY") or "").strip().lower() != "false"
 
 # service database map
 # The host port each stack's mongo is published on. The stack's .env names it
@@ -174,10 +176,11 @@ def dump_mongdb():
 
         os.unlink(file_location)
 
-        send_email(
-            subject=f"MongoDB Dump Of {COMPANY} ({OUTPUT_DIRECTORY}) - {date_string}",
-            body=f"The MongoDB dump for {OUTPUT_DIRECTORY} on {date_string} has been successfully created and uploaded to S3.",
-        )
+        if not FAIL_EMAIL_ONLY:
+            send_email(
+                subject=f"MongoDB Dump Of {COMPANY} ({OUTPUT_DIRECTORY}) - {date_string}",
+                body=f"The MongoDB dump for {OUTPUT_DIRECTORY} on {date_string} has been successfully created and uploaded to S3.",
+            )
 
     except Exception as e:
         print("An error occurred:", str(e))
