@@ -70,6 +70,7 @@ services:
       - ./LLM-integration/files:/app/files
       - ./LLM-integration/storage/files:/app/storage/files
       - ./LLM-integration/storage/public:/app/storage/public
+      - ./LLM-integration/storage/upload_sessions:/app/storage/upload_sessions
       - ./LLM-integration/memory_dumps:/app/memory_dumps
       - ./LLM-integration/data:/app/data
       - ${LAYERNEXT_KNOWLEDGE_DIR}:/app/knowledge:ro
