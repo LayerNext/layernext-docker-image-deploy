@@ -37,11 +37,6 @@ services:
   chat_frontend:
     image: layernextai/chat_frontend:3.28.8
     restart: always
-    ulimits:
-      nofile:
-        soft: 65535
-        hard: 65535
-
     networks:
       - layernext_network
     ports:
@@ -56,6 +51,10 @@ services:
   llm_fast_api_backend:
     image: layernextai/llm_fast_api_backend:3.28.9
     restart: always
+    ulimits:
+      nofile:
+        soft: 65535
+        hard: 65535
     environment:
       - LAYERNEXT_VERSION=3.21.14
     networks:
@@ -70,6 +69,7 @@ services:
       - ./LLM-integration/files:/app/files
       - ./LLM-integration/storage/files:/app/storage/files
       - ./LLM-integration/storage/public:/app/storage/public
+      - ./LLM-integration/storage/upload_sessions:/app/storage/upload_sessions
       - ./LLM-integration/memory_dumps:/app/memory_dumps
       - ./LLM-integration/data:/app/data
       - ${LAYERNEXT_KNOWLEDGE_DIR}:/app/knowledge:ro
